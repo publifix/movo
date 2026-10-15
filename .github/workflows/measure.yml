@@ -89,7 +89,7 @@ jobs:
           run --device pixel7 --enter --wait 24000
           run --device pixel7 --repeat --wait 10000
           run --device desktop --enter --wait 24000
-          run --device pixel7 --landscape --wait 12000
+          run --device pixel7 --landscape --enter --wait 24000
           run --device iphone14 --browser webkit --wait 12000
-          run --device iphone14 --browser webkit --landscape --wait 12000
+          run --device iphone14 --browser webkit --landscape --enter --wait 24000
           run --device iphone14 --browser webkit --viewport 980x1743 --mac-ua --wait 12000

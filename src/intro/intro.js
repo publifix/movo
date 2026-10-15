@@ -12,7 +12,9 @@
  *  - `mainSelector` acepta varios elementos (p. ej. 'main, .site-header'): todos quedan `inert`.
  *  - Quita la clase `intro-pending` del <html> (cortina puesta por el script inline del <head>
  *    para que el sitio no destelle antes de que exista la capa de la intro).
- *  - Emite `movo:intro-start` al entrar, para que el sitio pueda precargar el video del hero.
+ *  - Emite `movo:intro-start` al entrar.
+ *  - `forceMp4`: usa el MP4 sin consultar canPlayType (Safari / iOS).
+ *  - La descarga del video empieza cuando la pantalla de entrada ya está pintada.
  */
 const FRAME = { w: 1920, h: 1080 };            // resolución del video
 const LOGO_W_IN_FRAME = 1000;                  // ancho del logo completo en el último frame (px de video)
@@ -104,7 +106,9 @@ export async function initMovoIntro(opts = {}) {
   addEventListener('resize', layout);
 
   // ---------- carga completa del video con progreso (la pantalla de entrada "compra" ese tiempo) ----------
-  const useWebm = video.canPlayType('video/webm; codecs="vp9, opus"') !== '';
+  // La pantalla de entrada se pinta antes de que la descarga compita por la red
+  await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+  const useWebm = !opts.forceMp4 && video.canPlayType('video/webm; codecs="vp9, opus"') !== '';
   const url = base + (useWebm ? FILES.webm : FILES.mp4);
   try {
     const res = await fetch(url);

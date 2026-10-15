@@ -389,8 +389,8 @@ html.js [data-hero-reveal] {
 }
 
 /* Mobile portrait: vertical video, animation in the top third, copy in the lower half.
-   Keep in sync with MOBILE_QUERY in src/hero.js and the poster preloads in index.html. */
-@media (max-width: 767px) and (orientation: portrait) {
+   Orientation only (not width): keep in sync with isPortrait() in src/hero.js and the poster preloads. */
+@media (orientation: portrait) {
   .hero__video {
     object-position: center top;
   }
@@ -427,7 +427,7 @@ html.js [data-hero-reveal] {
   }
 }
 
-@media (max-width: 767px) and (orientation: portrait) and (max-height: 700px) {
+@media (orientation: portrait) and (max-height: 700px) {
   .hero__lede {
     font-size: 0.9375rem;
     margin: 12px 0 20px;
@@ -438,7 +438,7 @@ html.js [data-hero-reveal] {
   }
 }
 
-@media (max-width: 767px) and (orientation: portrait) and (max-height: 600px) {
+@media (orientation: portrait) and (max-height: 600px) {
   .hero__eyebrow {
     margin-bottom: 10px;
   }

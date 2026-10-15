@@ -14,7 +14,13 @@ Static site built with Vite, deployed to GitHub Pages: https://publifix.github.i
 - Palette: ink `#0B0B10` (exact video black), white `#F5F5F0`, volt `#D7FF3B`, magenta `#FF2D87`, violet `#6A3DFF`, gray `#2A2A33`.
   Volt and magenta only on dark backgrounds; text on volt is always ink.
 - Type: Archivo variable, self-hosted in `src/fonts/` (wght 100–900, wdth 62–125%). Headlines 900 / 125%.
-- Always honor `prefers-reduced-motion`. `?reset` in the URL replays the intro.
+- Always honor `prefers-reduced-motion`. `?reset` in the URL replays the intro; `?debug` shows on-screen diagnostics.
+- Hero video: chosen by ORIENTATION (not width) and browser in `src/hero.js` (MP4 on iOS/Safari, else WebM);
+  a single `src` is assigned only on `movo:intro-done`. Portrait layout CSS uses `(orientation: portrait)` only.
+- The intro is temporarily OFF on phones in portrait: `INTRO_ON_PHONE_PORTRAIT` in the inline `<head>` script of `index.html`.
+- Measuring: `node scripts/perf/measure.mjs <url> --device pixel7|iphone14|desktop [--landscape] [--enter]`;
+  production is measured by the manual workflow `.github/workflows/measure.yml` (the sandbox cannot reach github.io).
+- Hosting (GitHub Pages) serves everything with `cache-control: max-age=600`; headers cannot be configured there.
 
 ## Deploy workflow (agreed with the owner)
 - Every push to `main` or any `claude/**` branch triggers `.github/workflows/deploy.yml`, which builds and publishes to GitHub Pages (production).

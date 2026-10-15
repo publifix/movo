@@ -108,7 +108,7 @@ const rows = [...reqs.values()].map(r => {
   const end = r.end != null ? (r.end - t0) * 1000 : r.endWall != null ? r.endWall - navWall : null;
   return { file: decodeURIComponent(r.url.replace(/^https?:\/\/[^/]+/, '')).slice(0, 80), type: r.type, status: r.status, kb: +(r.bytes / 1024).toFixed(1),
     startMs: Math.round(start), endMs: end == null ? null : Math.round(end), range: r.range, enc: r.enc, failed: r.failed };
-}).filter(r => !r.file.startsWith('data:')).sort((a, b) => a.startMs - b.startMs);
+}).filter(r => !/^(data|blob):/.test(r.file)).sort((a, b) => a.startMs - b.startMs);
 
 const heroVideos = new Set(rows.filter(r => /movo-hero-.*\.(mp4|webm)/.test(r.file)).map(r => r.file.split('/').pop()));
 console.log(JSON.stringify({
