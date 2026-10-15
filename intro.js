@@ -1,0 +1,190 @@
+/**
+ * MOVO · Intro con pantalla de entrada y relevo invisible al sitio.
+ * Requiere GSAP 3 en window.gsap. Sin dependencias de framework.
+ *
+ * Contrato con el sitio:
+ *  - El navbar contiene un elemento [data-movo-nav-logo] con el SVG del wordmark (movo-wordmark.svg),
+ *    con color volt (#D7FF3B). intro.js lo oculta durante la intro y lo muestra al aterrizar el logo.
+ *  - El contenido principal escucha `movo:intro-done` en window para arrancar sus animaciones.
+ *  - El <main> queda `inert` durante la intro.
+ */
+const FRAME = { w: 1920, h: 1080 };            // resolución del video
+const LOGO_W_IN_FRAME = 1000;                  // ancho del logo completo en el último frame (px de video)
+const SVG = { w: 1981, h: 549 };               // sistema de coordenadas de movo-logo-completo.svg
+const WORDMARK_BOX = [3, 3, 1978, 446];        // x0, y0, x1, y1 del wordmark en ese sistema
+const SUBTITLE_BOX = [320, 497, 1680, 546];    // x0, y0, x1, y1 del subtítulo
+const DOT_R = 9;                               // radio del punto en el frame 0 (px de video)
+const HANDOFF_AT = 12.5;                       // s — el video está completamente quieto desde 12.4 s
+const SEEN_KEY = 'movo-intro-seen';
+const FILES = { webm: 'movo-intro-v2-1920x1080.webm', mp4: 'movo-intro-v2-1920x1080.mp4' };
+
+export async function initMovoIntro(opts = {}) {
+  const gsap = window.gsap;
+  const base = opts.base ?? '/video/intro/';
+  const logoBase = opts.logoBase ?? '/logo/';
+  const html = document.documentElement;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const navLogo = document.querySelector('[data-movo-nav-logo]');
+  const main = document.querySelector(opts.mainSelector ?? 'main');
+  const done = () => window.dispatchEvent(new CustomEvent('movo:intro-done'));
+
+  // Visita repetida en la sesión o movimiento reducido: directo al sitio
+  if (sessionStorage.getItem(SEEN_KEY) || reduce || opts.skip) {
+    if (navLogo) gsap.set(navLogo, { opacity: 1 });
+    done();
+    return;
+  }
+
+  html.classList.add('intro-lock');
+  main?.setAttribute('inert', '');
+  if (navLogo) gsap.set(navLogo, { opacity: 0 });
+
+  const svgText = async f => (await fetch(logoBase + f)).text();
+  const [svgM, svgWord, svgSub] = await Promise.all(['movo-M.svg', 'movo-wordmark.svg', 'movo-subtitle.svg'].map(svgText));
+
+  const root = document.createElement('div');
+  root.id = 'movo-intro';
+  root.innerHTML = `
+    <video playsinline preload="auto"></video>
+    <div id="movo-intro-logo" aria-hidden="true">
+      <span class="part word">${svgWord}</span><span class="part sub">${svgSub}</span>
+    </div>
+    <div id="movo-gate">
+      <div class="gate-core">
+        <svg class="gate-ring" viewBox="0 0 168 168" aria-hidden="true"><circle class="track" cx="84" cy="84" r="82"/><circle class="bar" cx="84" cy="84" r="82"/></svg>
+        <button class="gate-m" aria-label="Entrar a MOVO con sonido" disabled>${svgM}</button>
+      </div>
+      <div class="gate-actions">
+        <button class="gate-enter" disabled>Enter</button>
+        <button class="gate-mute" disabled>Enter without sound</button>
+      </div>
+      <div id="movo-dot"></div>
+    </div>
+    <button id="movo-skip" aria-label="Saltar intro">Skip</button>`;
+  document.body.appendChild(root);
+
+  const video = root.querySelector('video');
+  const gate = root.querySelector('#movo-gate');
+  const logo = root.querySelector('#movo-intro-logo');
+  const word = logo.querySelector('.word');
+  const sub = logo.querySelector('.sub');
+  const dot = root.querySelector('#movo-dot');
+  const skipBtn = root.querySelector('#movo-skip');
+  const bar = root.querySelector('.gate-ring .bar');
+  const C = 2 * Math.PI * 82;
+  bar.style.strokeDasharray = C;
+  bar.style.strokeDashoffset = C;
+  gsap.set(dot, { xPercent: -50, yPercent: -50, scale: 0 });
+
+  // ---------- geometría: dónde cae el logo del video en esta pantalla ----------
+  function layout() {
+    const vw = innerWidth, vh = innerHeight;
+    const cover = vw / vh >= 1.3;               // en pantallas verticales se usa contain para no recortar la frase
+    video.style.objectFit = cover ? 'cover' : 'contain';
+    const s = cover ? Math.max(vw / FRAME.w, vh / FRAME.h) : Math.min(vw / FRAME.w, vh / FRAME.h);
+    const w = LOGO_W_IN_FRAME * s, h = w * SVG.h / SVG.w;
+    Object.assign(logo.style, { width: `${w}px`, height: `${h}px`, left: `${(vw - w) / 2}px`, top: `${(vh - h) / 2}px` });
+    const place = (el, [x0, y0, x1]) => Object.assign(el.style, {
+      left: `${(x0 / SVG.w) * 100}%`, top: `${(y0 / SVG.h) * 100}%`, width: `${((x1 - x0) / SVG.w) * 100}%`,
+    });
+    place(word, WORDMARK_BOX);
+    place(sub, SUBTITLE_BOX);
+    const d = DOT_R * 2 * s;
+    Object.assign(dot.style, { width: `${d}px`, height: `${d}px` });
+  }
+  layout();
+  addEventListener('resize', layout);
+
+  // ---------- carga completa del video con progreso (la pantalla de entrada "compra" ese tiempo) ----------
+  const useWebm = video.canPlayType('video/webm; codecs="vp9, opus"') !== '';
+  const url = base + (useWebm ? FILES.webm : FILES.mp4);
+  try {
+    const res = await fetch(url);
+    const total = Number(res.headers.get('content-length')) || 0;
+    const reader = res.body.getReader();
+    const chunks = [];
+    let got = 0;
+    for (;;) {
+      const { done: end, value } = await reader.read();
+      if (end) break;
+      chunks.push(value);
+      got += value.length;
+      if (total) bar.style.strokeDashoffset = C * (1 - got / total);
+    }
+    video.src = URL.createObjectURL(new Blob(chunks, { type: useWebm ? 'video/webm' : 'video/mp4' }));
+  } catch {
+    video.src = url;                            // respaldo: streaming normal
+  }
+  bar.style.strokeDashoffset = 0;
+  await new Promise(r => (video.readyState >= 3 ? r() : video.addEventListener('canplaythrough', r, { once: true })));
+  gate.classList.add('ready');
+  root.querySelectorAll('#movo-gate button').forEach(b => { b.disabled = false; });
+
+  // ---------- entrar: la M se contrae en el punto del frame 0 ----------
+  let started = false, handed = false;
+  function enter(withSound) {
+    if (started) return;
+    started = true;
+    video.muted = !withSound;
+    video.play();                               // dentro del gesto del usuario => el navegador permite sonido
+    const m = gate.querySelector('.gate-m');
+    m.style.animation = 'none';
+    gsap.timeline()
+      .to(gate.querySelectorAll('.gate-actions, .gate-ring'), { opacity: 0, duration: 0.2 }, 0)
+      .to(m, { scale: 0.08, opacity: 0, duration: 0.3, ease: 'expo.in' }, 0)
+      .to(dot, { scale: 1, duration: 0.12, ease: 'power2.out' }, 0.2)
+      .set(video, { opacity: 1 }, 0.32)
+      .set(gate, { display: 'none' }, 0.34);
+    gsap.delayedCall(1.2, () => skipBtn.classList.add('show'));
+  }
+  gate.querySelector('.gate-m').addEventListener('click', () => enter(true));
+  gate.querySelector('.gate-enter').addEventListener('click', () => enter(true));
+  gate.querySelector('.gate-mute').addEventListener('click', () => enter(false));
+
+  // ---------- el relevo ----------
+  function handoff({ fromSkip = false } = {}) {
+    if (handed || !started) return;
+    handed = true;
+    sessionStorage.setItem(SEEN_KEY, '1');
+    skipBtn.remove();
+    const tl = gsap.timeline({ onComplete: cleanup });
+
+    // 1) el gemelo HTML aparece exactamente sobre el logo del video (con skip: crossfade desde donde vaya)
+    tl.to(logo, { opacity: 1, duration: fromSkip ? 0.25 : 0.15, ease: 'none' }, 0)
+      .to(video, { opacity: 0, duration: fromSkip ? 0.3 : 0.2, ease: 'none' }, fromSkip ? 0 : 0.15);
+    if (fromSkip) tl.to(video, { volume: 0, duration: 0.4, onComplete: () => video.pause() }, 0);
+
+    // 2) el subtítulo se va; el wordmark viaja al navbar
+    tl.to(sub, { opacity: 0, y: 8, duration: 0.35, ease: 'power2.in' }, 0.25);
+    if (navLogo) {
+      const a = word.getBoundingClientRect();
+      const b = navLogo.getBoundingClientRect();
+      tl.to(word, {
+        x: b.left - a.left, y: b.top - a.top, scale: b.width / a.width,
+        transformOrigin: '0 0', duration: 0.95, ease: 'expo.inOut',
+      }, 0.35)
+        .set(navLogo, { opacity: 1 }, 1.3)
+        .set(word, { opacity: 0 }, 1.3);
+    }
+
+    // 3) el fondo de la intro se desvanece y el sitio despierta
+    tl.to(root, { backgroundColor: 'rgba(11,11,16,0)', duration: 0.6, ease: 'power1.out' }, 0.45)
+      .call(() => {
+        html.classList.remove('intro-lock');
+        main?.removeAttribute('inert');
+        done();
+      }, null, 0.55);
+  }
+
+  function cleanup() {
+    root.style.pointerEvents = 'none';
+    const remove = () => { removeEventListener('resize', layout); URL.revokeObjectURL(video.src); root.remove(); };
+    if (video.paused || video.ended) remove();
+    else video.addEventListener('ended', remove, { once: true });   // la cola del audio termina natural
+  }
+
+  video.addEventListener('timeupdate', () => { if (video.currentTime >= HANDOFF_AT) handoff(); });
+  video.addEventListener('ended', () => handoff());
+  skipBtn.addEventListener('click', () => handoff({ fromSkip: true }));
+  addEventListener('keydown', e => { if (e.key === 'Escape' && started) handoff({ fromSkip: true }); });
+}

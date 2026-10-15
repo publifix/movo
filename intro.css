@@ -1,0 +1,40 @@
+/* ===== MOVO · Intro + relevo al sitio ===== */
+:root { --movo-bg: #0B0B10; --movo-volt: #D7FF3B; --movo-white: #F5F5F0; }
+
+/* Mientras corre la intro el sitio no hace scroll */
+html.intro-lock, html.intro-lock body { overflow: hidden; }
+
+#movo-intro { position: fixed; inset: 0; z-index: 1000; background: var(--movo-bg); color: var(--movo-volt); }
+
+/* Video: cover en pantallas apaisadas, contain en verticales (lo decide intro.js) */
+#movo-intro video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; background: var(--movo-bg); opacity: 0; }
+
+/* Gemelo HTML del logo final del video (intro.js lo posiciona en px) */
+#movo-intro-logo { position: absolute; left: 0; top: 0; opacity: 0; pointer-events: none; line-height: 0; }
+#movo-intro-logo .part { position: absolute; display: block; color: var(--movo-volt); }
+#movo-intro-logo svg, #movo-gate .gate-m svg, .movo-svg svg { width: 100%; height: auto; display: block; }
+
+/* Pantalla de entrada */
+#movo-gate { position: absolute; inset: 0; display: grid; place-items: center; }
+#movo-gate .gate-core { position: relative; width: 168px; height: 168px; display: grid; place-items: center; }
+#movo-gate .gate-ring { position: absolute; inset: 0; transform: rotate(-90deg); }
+#movo-gate .gate-ring circle { fill: none; stroke-width: 2; }
+#movo-gate .gate-ring .track { stroke: rgba(245, 245, 240, .12); }
+#movo-gate .gate-ring .bar { stroke: var(--movo-volt); stroke-linecap: round; transition: stroke-dashoffset .2s linear; }
+#movo-gate .gate-m { width: 72px; color: var(--movo-volt); border: 0; background: none; padding: 0; cursor: pointer; opacity: .35; transition: opacity .4s; }
+#movo-gate.ready .gate-m { opacity: 1; animation: movo-breathe 2.4s ease-in-out infinite; }
+#movo-gate .gate-m:focus-visible { outline: 2px solid var(--movo-volt); outline-offset: 12px; border-radius: 4px; }
+#movo-gate .gate-actions { position: absolute; left: 50%; top: calc(50% + 120px); transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 14px; opacity: 0; transition: opacity .5s; }
+#movo-gate.ready .gate-actions { opacity: 1; }
+#movo-gate .gate-enter { font: 600 15px/1 system-ui, sans-serif; letter-spacing: .02em; color: var(--movo-bg); background: var(--movo-volt); border: 0; border-radius: 999px; padding: 14px 28px; cursor: pointer; }
+#movo-gate .gate-mute { font: 400 13px/1 system-ui, sans-serif; color: rgba(245, 245, 240, .6); background: none; border: 0; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+@keyframes movo-breathe { 50% { transform: scale(1.06); } }
+
+/* Punto que reemplaza a la M al entrar (coincide con el frame 0 del video) */
+#movo-dot { position: absolute; left: 50%; top: 50%; border-radius: 50%; background: var(--movo-volt); }
+
+#movo-skip { position: absolute; right: 28px; bottom: 24px; font: 500 13px/1 system-ui, sans-serif; color: rgba(245, 245, 240, .55); background: none; border: 1px solid rgba(245, 245, 240, .2); border-radius: 999px; padding: 9px 16px; cursor: pointer; opacity: 0; transition: opacity .4s, color .2s; }
+#movo-skip.show { opacity: 1; }
+#movo-skip:hover { color: var(--movo-white); }
+
+@media (prefers-reduced-motion: reduce) { #movo-gate.ready .gate-m { animation: none; } }
