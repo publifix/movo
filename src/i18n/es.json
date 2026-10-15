@@ -1,0 +1,41 @@
+{
+  "_note": "Copy provisional del hero: reemplazar por el definitivo. Mantener las mismas claves en en.json.",
+  "meta": {
+    "title": "MOVO — Estudio de Motion Design",
+    "description": "MOVO es un estudio de motion design. Animación, motion graphics y video para marcas que no se quedan quietas.",
+    "ogDescription": "Las grandes ideas no se quedan quietas.",
+    "ogLocale": "es_MX"
+  },
+  "a11y": {
+    "skip": "Saltar al contenido",
+    "home": "MOVO — inicio",
+    "primaryNav": "Principal",
+    "menu": "Menú",
+    "closeMenu": "Cerrar menú",
+    "language": "Idioma"
+  },
+  "nav": {
+    "work": { "label": "Trabajo", "href": "#trabajo" },
+    "services": { "label": "Servicios", "href": "#servicios" },
+    "studio": { "label": "Estudio", "href": "#estudio" },
+    "contact": { "label": "Contacto", "href": "#contacto" }
+  },
+  "hero": {
+    "eyebrow": "Estudio de motion design",
+    "title": "Hacemos que las marcas se muevan.",
+    "lede": "Motion graphics, animación y video para marcas que se niegan a quedarse quietas. Del primer cuadro al corte final.",
+    "cta": "Empieza un proyecto"
+  },
+  "intro": {
+    "enter": "Entrar",
+    "enterMuted": "Entrar sin sonido",
+    "enterAria": "Entrar a MOVO con sonido",
+    "skip": "Saltar",
+    "skipAria": "Saltar intro"
+  },
+  "notFound": {
+    "title": "Página no encontrada",
+    "text": "Esta página se movió o nunca existió.",
+    "back": "Volver al inicio"
+  }
+}

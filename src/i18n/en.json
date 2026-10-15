@@ -1,0 +1,41 @@
+{
+  "_note": "Provisional hero copy: replace with final copy. Keep the same keys as es.json.",
+  "meta": {
+    "title": "MOVO — Motion Design Studio",
+    "description": "MOVO is a motion design studio. Animation, motion graphics and video for brands that don’t sit still.",
+    "ogDescription": "Great ideas don’t sit still.",
+    "ogLocale": "en_US"
+  },
+  "a11y": {
+    "skip": "Skip to content",
+    "home": "MOVO — home",
+    "primaryNav": "Primary",
+    "menu": "Menu",
+    "closeMenu": "Close menu",
+    "language": "Language"
+  },
+  "nav": {
+    "work": { "label": "Work", "href": "#work" },
+    "services": { "label": "Services", "href": "#services" },
+    "studio": { "label": "Studio", "href": "#studio" },
+    "contact": { "label": "Contact", "href": "#contact" }
+  },
+  "hero": {
+    "eyebrow": "Motion Design Studio",
+    "title": "We make brands move.",
+    "lede": "Motion graphics, animation and video for brands that refuse to sit still. From first frame to final cut.",
+    "cta": "Start a project"
+  },
+  "intro": {
+    "enter": "Enter",
+    "enterMuted": "Enter without sound",
+    "enterAria": "Enter MOVO with sound",
+    "skip": "Skip",
+    "skipAria": "Skip intro"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "text": "This page moved, or never existed.",
+    "back": "Back to home"
+  }
+}

@@ -1,6 +1,6 @@
 // Network / loading measurement for the MOVO site.
 //
-//   node scripts/perf/measure.mjs <url> [--device pixel7|iphone14|desktop] [--landscape]
+//   node scripts/perf/measure.mjs <url> [--device pixel7|iphone14|ipad|desktop] [--landscape]
 //        [--browser chromium|webkit] [--throttle fast4g|none] [--enter] [--wait 20000] [--repeat]
 //
 // Prints one JSON object: every request (order, start/end ms from navigation, bytes on the wire,
@@ -24,7 +24,7 @@ const repeat = !!opt('repeat', false);
 const viewportArg = opt('viewport', null); // e.g. 980x1743: iPhone with "Request desktop website"
 const desktopUA = !!opt('mac-ua', false);  // iOS desktop mode reports a Mac Safari user agent
 
-const DEVICES = { pixel7: devices['Pixel 7'], iphone14: devices['iPhone 14'], desktop: { viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1 } };
+const DEVICES = { pixel7: devices['Pixel 7'], iphone14: devices['iPhone 14'], ipad: devices['iPad Pro 11'], desktop: { viewport: { width: 1440, height: 900 }, deviceScaleFactor: 1 } };
 let ctxOpts = { ...DEVICES[deviceName] };
 if (landscape && ctxOpts.viewport) ctxOpts = { ...ctxOpts, viewport: { width: ctxOpts.viewport.height, height: ctxOpts.viewport.width } };
 if (viewportArg) { const [w, h] = viewportArg.split('x').map(Number); ctxOpts = { ...ctxOpts, viewport: { width: w, height: h } }; }

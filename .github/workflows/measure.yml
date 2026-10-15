@@ -41,14 +41,14 @@ jobs:
               | grep -iE '^(HTTP/|content-type|content-length|content-encoding|cache-control|accept-ranges|etag|last-modified|age|x-cache)' || true
           }
           html=$(curl -s "$U")
-          for f in "" $(echo "$html" | grep -oE '(assets/[^"]+)' | sort -u) \
-                   video/hero/movo-hero-mobile-1080x1920.mp4 video/hero/movo-hero-mobile-1080x1920.webm video/hero/movo-hero-mobile-poster.jpg \
+          for f in "" en/ robots.txt sitemap.xml og/movo-og-1200x630.jpg $(echo "$html" | grep -oE '(assets/[^"]+)' | sort -u) \
+                   video/hero/movo-hero-mobile-720x1280.mp4 video/hero/movo-hero-mobile-720x1280.webm video/hero/movo-hero-mobile-poster.jpg \
                    video/hero/movo-hero-1920x1080.mp4 video/hero/movo-hero-1920x1080.webm video/hero/movo-hero-poster.jpg \
                    video/intro/movo-intro-v2-1920x1080.webm video/intro/movo-intro-v2-1920x1080.mp4; do
             check "$f"
           done
           echo; echo "## Range requests (expect 206 and 1024 bytes)"
-          for f in video/hero/movo-hero-mobile-1080x1920.mp4 video/hero/movo-hero-1920x1080.webm; do
+          for f in video/hero/movo-hero-mobile-720x1280.mp4 video/hero/movo-hero-1920x1080.webm; do
             curl -s -o /dev/null -r 0-1023 -w "$f -> %{http_code} %{size_download} bytes\n" "$U$f"
           done
           echo; echo "## Served index.html references"; echo "$html" | grep -oE '(src|href)="[^"]*"' | grep -vE '^href="#' | head -30
@@ -89,7 +89,9 @@ jobs:
           run --device pixel7 --enter --wait 24000
           run --device pixel7 --repeat --wait 10000
           run --device desktop --enter --wait 24000
-          run --device pixel7 --landscape --enter --wait 24000
+          run --device pixel7 --landscape --wait 12000
           run --device iphone14 --browser webkit --wait 12000
-          run --device iphone14 --browser webkit --landscape --enter --wait 24000
+          run --device iphone14 --browser webkit --landscape --wait 12000
           run --device iphone14 --browser webkit --viewport 980x1743 --mac-ua --wait 12000
+          run --device ipad --browser webkit --wait 12000
+          run --device ipad --browser webkit --landscape --wait 12000

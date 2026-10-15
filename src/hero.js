@@ -4,7 +4,7 @@ import { gsap } from 'gsap';
 // movo:intro-done, so the loop never competes with first paint and a device never fetches two cuts.
 const FILES = {
   landscape: { webm: 'movo-hero-1920x1080.webm', mp4: 'movo-hero-1920x1080.mp4', poster: 'movo-hero-poster.jpg' },
-  portrait: { webm: 'movo-hero-mobile-1080x1920.webm', mp4: 'movo-hero-mobile-1080x1920.mp4', poster: 'movo-hero-mobile-poster.jpg' },
+  portrait: { webm: 'movo-hero-mobile-720x1280.webm', mp4: 'movo-hero-mobile-720x1280.mp4', poster: 'movo-hero-mobile-poster.jpg' },
 };
 
 // Orientation, not width: iOS "Request desktop website" and some in-app browsers report ~980 px.
@@ -17,9 +17,38 @@ const isIOS = /iP(hone|ad|od)/.test(ua) || (/Macintosh/.test(ua) && navigator.ma
 const isSafari = /Safari/.test(ua) && !/Chrome|Chromium|CriOS|FxiOS|EdgiOS|Edg|Android/.test(ua);
 export const preferMp4 = isIOS || isSafari;
 
+// Where the animation sits in each cut, as a fraction of the rendered video height: in the vertical
+// cut the ring ends at 48.6 %; the copy must stay below it (portrait) or below the navbar (landscape).
+const RING_BOTTOM = 0.486;
+
+// Scale the copy block down (never up) when a longer text or language doesn't fit the free area.
+// Uses the CSS `scale` property, so layout boxes don't move (no CLS) and copy length doesn't matter.
+function fitCopy(content) {
+  const hero = content.closest('.hero').getBoundingClientRect();
+  const navBottom = document.querySelector('[data-site-header]')?.getBoundingClientRect().bottom ?? 0;
+  content.style.scale = '';
+  const r = content.getBoundingClientRect();
+  let avail;
+  if (isPortrait()) {
+    // bottom-anchored (scales from its bottom-left corner): room between the ring and its bottom edge
+    const videoH = Math.max(hero.height, (hero.width * 1920) / 1080);
+    avail = r.bottom - (hero.top + RING_BOTTOM * videoH + 16);
+  } else {
+    // vertically centered (scales around its center): room above and below, whichever is tighter
+    const center = r.top + r.height / 2;
+    avail = 2 * Math.min(center - (navBottom + 12), hero.bottom - 8 - center);
+  }
+  const s = r.height > avail ? Math.max(0.6, avail / r.height) : 1;
+  content.style.scale = s < 1 ? String(s) : '';
+}
+
 export function initHero({ base }) {
   const video = document.querySelector('[data-hero-video]');
   const reveal = document.querySelectorAll('[data-hero-reveal]');
+  const content = document.querySelector('.hero__content');
+  const fit = () => content && fitCopy(content);
+  // Fit with the real font: wait for it (it is preloaded), but never more than 800 ms.
+  const fontsReady = Promise.race([document.fonts?.ready ?? Promise.resolve(), new Promise(r => setTimeout(r, 800))]).then(fit);
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (!video) return;
 
@@ -59,9 +88,10 @@ export function initHero({ base }) {
   });
 
   select();
-  portraitQuery.addEventListener('change', select);
+  fit();
+  portraitQuery.addEventListener('change', () => { select(); fit(); });
   let t;
-  addEventListener('resize', () => { clearTimeout(t); t = setTimeout(select, 150); });
+  addEventListener('resize', () => { clearTimeout(t); t = setTimeout(() => { select(); fit(); }, 150); });
 
   window.addEventListener(
     'movo:intro-done',
@@ -81,10 +111,13 @@ export function initHero({ base }) {
       if (document.readyState === 'complete') select();
       else addEventListener('load', select, { once: true });
       gsap.to(video, { opacity: 1, duration: 1.2, ease: 'power1.out' });
-      gsap.fromTo(
-        reveal,
-        { opacity: 0, y: 28 },
-        { opacity: 1, y: 0, duration: 0.9, ease: 'expo.out', stagger: 0.09, delay: 0.15, clearProps: 'transform' },
+      // The copy enters once it has been fitted with the real font (no visible jump).
+      fontsReady.then(() =>
+        gsap.fromTo(
+          reveal,
+          { opacity: 0, y: 28 },
+          { opacity: 1, y: 0, duration: 0.9, ease: 'expo.out', stagger: 0.09, delay: 0.15, clearProps: 'transform' },
+        ),
       );
     },
     { once: true },

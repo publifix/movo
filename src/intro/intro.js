@@ -18,6 +18,7 @@
  *  - Con el video ya en memoria (o en Safari/iOS), la pantalla de entrada se habilita con los metadatos
  *    (iOS no emite `canplaythrough` sin gesto). Si en 3 s no carga, streaming; nunca se queda bloqueada.
  *  - Si el video no arranca a los 4 s de entrar (o falla), se hace el relevo como con Skip.
+ *  - `labels`: textos de los botones por idioma ({ enter, enterMuted, enterAria, skip, skipAria }).
  *    Eventos y errores quedan en window.__movoIntro (los muestra ?debug).
  */
 const FRAME = { w: 1920, h: 1080 };            // resolución del video
@@ -39,6 +40,7 @@ export async function initMovoIntro(opts = {}) {
   const navLogo = document.querySelector('[data-movo-nav-logo]');
   const mains = [...document.querySelectorAll(opts.mainSelector ?? 'main')];
   const done = () => window.dispatchEvent(new CustomEvent('movo:intro-done'));
+  const L = { enter: 'Enter', enterMuted: 'Enter without sound', enterAria: 'Entrar a MOVO con sonido', skip: 'Skip', skipAria: 'Saltar intro', ...opts.labels };
 
   // Visita repetida en la sesión o movimiento reducido: directo al sitio
   if (sessionStorage.getItem(SEEN_KEY) || reduce || opts.skip) {
@@ -65,15 +67,15 @@ export async function initMovoIntro(opts = {}) {
     <div id="movo-gate">
       <div class="gate-core">
         <svg class="gate-ring" viewBox="0 0 168 168" aria-hidden="true"><circle class="track" cx="84" cy="84" r="82"/><circle class="bar" cx="84" cy="84" r="82"/></svg>
-        <button class="gate-m" aria-label="Entrar a MOVO con sonido" disabled>${svgM}</button>
+        <button class="gate-m" aria-label="${L.enterAria}" disabled>${svgM}</button>
       </div>
       <div class="gate-actions">
-        <button class="gate-enter" disabled>Enter</button>
-        <button class="gate-mute" disabled>Enter without sound</button>
+        <button class="gate-enter" disabled>${L.enter}</button>
+        <button class="gate-mute" disabled>${L.enterMuted}</button>
       </div>
       <div id="movo-dot"></div>
     </div>
-    <button id="movo-skip" aria-label="Saltar intro">Skip</button>`;
+    <button id="movo-skip" aria-label="${L.skipAria}">${L.skip}</button>`;
   document.body.appendChild(root);
   html.classList.remove('intro-pending');
 

@@ -1,5 +1,5 @@
 // Navbar: background once the page scrolls, accessible mobile menu.
-export function initNav() {
+export function initNav({ labels = {} } = {}) {
   const header = document.querySelector('[data-site-header]');
   const nav = header?.querySelector('.nav');
   const toggle = header?.querySelector('[data-nav-toggle]');
@@ -16,7 +16,7 @@ export function initNav() {
   const setOpen = open => {
     nav.classList.toggle('is-open', open);
     toggle.setAttribute('aria-expanded', String(open));
-    toggle.querySelector('.sr-only').textContent = open ? 'Close menu' : 'Menu';
+    toggle.querySelector('.sr-only').textContent = open ? labels.closeMenu || 'Close menu' : labels.menu || 'Menu';
     document.documentElement.style.overflow = open ? 'hidden' : '';
     if (open) links[0]?.focus();
   };

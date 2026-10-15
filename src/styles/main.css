@@ -204,6 +204,28 @@ html.intro-pending body::after {
   transform-origin: left;
 }
 
+/* Language switch: ES / EN */
+.nav__lang {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: rgb(245 245 240 / 0.45);
+  font-size: 0.8125rem;
+}
+
+.nav__lang a {
+  letter-spacing: 0.12em;
+  color: rgb(245 245 240 / 0.72);
+}
+
+.nav__lang a[aria-current='true'] {
+  color: var(--c-volt);
+}
+
+.nav__lang a::after {
+  display: none;
+}
+
 .nav__toggle {
   display: none;
 }
@@ -276,6 +298,21 @@ html.intro-pending body::after {
     line-height: 1.15;
   }
 
+  .nav__lang {
+    margin-top: 24px;
+    gap: 10px;
+    font-size: 1rem;
+  }
+
+  .nav__lang a {
+    font-size: 1rem;
+    font-weight: 600;
+    font-stretch: 112%;
+    letter-spacing: 0.12em;
+    line-height: 1;
+    padding: 12px 4px;
+  }
+
   .nav.is-open .nav__links {
     visibility: visible;
     opacity: 1;
@@ -320,6 +357,9 @@ html.intro-pending body::after {
   top: 50%;
   width: min(44vw, 680px, calc(100vw - var(--video-w) / 2 - 2 * var(--gutter)));
   transform: translateY(-50%);
+  /* src/hero.js may shrink the block with `scale`, which applies after `transform`: the box's
+     layout top edge is its visual center (translateY -50%), so "left top" keeps it centered. */
+  transform-origin: left top;
   container-type: inline-size;
 }
 
@@ -411,6 +451,7 @@ html.js [data-hero-reveal] {
     right: var(--gutter);
     width: auto;
     transform: none;
+    transform-origin: left bottom;
   }
 
   /* Copy must fit below the ring (49% of the video height), so type also scales with height. */
