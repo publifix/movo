@@ -100,7 +100,7 @@ const metrics = await page.evaluate(() => {
   return { ...window.__movoMetrics, heroSrc: v?.currentSrc.split('/').pop() || '', heroPoster: v?.poster.split('/').pop() || '', heroPaused: v?.paused,
     heroVideoSize: v ? `${v.videoWidth}x${v.videoHeight}` : '', heroRect: v ? (r => `${Math.round(r.width)}x${Math.round(r.height)}`)(v.getBoundingClientRect()) : '',
     viewport: `${innerWidth}x${innerHeight}`, dpr: devicePixelRatio, domContentLoaded: nav?.domContentLoadedEventEnd, load: nav?.loadEventEnd,
-    debugText: document.querySelector('#movo-debug')?.innerText || null };
+    debugText: document.querySelector('#movo-debug')?.innerText || null, intro: window.__movoIntro || null };
 });
 
 const rows = [...reqs.values()].map(r => {

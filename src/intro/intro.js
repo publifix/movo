@@ -17,6 +17,8 @@
  *  - La descarga del video empieza cuando la pantalla de entrada ya está pintada.
  *  - Con el video ya en memoria, la pantalla de entrada se habilita con los metadatos (iOS no emite
  *    `canplaythrough` sin gesto del usuario).
+ *  - Si el video no arranca a los 4 s de entrar (o falla), se hace el relevo como con Skip.
+ *    Eventos y errores quedan en window.__movoIntro (los muestra ?debug).
  */
 const FRAME = { w: 1920, h: 1080 };            // resolución del video
 const LOGO_W_IN_FRAME = 1000;                  // ancho del logo completo en el último frame (px de video)
@@ -141,11 +143,26 @@ export async function initMovoIntro(opts = {}) {
 
   // ---------- entrar: la M se contrae en el punto del frame 0 ----------
   let started = false, handed = false;
+
+  // Diagnóstico (lo muestra ?debug) y red de seguridad: si el video no arranca, nadie queda atrapado.
+  const diag = (window.__movoIntro = { file: url.split('/').pop(), inMemory, events: [], errors: [] });
+  const t0 = performance.now();
+  ['loadedmetadata', 'canplay', 'canplaythrough', 'playing', 'waiting', 'stalled', 'ended', 'error'].forEach(ev =>
+    video.addEventListener(ev, () => diag.events.push(`${ev}@${Math.round(performance.now() - t0)}`)));
+  video.addEventListener('error', () => {
+    diag.errors.push(`video error ${video.error?.code ?? '?'}: ${video.error?.message || ''}`);
+    if (started) handoff({ fromSkip: true });
+  });
+  let playing = false;
+  video.addEventListener('playing', () => { playing = true; }, { once: true });
+
   function enter(withSound) {
     if (started) return;
     started = true;
     video.muted = !withSound;
-    video.play();                               // dentro del gesto del usuario => el navegador permite sonido
+    const p = video.play();                     // dentro del gesto del usuario => el navegador permite sonido
+    if (p) p.catch(err => { diag.errors.push(`play(): ${err.name}: ${err.message}`); handoff({ fromSkip: true }); });
+    gsap.delayedCall(4, () => { if (!playing && !handed) { diag.errors.push('no playback after 4 s'); handoff({ fromSkip: true }); } });
     window.dispatchEvent(new CustomEvent('movo:intro-start'));
     const m = gate.querySelector('.gate-m');
     m.style.animation = 'none';

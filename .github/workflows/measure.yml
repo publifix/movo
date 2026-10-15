@@ -83,7 +83,7 @@ jobs:
           run() { echo "::group::$*"; node scripts/perf/measure.mjs "$U" "$@" > out.json || true; node -e '
             const d = require("./out.json"), m = d.metrics;
             console.log("RESULT", JSON.stringify({ device: d.device, landscape: d.landscape, browser: d.browser, throttle: d.throttle, enter: d.enter, repeat: d.repeat, enteredAt: d.enteredAt, totalKB: d.totalKB, requests: d.requests, heroVideoFiles: d.heroVideoFiles,
-              lcp: Math.round(m.lcp), lcpEl: m.lcpEl, introShown: m.introShown, introDone: m.introDone && Math.round(m.introDone), heroPlaying: m.heroPlaying && Math.round(m.heroPlaying), heroSrc: m.heroSrc, heroPoster: m.heroPoster, heroPaused: m.heroPaused, heroVideoSize: m.heroVideoSize, heroRect: m.heroRect, viewport: m.viewport, errors: m.errors }));
+              lcp: Math.round(m.lcp), lcpEl: m.lcpEl, introShown: m.introShown, introDone: m.introDone && Math.round(m.introDone), heroPlaying: m.heroPlaying && Math.round(m.heroPlaying), heroSrc: m.heroSrc, heroPoster: m.heroPoster, heroPaused: m.heroPaused, heroVideoSize: m.heroVideoSize, heroRect: m.heroRect, viewport: m.viewport, errors: m.errors, intro: m.intro }));
             for (const r of d.rows) console.log(String(r.startMs).padStart(7), "->", String(r.endMs).padStart(7), "ms", String(r.kb).padStart(8), "KB", r.status, r.type, r.file, r.range || "", r.enc || "", r.failed || "");' ; echo "::endgroup::"; }
           run --device pixel7 --wait 15000
           run --device pixel7 --enter --wait 24000
