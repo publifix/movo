@@ -1,0 +1,423 @@
+@import './fonts.css';
+@import '../intro/intro.css';
+
+/* ===== Tokens ===== */
+:root {
+  --c-ink: #0b0b10;       /* exact black of the videos */
+  --c-white: #f5f5f0;
+  --c-volt: #d7ff3b;      /* dark backgrounds only; text on volt is always ink */
+  --c-magenta: #ff2d87;   /* dark backgrounds only */
+  --c-violet: #6a3dff;
+  --c-gray: #2a2a33;
+  --c-text-muted: rgb(245 245 240 / 0.72);
+
+  --font-sans: 'Archivo', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --gutter: clamp(20px, 4vw, 64px);
+  --nav-h: 88px;
+  --nav-logo-w: 130px;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  color-scheme: dark;
+}
+
+@media (max-width: 767px) {
+  :root {
+    --nav-h: 72px;
+    --nav-logo-w: 108px;
+  }
+}
+
+/* ===== Base ===== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--c-ink);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--c-ink);
+  color: var(--c-white);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+a {
+  color: inherit;
+}
+
+:focus-visible {
+  outline: 2px solid var(--c-volt);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: fixed;
+  left: var(--gutter);
+  top: 12px;
+  z-index: 200;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: var(--c-volt);
+  color: var(--c-ink);
+  font-weight: 700;
+  text-decoration: none;
+  transform: translateY(-160%);
+  transition: transform 0.2s;
+}
+
+.skip-link:focus-visible {
+  transform: none;
+  outline-color: var(--c-white);
+}
+
+/* Curtain until the intro layer exists (class set inline in <head>, removed by intro.js). */
+html.intro-pending body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 999;
+  background: var(--c-ink);
+}
+
+/* ===== Navbar ===== */
+.site-header {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 50;
+}
+
+/* Backdrop on a pseudo-element: a filter on the header itself would trap the fixed mobile menu. */
+.site-header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: rgb(11 11 16 / 0.82);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.site-header.is-scrolled::before {
+  opacity: 1;
+}
+
+.nav {
+  height: var(--nav-h);
+  /* Whole-pixel logo origin: the intro wordmark lands on the same raster grid (no sub-pixel shimmer). */
+  padding: 0 var(--gutter);
+  padding: 0 round(var(--gutter), 1px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.nav__brand {
+  position: relative;
+  z-index: 2; /* stays above the open mobile menu */
+  display: block;
+  align-self: flex-start;
+  margin-top: calc((var(--nav-h) - var(--nav-logo-w) * 443 / 1975) / 2);
+  margin-top: round(down, calc((var(--nav-h) - var(--nav-logo-w) * 443 / 1975) / 2), 1px);
+  color: var(--c-volt);
+  text-decoration: none;
+  border-radius: 2px;
+}
+
+/* Final size and position from the very first render: the intro hand-off measures this box. */
+.nav__logo {
+  display: block;
+  width: var(--nav-logo-w);
+  line-height: 0;
+  color: var(--c-volt);
+}
+
+.nav__logo svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.nav__links {
+  display: flex;
+  align-items: center;
+  gap: clamp(20px, 2.6vw, 44px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.nav__links a {
+  position: relative;
+  display: inline-block;
+  padding: 8px 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  font-stretch: 112%;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--c-white);
+}
+
+.nav__links a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 2px;
+  height: 2px;
+  background: var(--c-volt);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.35s var(--ease-out);
+}
+
+.nav__links a:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.nav__toggle {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .nav__toggle {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    margin-right: -12px;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--c-white);
+    cursor: pointer;
+  }
+
+  .nav__toggle-bars,
+  .nav__toggle-bars::before {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: currentColor;
+    transition: transform 0.3s var(--ease-out);
+  }
+
+  .nav__toggle-bars {
+    position: relative;
+    transform: translateY(-4px);
+  }
+
+  .nav__toggle-bars::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 8px;
+  }
+
+  .nav__toggle[aria-expanded='true'] .nav__toggle-bars {
+    transform: translateY(0) rotate(45deg);
+  }
+
+  .nav__toggle[aria-expanded='true'] .nav__toggle-bars::before {
+    transform: translateY(-8px) rotate(-90deg);
+  }
+
+  .nav__links {
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 4px;
+    padding: var(--nav-h) var(--gutter) var(--gutter);
+    background: var(--c-ink);
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s, visibility 0s 0.3s;
+  }
+
+  .nav__links a {
+    font-size: clamp(2.25rem, 11vw, 3.25rem);
+    font-weight: 900;
+    font-stretch: 125%;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+  }
+
+  .nav.is-open .nav__links {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.3s;
+  }
+}
+
+/* ===== Hero ===== */
+.hero {
+  position: relative;
+  height: 100vh;
+  height: 100svh;
+  min-height: 560px;
+  overflow: hidden;
+  background: var(--c-ink);
+  isolation: isolate;
+}
+
+.hero__media {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+}
+
+.hero__video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: right center;
+  background: var(--c-ink);
+  opacity: 0; /* faded in by hero.js after movo:intro-done */
+}
+
+.hero__content {
+  position: absolute;
+  left: var(--gutter);
+  top: 50%;
+  width: min(44vw, 680px);
+  transform: translateY(-50%);
+}
+
+.hero__eyebrow {
+  margin: 0 0 clamp(16px, 2vw, 28px);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  font-stretch: 115%;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--c-volt);
+}
+
+.hero__title {
+  margin: 0;
+  font-size: clamp(2.75rem, 5.4vw, 6.75rem);
+  font-weight: 900;
+  font-stretch: 125%;
+  line-height: 0.92;
+  letter-spacing: -0.035em;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+.hero__lede {
+  max-width: 34ch;
+  margin: clamp(20px, 2.2vw, 32px) 0 clamp(28px, 3vw, 44px);
+  font-size: clamp(1rem, 1.15vw, 1.25rem);
+  font-stretch: 100%;
+  line-height: 1.55;
+  color: var(--c-text-muted);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  padding: 0 30px;
+  border-radius: 999px;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  font-stretch: 110%;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  transition: transform 0.25s var(--ease-out), background-color 0.25s;
+}
+
+.btn--volt {
+  background: var(--c-volt);
+  color: var(--c-ink);
+}
+
+.btn--volt:hover {
+  background: #e4ff7a;
+  transform: translateY(-2px);
+}
+
+.btn--volt:focus-visible {
+  outline-color: var(--c-white);
+}
+
+/* Hidden until the GSAP stagger runs (JS only; no layout shift: opacity/transform only). */
+html.js [data-hero-reveal] {
+  opacity: 0;
+}
+
+/* Mobile: vertical video, animation in the top third, copy in the lower half */
+@media (max-width: 767px) {
+  .hero__video {
+    object-position: center top;
+  }
+
+  .hero__media::after {
+    /* Keeps copy legible if the animation reaches the lower half; fades to the exact ink. */
+    content: '';
+    position: absolute;
+    inset: 40% 0 0 0;
+    background: linear-gradient(to bottom, rgb(11 11 16 / 0), var(--c-ink) 45%);
+  }
+
+  .hero__content {
+    top: auto;
+    bottom: max(var(--gutter), env(safe-area-inset-bottom));
+    right: var(--gutter);
+    width: auto;
+    transform: none;
+  }
+
+  .hero__title {
+    font-size: clamp(2.5rem, 12vw, 3.5rem);
+  }
+
+  .hero__lede {
+    margin: 16px 0 28px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nav__links a::after,
+  .btn,
+  .nav__toggle-bars,
+  .nav__toggle-bars::before {
+    transition: none;
+  }
+}

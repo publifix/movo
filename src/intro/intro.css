@@ -26,14 +26,14 @@ html.intro-lock, html.intro-lock body { overflow: hidden; }
 #movo-gate .gate-m:focus-visible { outline: 2px solid var(--movo-volt); outline-offset: 12px; border-radius: 4px; }
 #movo-gate .gate-actions { position: absolute; left: 50%; top: calc(50% + 120px); transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 14px; opacity: 0; transition: opacity .5s; }
 #movo-gate.ready .gate-actions { opacity: 1; }
-#movo-gate .gate-enter { font: 600 15px/1 system-ui, sans-serif; letter-spacing: .02em; color: var(--movo-bg); background: var(--movo-volt); border: 0; border-radius: 999px; padding: 14px 28px; cursor: pointer; }
-#movo-gate .gate-mute { font: 400 13px/1 system-ui, sans-serif; color: rgba(245, 245, 240, .6); background: none; border: 0; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+#movo-gate .gate-enter { font: 600 15px/1 var(--font-sans, system-ui, sans-serif); letter-spacing: .02em; color: var(--movo-bg); background: var(--movo-volt); border: 0; border-radius: 999px; padding: 14px 28px; cursor: pointer; }
+#movo-gate .gate-mute { font: 400 13px/1 var(--font-sans, system-ui, sans-serif); color: rgba(245, 245, 240, .6); background: none; border: 0; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
 @keyframes movo-breathe { 50% { transform: scale(1.06); } }
 
 /* Punto que reemplaza a la M al entrar (coincide con el frame 0 del video) */
 #movo-dot { position: absolute; left: 50%; top: 50%; border-radius: 50%; background: var(--movo-volt); }
 
-#movo-skip { position: absolute; right: 28px; bottom: 24px; font: 500 13px/1 system-ui, sans-serif; color: rgba(245, 245, 240, .55); background: none; border: 1px solid rgba(245, 245, 240, .2); border-radius: 999px; padding: 9px 16px; cursor: pointer; opacity: 0; transition: opacity .4s, color .2s; }
+#movo-skip { position: absolute; right: 28px; bottom: 24px; font: 500 13px/1 var(--font-sans, system-ui, sans-serif); color: rgba(245, 245, 240, .55); background: none; border: 1px solid rgba(245, 245, 240, .2); border-radius: 999px; padding: 9px 16px; cursor: pointer; opacity: 0; transition: opacity .4s, color .2s; }
 #movo-skip.show { opacity: 1; }
 #movo-skip:hover { color: var(--movo-white); }
 

@@ -7,6 +7,12 @@
  *    con color volt (#D7FF3B). intro.js lo oculta durante la intro y lo muestra al aterrizar el logo.
  *  - El contenido principal escucha `movo:intro-done` en window para arrancar sus animaciones.
  *  - El <main> queda `inert` durante la intro.
+ *
+ * Adaptaciones al sitio (no cambian tiempos ni geometría):
+ *  - `mainSelector` acepta varios elementos (p. ej. 'main, .site-header'): todos quedan `inert`.
+ *  - Quita la clase `intro-pending` del <html> (cortina puesta por el script inline del <head>
+ *    para que el sitio no destelle antes de que exista la capa de la intro).
+ *  - Emite `movo:intro-start` al entrar, para que el sitio pueda precargar el video del hero.
  */
 const FRAME = { w: 1920, h: 1080 };            // resolución del video
 const LOGO_W_IN_FRAME = 1000;                  // ancho del logo completo en el último frame (px de video)
@@ -25,18 +31,19 @@ export async function initMovoIntro(opts = {}) {
   const html = document.documentElement;
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const navLogo = document.querySelector('[data-movo-nav-logo]');
-  const main = document.querySelector(opts.mainSelector ?? 'main');
+  const mains = [...document.querySelectorAll(opts.mainSelector ?? 'main')];
   const done = () => window.dispatchEvent(new CustomEvent('movo:intro-done'));
 
   // Visita repetida en la sesión o movimiento reducido: directo al sitio
   if (sessionStorage.getItem(SEEN_KEY) || reduce || opts.skip) {
     if (navLogo) gsap.set(navLogo, { opacity: 1 });
+    html.classList.remove('intro-pending');
     done();
     return;
   }
 
   html.classList.add('intro-lock');
-  main?.setAttribute('inert', '');
+  mains.forEach(el => el.setAttribute('inert', ''));
   if (navLogo) gsap.set(navLogo, { opacity: 0 });
 
   const svgText = async f => (await fetch(logoBase + f)).text();
@@ -62,6 +69,7 @@ export async function initMovoIntro(opts = {}) {
     </div>
     <button id="movo-skip" aria-label="Saltar intro">Skip</button>`;
   document.body.appendChild(root);
+  html.classList.remove('intro-pending');
 
   const video = root.querySelector('video');
   const gate = root.querySelector('#movo-gate');
@@ -127,6 +135,7 @@ export async function initMovoIntro(opts = {}) {
     started = true;
     video.muted = !withSound;
     video.play();                               // dentro del gesto del usuario => el navegador permite sonido
+    window.dispatchEvent(new CustomEvent('movo:intro-start'));
     const m = gate.querySelector('.gate-m');
     m.style.animation = 'none';
     gsap.timeline()
@@ -171,7 +180,7 @@ export async function initMovoIntro(opts = {}) {
     tl.to(root, { backgroundColor: 'rgba(11,11,16,0)', duration: 0.6, ease: 'power1.out' }, 0.45)
       .call(() => {
         html.classList.remove('intro-lock');
-        main?.removeAttribute('inert');
+        mains.forEach(el => el.removeAttribute('inert'));
         done();
       }, null, 0.55);
   }
