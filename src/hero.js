@@ -44,41 +44,13 @@ export function initHero({ base }) {
     if (!started || reduce || file === state.file) return;
     state.file = file;
     video.preload = 'auto';
-    if (preferMp4) loadInMemory(file);
-    else assign(base + file);
+    assign(base + file);
   };
 
   const assign = src => {
     video.src = src;
     video.load();
     play();
-  };
-
-  // WebKit re-requests a looping video from the network on every loop (measured: +2.4 MB per
-  // 11 s loop). On iOS/Safari the file is fetched once into memory and looped from there.
-  let blobUrl = '';
-  const loadInMemory = async file => {
-    try {
-      const res = await fetch(base + file);
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const blob = await res.blob();
-      if (file !== state.file) return; // orientation changed meanwhile
-      if (blobUrl) URL.revokeObjectURL(blobUrl);
-      blobUrl = URL.createObjectURL(blob);
-      state.inMemory = true;
-      assign(blobUrl);
-      // Safety net: if WebKit does not render the in-memory copy, stream the same file instead.
-      setTimeout(() => {
-        if (file === state.file && state.inMemory && video.readyState < 2) {
-          state.errors.push(`in-memory ${file} not rendering after 3 s; streaming instead`);
-          state.inMemory = false;
-          assign(base + file);
-        }
-      }, 3000);
-    } catch (err) {
-      state.errors.push(`fetch ${file}: ${err.message}; streaming instead`);
-      if (file === state.file) assign(base + file);
-    }
   };
 
   video.addEventListener('error', () => {

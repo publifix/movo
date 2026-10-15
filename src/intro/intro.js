@@ -15,8 +15,8 @@
  *  - Emite `movo:intro-start` al entrar.
  *  - `forceMp4`: usa el MP4 sin consultar canPlayType (Safari / iOS).
  *  - La descarga del video empieza cuando la pantalla de entrada ya está pintada.
- *  - Con el video ya en memoria, la pantalla de entrada se habilita con los metadatos (iOS no emite
- *    `canplaythrough` sin gesto del usuario).
+ *  - Con el video ya en memoria (o en Safari/iOS), la pantalla de entrada se habilita con los metadatos
+ *    (iOS no emite `canplaythrough` sin gesto). Si en 3 s no carga, streaming; nunca se queda bloqueada.
  *  - Si el video no arranca a los 4 s de entrar (o falla), se hace el relevo como con Skip.
  *    Eventos y errores quedan en window.__movoIntro (los muestra ?debug).
  */
@@ -134,10 +134,22 @@ export async function initMovoIntro(opts = {}) {
     video.src = url;                            // respaldo: streaming normal
   }
   bar.style.strokeDashoffset = 0;
-  // iOS Safari no precarga datos de medios sin un gesto, así que `canplaythrough` nunca llega antes del clic.
-  // Con el archivo completo en memoria (blob) basta con los metadatos; con streaming se espera lo de siempre.
-  const [need, ev] = inMemory ? [1, 'loadedmetadata'] : [3, 'canplaythrough'];
-  await new Promise(r => (video.readyState >= need ? r() : video.addEventListener(ev, r, { once: true })));
+  // iOS Safari no precarga datos de medios sin un gesto, así que `canplaythrough` nunca llega antes del clic:
+  // con el archivo en memoria, o en Safari/iOS, basta con los metadatos.
+  const ready = (light, ms) => new Promise(r => {
+    const [need, ev] = light ? [1, 'loadedmetadata'] : [3, 'canplaythrough'];
+    if (video.readyState >= need) return r(true);
+    video.addEventListener(ev, () => r(true), { once: true });
+    setTimeout(() => r(false), ms);
+  });
+  if (!(await ready(inMemory || opts.forceMp4, 3000)) && inMemory) {
+    // La copia en memoria no carga (visto en WebKit): streaming del mismo archivo.
+    URL.revokeObjectURL(video.src);
+    video.src = url;
+    inMemory = false;
+    await ready(true, 4000);
+  }
+  // Pase lo que pase, la pantalla de entrada se habilita: si luego no arranca, el watchdog hace el relevo.
   gate.classList.add('ready');
   root.querySelectorAll('#movo-gate button').forEach(b => { b.disabled = false; });
 
