@@ -21,9 +21,20 @@ export const preferMp4 = isIOS || isSafari;
 // cut the ring ends at 48.6 %; the copy must stay below it (portrait) or below the navbar (landscape).
 const RING_BOTTOM = 0.486;
 
-// Scale the copy block down (never up) when a longer text or language doesn't fit the free area.
-// Uses the CSS `scale` property, so layout boxes don't move (no CLS) and copy length doesn't matter.
+// Fit the copy to the free area for any text or language (never enlarges): first the headline's longest
+// word to the column width, then the whole block (CSS `scale`) to the free height. Runs before the copy
+// is revealed, so there is no visible jump and no layout shift.
 function fitCopy(content) {
+  // 1) Width: a headline word that doesn't fit the column (e.g. "MOVIMIENTO.") can't wrap and would
+  //    spill into the animation or off-screen. Shrink the title just enough for its longest word.
+  const title = content.querySelector('.hero__title');
+  if (title) {
+    title.style.fontSize = '';
+    const overflow = title.scrollWidth / title.clientWidth;
+    if (overflow > 1.001) title.style.fontSize = `${(parseFloat(getComputedStyle(title).fontSize) / overflow) * 0.99}px`;
+  }
+
+  // 2) Height: the whole block must fit the free area (below the ring / between navbar and bottom).
   const hero = content.closest('.hero').getBoundingClientRect();
   const navBottom = document.querySelector('[data-site-header]')?.getBoundingClientRect().bottom ?? 0;
   content.style.scale = '';
