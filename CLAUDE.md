@@ -6,6 +6,7 @@ Static site built with Vite, deployed to GitHub Pages: https://publifix.github.i
 - Vite (vanilla JS/CSS). `npm run dev` / `npm run build` (output in `dist/`).
 - `index.html` + `src/` for code, `public/` for files served as-is (favicons, manifest).
 - Brand assets: `public/brand/` (logo variants: volt, blanco, negro; completo = with "Motion Design Studio").
+- Video: `public/video/` (`movo-intro-v2-1920x1080` mp4/webm + last-frame jpg poster).
 - Brand colors: volt `#D7FF3B`, ink `#0B0B10`. Display type: Archivo (wide/black).
 - Heavy video and motion graphics planned (HyperFrames compositions, GSAP). Always honor `prefers-reduced-motion`.
 
