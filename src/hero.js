@@ -67,6 +67,14 @@ export function initHero({ base }) {
       blobUrl = URL.createObjectURL(blob);
       state.inMemory = true;
       assign(blobUrl);
+      // Safety net: if WebKit does not render the in-memory copy, stream the same file instead.
+      setTimeout(() => {
+        if (file === state.file && state.inMemory && video.readyState < 2) {
+          state.errors.push(`in-memory ${file} not rendering after 3 s; streaming instead`);
+          state.inMemory = false;
+          assign(base + file);
+        }
+      }, 3000);
     } catch (err) {
       state.errors.push(`fetch ${file}: ${err.message}; streaming instead`);
       if (file === state.file) assign(base + file);
