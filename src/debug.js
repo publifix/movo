@@ -49,7 +49,7 @@ export function initDebug() {
       '',
       `intro         ${html.dataset.intro}${introShown ? ' → shown' : ' → skipped'}${introDoneAt != null ? `, done @${Math.round(introDoneAt)}ms` : ', not done yet'}`,
       `hero format   ${hero.format || '?'}   orientation ${hero.orientation || '?'}`,
-      `hero chosen   ${hero.file || '(not assigned yet)'}`,
+      `hero chosen   ${hero.file || '(not assigned yet)'}${hero.inMemory ? '  (in memory)' : ''}`,
       `currentSrc    ${v.currentSrc ? v.currentSrc.split('/').pop() : '(none)'}`,
       `poster        ${v.poster ? v.poster.split('/').pop() : '(none)'}`,
       `video state   ${v.paused ? 'paused' : 'playing'}  ready ${v.readyState}  net ${v.networkState}  ${v.videoWidth}×${v.videoHeight}`,
