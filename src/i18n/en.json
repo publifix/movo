@@ -15,10 +15,26 @@
     "language": "Language"
   },
   "nav": {
-    "work": { "label": "Work", "href": "#work" },
-    "services": { "label": "Services", "href": "#services" },
-    "studio": { "label": "Studio", "href": "#studio" },
-    "contact": { "label": "Contact", "href": "#contact" }
+    "work": {
+      "label": "Work",
+      "href": "#work",
+      "id": "work"
+    },
+    "services": {
+      "label": "Services",
+      "href": "#services",
+      "id": "services"
+    },
+    "studio": {
+      "label": "Studio",
+      "href": "#studio",
+      "id": "studio"
+    },
+    "contact": {
+      "label": "Contact",
+      "href": "#contact",
+      "id": "contact"
+    }
   },
   "hero": {
     "eyebrow": "Motion Design Studio",
@@ -37,5 +53,41 @@
     "title": "Page not found",
     "text": "This page moved, or never existed.",
     "back": "Back to home"
+  },
+  "timecode": {
+    "hero": "Opening",
+    "label": "Timeline"
+  },
+  "work": {
+    "_note": "PLACEHOLDER: the manifesto is provisional.",
+    "heading": "Work",
+    "manifesto": {
+      "line1": "We don't make videos.",
+      "line2": "We make things move."
+    },
+    "filtersLabel": "Filter by category",
+    "all": "All",
+    "categories": {
+      "social": "Social",
+      "branding": "Branding",
+      "explainer": "Explainer",
+      "advertising": "Advertising"
+    },
+    "open": "Play reel",
+    "scrubHint": "Move the cursor to scrub the video"
+  },
+  "player": {
+    "label": "Video player",
+    "close": "Close",
+    "prev": "Previous reel",
+    "next": "Next reel",
+    "of": "of"
+  },
+  "sections": {
+    "_note": "PLACEHOLDER: sections to be built.",
+    "soon": "Coming soon",
+    "servicesText": "Motion graphics, animated branding, explainers and social content.",
+    "studioText": "A small studio, obsessed with motion.",
+    "contactText": "Tell us what you want to set in motion."
   }
 }

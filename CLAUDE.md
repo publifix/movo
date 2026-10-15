@@ -39,3 +39,22 @@ Static site built with Vite, deployed to GitHub Pages: https://publifix.github.i
 - Every push to `main` or any `claude/**` branch triggers `.github/workflows/deploy.yml`, which builds and publishes to GitHub Pages (production).
 - At the end of every work round: run `npm run build` to verify, commit, and push. The push is the deploy — the owner reviews progress live at the URL above.
 - The latest push from any of those branches wins, so keep work on one branch at a time.
+
+## Work section (Trabajo) + "the scroll is the timeline"
+- Data: `src/data/reels.json` (id, title es/en, client, category, poster, preview webm/mp4, full). `fullBaseUrl`
+  is the ONE switch for full videos (empty = files in `public/video/work/`; set to the Bunny Stream/CDN base later).
+  The i18n plugin renders cards + category filters into the HTML (`{{workReels}}`, `{{workFilters}}`).
+- Mock reels (marked MOCK): `python3 scripts/mocks/make-reels.py` → `public/video/work/<id>/` (full 540x960 with
+  audio, preview 3.5 s 480p ~35 KB webm/mp4, poster). reel-01 reuses the hero vertical loop. Replace with real work.
+- Code: `src/work/` is a LAZY chunk (index.js + work.css + media.js + player.js), imported by `src/main.js` on the
+  first scroll intent after `movo:intro-done`. Nothing from Work (code, posters, previews) loads before that.
+- Modes (rebuilt on resize/rotation): `html.work-strip` landscape (pinned scene: hero clip-path → 9:16 card →
+  film strip, horizontal by vertical scroll, hover scrub + play cursor, filters with Flip); `html.work-feed`
+  portrait (pinned transition → full-screen Reels-style feed, nested scroll-snap, preloads only the next reel);
+  `html.work-grid` reduced motion (no pin, no scrub, poster grid).
+- Playback is driven by the TIMELINE's onUpdate (smoothed scrub), not the trigger's. Video budget: max 3 playing
+  (global guard in `media.js`). Full videos download only when the player opens (src removed on close).
+- Player: dialog + aria-modal, page `inert`, focus trap, Esc / ← → / swipe (down closes), focus returns to the card.
+- Timecode (`src/timecode.js`): 24 fps, 4 s per viewport; clips are `[data-clip]` (`data-clip-start` overrides
+  the measured start — needed for anything inside the pinned scene); nested scrollers with
+  `[data-timecode-scroll]` (the feed) add their scroll; `movo:clips` re-measures.

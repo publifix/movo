@@ -12,6 +12,40 @@ import site from './site.config.mjs';
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../..');
 const TEMPLATE = path.join(ROOT, 'src/page.html');
 const strings = code => JSON.parse(fs.readFileSync(path.join(ROOT, `src/i18n/${code}.json`), 'utf8'));
+const REELS = path.join(ROOT, 'src/data/reels.json');
+const reelsData = () => JSON.parse(fs.readFileSync(REELS, 'utf8'));
+
+// Work cards, rendered into the HTML for every language (titles indexable). No media URL is in a src
+// attribute: posters and previews load from data-* only after the visitor scrolls (src/work/).
+function workMarkup(t, root) {
+  const { fullBaseUrl = '', reels } = reelsData();
+  const fullUrl = r => (/^https?:\/\//.test(r.full) ? r.full : fullBaseUrl ? fullBaseUrl + r.full : root + r.full);
+  const cats = [...new Set(reels.map(r => r.category))];
+  const filters = [`<button type="button" class="work__filter" data-filter="all" aria-pressed="true">${esc(t.work.all)}</button>`]
+    .concat(cats.map(c => `<button type="button" class="work__filter" data-filter="${c}" aria-pressed="false">${esc(t.work.categories[c])}</button>`))
+    .join('');
+  const cards = reels.map((r, i) => {
+    const title = r.title[t._lang] ?? r.title.es;
+    const cat = t.work.categories[r.category];
+    return `<li class="work__item" data-category="${r.category}">
+          <a class="reel" href="${esc(fullUrl(r))}" data-reel="${r.id}" data-index="${i}"
+             data-poster="${root}${r.poster}" data-preview-webm="${root}${r.preview.webm}" data-preview-mp4="${root}${r.preview.mp4}"
+             data-full="${esc(fullUrl(r))}" data-title="${esc(title)}" data-client="${esc(r.client)}" data-category-label="${esc(cat)}"
+             aria-label="${esc(t.work.open)}: ${esc(title)} — ${esc(r.client)}">
+            <span class="reel__media">
+              <img class="reel__poster" alt="" width="480" height="854" decoding="async" data-src="${root}${r.poster}" />
+              <video class="reel__video" muted loop playsinline preload="none" disablepictureinpicture tabindex="-1" aria-hidden="true"></video>
+            </span>
+            <span class="reel__info">
+              <span class="reel__client">${esc(r.client)}</span>
+              <span class="reel__title">${esc(title)}</span>
+              <span class="reel__cat">${esc(cat)}</span>
+            </span>${r.mock ? '\n            <span class="reel__mock" aria-hidden="true">MOCK</span>' : ''}
+          </a>
+        </li>`;
+  });
+  return { filters, cards: cards.join('\n        ') };
+}
 
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const get = (obj, key) => key.split('.').reduce((o, k) => (o == null ? o : o[k]), obj);
@@ -24,7 +58,7 @@ function localeFor(filename) {
 }
 
 function render(locale) {
-  const t = strings(locale.code);
+  const t = { ...strings(locale.code), _lang: locale.code };
   const root = locale.path ? '../'.repeat(locale.path.split('/').filter(Boolean).length) : './';
   const url = absolute(locale.path);
 
@@ -73,7 +107,8 @@ function render(locale) {
     })
     .join('<span aria-hidden="true">/</span>');
 
-  const ui = { intro: t.intro, a11y: { menu: t.a11y.menu, closeMenu: t.a11y.closeMenu } };
+  const ui = { intro: t.intro, a11y: { menu: t.a11y.menu, closeMenu: t.a11y.closeMenu }, player: t.player, work: { scrubHint: t.work.scrubHint } };
+  const work = workMarkup(t, root);
   const vars = {
     lang: locale.code,
     root,
@@ -81,6 +116,8 @@ function render(locale) {
     seo,
     langSwitch: `<span class="sr-only">${esc(t.a11y.language)}:</span> ${langSwitch}`,
     uiJson: JSON.stringify(ui).replace(/</g, '\\u003c'),
+    workFilters: work.filters,
+    workReels: work.cards,
   };
 
   return fs.readFileSync(TEMPLATE, 'utf8').replace(/\{\{([\w.]+)\}\}/g, (m, key) => {
@@ -127,7 +164,7 @@ export default function movoI18n() {
     },
     configureServer(server) {
       // Edits to the template or the strings reload every language page
-      const watched = [TEMPLATE, ...site.locales.map(l => path.join(ROOT, `src/i18n/${l.code}.json`))];
+      const watched = [TEMPLATE, REELS, ...site.locales.map(l => path.join(ROOT, `src/i18n/${l.code}.json`))];
       server.watcher.add(watched);
       server.watcher.on('change', file => {
         if (watched.includes(file)) server.ws.send({ type: 'full-reload' });

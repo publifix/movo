@@ -15,10 +15,26 @@
     "language": "Idioma"
   },
   "nav": {
-    "work": { "label": "Trabajo", "href": "#trabajo" },
-    "services": { "label": "Servicios", "href": "#servicios" },
-    "studio": { "label": "Estudio", "href": "#estudio" },
-    "contact": { "label": "Contacto", "href": "#contacto" }
+    "work": {
+      "label": "Trabajo",
+      "href": "#trabajo",
+      "id": "trabajo"
+    },
+    "services": {
+      "label": "Servicios",
+      "href": "#servicios",
+      "id": "servicios"
+    },
+    "studio": {
+      "label": "Estudio",
+      "href": "#estudio",
+      "id": "estudio"
+    },
+    "contact": {
+      "label": "Contacto",
+      "href": "#contacto",
+      "id": "contacto"
+    }
   },
   "hero": {
     "eyebrow": "Estudio de motion design",
@@ -37,5 +53,41 @@
     "title": "Página no encontrada",
     "text": "Esta página se movió o nunca existió.",
     "back": "Volver al inicio"
+  },
+  "timecode": {
+    "hero": "Inicio",
+    "label": "Línea de tiempo"
+  },
+  "work": {
+    "_note": "PLACEHOLDER: el manifiesto es provisional.",
+    "heading": "Trabajo",
+    "manifesto": {
+      "line1": "No hacemos videos.",
+      "line2": "Hacemos que las cosas se muevan."
+    },
+    "filtersLabel": "Filtrar por categoría",
+    "all": "Todo",
+    "categories": {
+      "social": "Social",
+      "branding": "Branding",
+      "explainer": "Explainer",
+      "advertising": "Publicidad"
+    },
+    "open": "Ver reel",
+    "scrubHint": "Mueve el cursor para recorrer el video"
+  },
+  "player": {
+    "label": "Reproductor de video",
+    "close": "Cerrar",
+    "prev": "Reel anterior",
+    "next": "Siguiente reel",
+    "of": "de"
+  },
+  "sections": {
+    "_note": "PLACEHOLDER: secciones por construir.",
+    "soon": "Próximamente",
+    "servicesText": "Motion graphics, branding animado, explainers y contenido para redes.",
+    "studioText": "Un estudio pequeño, obsesionado con el movimiento.",
+    "contactText": "Cuéntanos qué quieres poner en movimiento."
   }
 }

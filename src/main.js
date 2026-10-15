@@ -2,6 +2,7 @@ import { gsap } from 'gsap';
 import { initMovoIntro } from './intro/intro.js';
 import { initNav } from './nav.js';
 import { initHero, preferMp4 } from './hero.js';
+import { initTimecode } from './timecode.js';
 
 // intro.js expects GSAP on window
 window.gsap = gsap;
@@ -18,6 +19,31 @@ if (new URLSearchParams(location.search).has('debug')) import('./debug.js').then
 // skipped it fires synchronously inside initMovoIntro.
 initNav({ labels: UI.a11y });
 initHero({ base: `${ROOT}video/hero/` });
+initTimecode();
+
+// Work (scene, strip/feed, player, ScrollTrigger) is a separate chunk with its own CSS. Nothing of it
+// — code, posters, previews — loads before the visitor shows intent to scroll (or arrives scrolled /
+// with a #hash), and never during the intro.
+let workRequested = false;
+const loadWork = () => {
+  if (workRequested) return;
+  workRequested = true;
+  removeEventListener('scroll', onIntent);
+  removeEventListener('wheel', onIntent);
+  removeEventListener('touchmove', onIntent);
+  removeEventListener('keydown', onKey);
+  import('./work/index.js').then(m => m.initWork({ root: ROOT, ui: UI, preferMp4 }));
+};
+const onIntent = () => loadWork();
+const onKey = e => { if (['ArrowDown', 'PageDown', ' ', 'End', 'Tab'].includes(e.key)) loadWork(); };
+addEventListener('movo:intro-done', () => {
+  if (scrollY > 0 || location.hash) return loadWork();
+  addEventListener('scroll', onIntent, { passive: true });
+  addEventListener('wheel', onIntent, { passive: true });
+  addEventListener('touchmove', onIntent, { passive: true });
+  addEventListener('keydown', onKey);
+  document.querySelectorAll('.nav__links a[href^="#"]').forEach(a => a.addEventListener('click', loadWork));
+}, { once: true });
 
 // Decided in the inline <head> script (see INTRO_ON_TOUCH there).
 const introState = document.documentElement.dataset.intro;

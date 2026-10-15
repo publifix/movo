@@ -1,0 +1,167 @@
+{
+  "_note": "MOCK data: replace with real reels. Paths in poster/preview are relative to the site root; 'full' is relative to fullBaseUrl (or an absolute URL).",
+  "fullBaseUrl": "",
+  "_fullBaseUrlNote": "Single switch for the full videos. Empty = files in this repo (public/video/work/). Set to the streaming CDN base, e.g. 'https://<library>.b-cdn.net/', with a trailing slash.",
+  "reels": [
+    {
+      "id": "reel-01",
+      "mock": true,
+      "title": {
+        "es": "MOVO — Showreel 2026",
+        "en": "MOVO — Showreel 2026"
+      },
+      "client": "MOVO",
+      "category": "branding",
+      "poster": "video/hero/movo-hero-mobile-poster.jpg",
+      "preview": {
+        "webm": "video/hero/movo-hero-mobile-720x1280.webm",
+        "mp4": "video/hero/movo-hero-mobile-720x1280.mp4"
+      },
+      "full": "video/work/reel-01/full.mp4"
+    },
+    {
+      "id": "reel-02",
+      "mock": true,
+      "title": {
+        "es": "Lanzamiento de app",
+        "en": "App launch"
+      },
+      "client": "Nova Bank (MOCK)",
+      "category": "explainer",
+      "poster": "video/work/reel-02/poster.jpg",
+      "preview": {
+        "webm": "video/work/reel-02/preview.webm",
+        "mp4": "video/work/reel-02/preview.mp4"
+      },
+      "full": "video/work/reel-02/full.mp4"
+    },
+    {
+      "id": "reel-03",
+      "mock": true,
+      "title": {
+        "es": "Campaña de verano",
+        "en": "Summer campaign"
+      },
+      "client": "Sol & Sal (MOCK)",
+      "category": "advertising",
+      "poster": "video/work/reel-03/poster.jpg",
+      "preview": {
+        "webm": "video/work/reel-03/preview.webm",
+        "mp4": "video/work/reel-03/preview.mp4"
+      },
+      "full": "video/work/reel-03/full.mp4"
+    },
+    {
+      "id": "reel-04",
+      "mock": true,
+      "title": {
+        "es": "Rebrand animado",
+        "en": "Animated rebrand"
+      },
+      "client": "Brava Café (MOCK)",
+      "category": "branding",
+      "poster": "video/work/reel-04/poster.jpg",
+      "preview": {
+        "webm": "video/work/reel-04/preview.webm",
+        "mp4": "video/work/reel-04/preview.mp4"
+      },
+      "full": "video/work/reel-04/full.mp4"
+    },
+    {
+      "id": "reel-05",
+      "mock": true,
+      "title": {
+        "es": "Serie para TikTok",
+        "en": "TikTok series"
+      },
+      "client": "Pulse Fitness (MOCK)",
+      "category": "social",
+      "poster": "video/work/reel-05/poster.jpg",
+      "preview": {
+        "webm": "video/work/reel-05/preview.webm",
+        "mp4": "video/work/reel-05/preview.mp4"
+      },
+      "full": "video/work/reel-05/full.mp4"
+    },
+    {
+      "id": "reel-06",
+      "mock": true,
+      "title": {
+        "es": "Explainer de producto",
+        "en": "Product explainer"
+      },
+      "client": "Orbita (MOCK)",
+      "category": "explainer",
+      "poster": "video/work/reel-06/poster.jpg",
+      "preview": {
+        "webm": "video/work/reel-06/preview.webm",
+        "mp4": "video/work/reel-06/preview.mp4"
+      },
+      "full": "video/work/reel-06/full.mp4"
+    },
+    {
+      "id": "reel-07",
+      "mock": true,
+      "title": {
+        "es": "Spot de lanzamiento",
+        "en": "Launch spot"
+      },
+      "client": "Andes Motors (MOCK)",
+      "category": "advertising",
+      "poster": "video/work/reel-07/poster.jpg",
+      "preview": {
+        "webm": "video/work/reel-07/preview.webm",
+        "mp4": "video/work/reel-07/preview.mp4"
+      },
+      "full": "video/work/reel-07/full.mp4"
+    },
+    {
+      "id": "reel-08",
+      "mock": true,
+      "title": {
+        "es": "Reels de producto",
+        "en": "Product reels"
+      },
+      "client": "Lumen Skincare (MOCK)",
+      "category": "social",
+      "poster": "video/work/reel-08/poster.jpg",
+      "preview": {
+        "webm": "video/work/reel-08/preview.webm",
+        "mp4": "video/work/reel-08/preview.mp4"
+      },
+      "full": "video/work/reel-08/full.mp4"
+    },
+    {
+      "id": "reel-09",
+      "mock": true,
+      "title": {
+        "es": "Identidad en movimiento",
+        "en": "Identity in motion"
+      },
+      "client": "Kairo Studio (MOCK)",
+      "category": "branding",
+      "poster": "video/work/reel-09/poster.jpg",
+      "preview": {
+        "webm": "video/work/reel-09/preview.webm",
+        "mp4": "video/work/reel-09/preview.mp4"
+      },
+      "full": "video/work/reel-09/full.mp4"
+    },
+    {
+      "id": "reel-10",
+      "mock": true,
+      "title": {
+        "es": "Teaser de festival",
+        "en": "Festival teaser"
+      },
+      "client": "Fest Norte (MOCK)",
+      "category": "social",
+      "poster": "video/work/reel-10/poster.jpg",
+      "preview": {
+        "webm": "video/work/reel-10/preview.webm",
+        "mp4": "video/work/reel-10/preview.mp4"
+      },
+      "full": "video/work/reel-10/full.mp4"
+    }
+  ]
+}

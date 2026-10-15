@@ -85,7 +85,10 @@
     </header>
 
     <main id="main">
-      <section class="hero" aria-labelledby="hero-title">
+      <!-- The scene: hero → manifesto → work. In cinematic mode (src/work/) it is pinned and the layers
+           overlap; without JS / with reduced motion it is plain document flow. -->
+      <div class="scene" data-scene>
+      <section class="hero" aria-labelledby="hero-title" data-clip="hero" data-clip-start="0" data-clip-label="{{timecode.hero}}">
         <div class="hero__media" aria-hidden="true">
           <!-- No src/<source> here: src/hero.js assigns a single file (by orientation and browser) on movo:intro-done. -->
           <video class="hero__video" muted loop playsinline preload="none" disablepictureinpicture data-hero-video></video>
@@ -99,7 +102,47 @@
           <a class="btn btn--volt" href="{{nav.contact.href}}" data-hero-reveal>{{hero.cta}}</a>
         </div>
       </section>
+
+      <!-- PLACEHOLDER COPY: manifesto (src/i18n/*.json → work.manifesto). Letters are split by src/work/. -->
+      <div class="manifesto" data-manifesto>
+        <p class="manifesto__line" data-manifesto-line>{{work.manifesto.line1}}</p>
+        <p class="manifesto__line manifesto__line--accent" data-manifesto-line>{{work.manifesto.line2}}</p>
+      </div>
+
+      <section class="work" id="{{nav.work.id}}" aria-labelledby="work-title" data-work data-clip="work" data-clip-label="{{nav.work.label}}">
+        <div class="work__head">
+          <h2 class="work__title" id="work-title">{{work.heading}}</h2>
+          <div class="work__filters" role="group" aria-label="{{work.filtersLabel}}" data-work-filters>{{workFilters}}</div>
+        </div>
+        <!-- Cards are generated from src/data/reels.json (MOCK data). No media loads until the visitor scrolls. -->
+        <ul class="work__track" data-work-track>{{workReels}}</ul>
+      </section>
+      </div>
+
+      <!-- PLACEHOLDER sections: to be designed and built. -->
+      <section class="soon" id="{{nav.services.id}}" aria-labelledby="services-title" data-clip="services" data-clip-label="{{nav.services.label}}">
+        <p class="soon__eyebrow">{{sections.soon}}</p>
+        <h2 class="soon__title" id="services-title">{{nav.services.label}}</h2>
+        <p class="soon__text">{{sections.servicesText}}</p>
+      </section>
+      <section class="soon" id="{{nav.studio.id}}" aria-labelledby="studio-title" data-clip="studio" data-clip-label="{{nav.studio.label}}">
+        <p class="soon__eyebrow">{{sections.soon}}</p>
+        <h2 class="soon__title" id="studio-title">{{nav.studio.label}}</h2>
+        <p class="soon__text">{{sections.studioText}}</p>
+      </section>
+      <section class="soon" id="{{nav.contact.id}}" aria-labelledby="contact-title" data-clip="contact" data-clip-label="{{nav.contact.label}}">
+        <p class="soon__eyebrow">{{sections.soon}}</p>
+        <h2 class="soon__title" id="contact-title">{{nav.contact.label}}</h2>
+        <p class="soon__text">{{sections.contactText}}</p>
+      </section>
     </main>
+
+    <!-- Scroll timeline: timecode + current clip (decorative; the sections have real headings). -->
+    <div class="timecode" aria-hidden="true" data-timecode>
+      <span class="timecode__dot"></span>
+      <span class="timecode__tc" data-timecode-tc>00:00:00:00</span>
+      <span class="timecode__clip" data-timecode-clip></span>
+    </div>
 
     <script type="module" src="/src/main.js"></script>
   </body>
