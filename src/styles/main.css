@@ -285,10 +285,11 @@ html.intro-pending body::after {
 
 /* ===== Hero ===== */
 .hero {
+  --hero-min-h: 560px;
   position: relative;
   height: 100vh;
   height: 100svh;
-  min-height: 560px;
+  min-height: var(--hero-min-h);
   overflow: hidden;
   background: var(--c-ink);
   isolation: isolate;
@@ -310,12 +311,16 @@ html.intro-pending body::after {
   opacity: 0; /* faded in by hero.js after movo:intro-done */
 }
 
+/* The copy lives in the free left half of the 16:9 loop (the animation starts at its horizontal
+   center). With object-fit: cover + right anchoring, that free zone is 100vw - videoWidth / 2. */
 .hero__content {
+  --video-w: max(100vw, max(100svh, var(--hero-min-h)) * 16 / 9);
   position: absolute;
   left: var(--gutter);
   top: 50%;
-  width: min(44vw, 680px);
+  width: min(44vw, 680px, calc(100vw - var(--video-w) / 2 - 2 * var(--gutter)));
   transform: translateY(-50%);
+  container-type: inline-size;
 }
 
 .hero__eyebrow {
@@ -330,7 +335,8 @@ html.intro-pending body::after {
 
 .hero__title {
   margin: 0;
-  font-size: clamp(2.75rem, 5.4vw, 6.75rem);
+  /* 16cqi keeps the widest line ("WE MAKE") inside the free zone on narrow landscapes */
+  font-size: min(clamp(2.75rem, 5.4vw, 6.75rem), 16cqi);
   font-weight: 900;
   font-stretch: 125%;
   line-height: 0.92;
@@ -382,18 +388,21 @@ html.js [data-hero-reveal] {
   opacity: 0;
 }
 
-/* Mobile: vertical video, animation in the top third, copy in the lower half */
-@media (max-width: 767px) {
+/* Mobile portrait: vertical video, animation in the top third, copy in the lower half.
+   Keep in sync with MOBILE_QUERY in src/hero.js and the poster preloads in index.html. */
+@media (max-width: 767px) and (orientation: portrait) {
   .hero__video {
     object-position: center top;
   }
 
   .hero__media::after {
-    /* Keeps copy legible if the animation reaches the lower half; fades to the exact ink. */
+    /* Starts just below the ring (49% of the vertical video) and fades to the exact ink, so the
+       video's timeline/timecode (62–67%) never sits behind the copy. Positions are in video
+       coordinates: the video's rendered height is max(100svh, 100vw * 1920 / 1080). */
     content: '';
     position: absolute;
-    inset: 40% 0 0 0;
-    background: linear-gradient(to bottom, rgb(11 11 16 / 0), var(--c-ink) 45%);
+    inset: max(49svh, 87.1vw) 0 0 0;
+    background: linear-gradient(to bottom, rgb(11 11 16 / 0), var(--c-ink) max(7svh, 12.4vw));
   }
 
   .hero__content {
@@ -404,12 +413,68 @@ html.js [data-hero-reveal] {
     transform: none;
   }
 
+  /* Copy must fit below the ring (49% of the video height), so type also scales with height. */
   .hero__title {
-    font-size: clamp(2.5rem, 12vw, 3.5rem);
+    font-size: clamp(2.125rem, min(12vw, 6.2svh), 3.5rem);
+  }
+
+  .hero__eyebrow {
+    margin-bottom: 14px;
   }
 
   .hero__lede {
-    margin: 16px 0 28px;
+    margin: 14px 0 24px;
+  }
+}
+
+@media (max-width: 767px) and (orientation: portrait) and (max-height: 700px) {
+  .hero__lede {
+    font-size: 0.9375rem;
+    margin: 12px 0 20px;
+  }
+
+  .btn {
+    min-height: 48px;
+  }
+}
+
+@media (max-width: 767px) and (orientation: portrait) and (max-height: 600px) {
+  .hero__eyebrow {
+    margin-bottom: 10px;
+  }
+
+  .hero__title {
+    font-size: 5.2svh;
+  }
+
+  .hero__lede {
+    font-size: 0.875rem;
+    margin: 10px 0 16px;
+  }
+}
+
+/* Short landscape (phones on their side): full-bleed height, copy centered below the navbar */
+@media (orientation: landscape) and (max-height: 500px) {
+  .hero {
+    --hero-min-h: 0px;
+  }
+
+  .hero__content {
+    top: calc(var(--nav-h) + (100% - var(--nav-h)) / 2);
+  }
+
+  .hero__eyebrow {
+    margin-bottom: 10px;
+  }
+
+  .hero__lede {
+    font-size: 0.875rem;
+    margin: 10px 0 16px;
+  }
+
+  .btn {
+    min-height: 44px;
+    padding: 0 24px;
   }
 }
 

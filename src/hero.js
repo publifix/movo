@@ -2,7 +2,7 @@ import { gsap } from 'gsap';
 
 // One file set per layout. The source is chosen here by width (not with <source media>)
 // so a device never downloads both.
-const MOBILE_QUERY = '(max-width: 767px)';
+const MOBILE_QUERY = '(max-width: 767px) and (orientation: portrait)'; // keep in sync with main.css
 const FILES = {
   desktop: { webm: 'movo-hero-1920x1080.webm', mp4: 'movo-hero-1920x1080.mp4', poster: 'movo-hero-poster.jpg' },
   mobile: {
@@ -30,8 +30,8 @@ export function initHero({ base }) {
   const isMobile = matchMedia(MOBILE_QUERY).matches;
   setSources(isMobile ? FILES.mobile : FILES.desktop);
 
-  // Until the vertical cut exists, a missing mobile file falls back to the 16:9 loop.
-  // The poster probe hits the cache (it is preloaded in <head>) and covers reduced motion,
+  // Safety net: if the vertical cut ever fails to load, fall back to the 16:9 loop.
+  // The poster probe hits the cache (it is preloaded in <head>) and also covers reduced motion,
   // where the video itself never loads.
   if (isMobile) {
     let fellBack = false;
