@@ -15,6 +15,8 @@
  *  - Emite `movo:intro-start` al entrar.
  *  - `forceMp4`: usa el MP4 sin consultar canPlayType (Safari / iOS).
  *  - La descarga del video empieza cuando la pantalla de entrada ya está pintada.
+ *  - Con el video ya en memoria, la pantalla de entrada se habilita con los metadatos (iOS no emite
+ *    `canplaythrough` sin gesto del usuario).
  */
 const FRAME = { w: 1920, h: 1080 };            // resolución del video
 const LOGO_W_IN_FRAME = 1000;                  // ancho del logo completo en el último frame (px de video)
@@ -110,6 +112,7 @@ export async function initMovoIntro(opts = {}) {
   await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
   const useWebm = !opts.forceMp4 && video.canPlayType('video/webm; codecs="vp9, opus"') !== '';
   const url = base + (useWebm ? FILES.webm : FILES.mp4);
+  let inMemory = false;
   try {
     const res = await fetch(url);
     const total = Number(res.headers.get('content-length')) || 0;
@@ -124,11 +127,15 @@ export async function initMovoIntro(opts = {}) {
       if (total) bar.style.strokeDashoffset = C * (1 - got / total);
     }
     video.src = URL.createObjectURL(new Blob(chunks, { type: useWebm ? 'video/webm' : 'video/mp4' }));
+    inMemory = true;
   } catch {
     video.src = url;                            // respaldo: streaming normal
   }
   bar.style.strokeDashoffset = 0;
-  await new Promise(r => (video.readyState >= 3 ? r() : video.addEventListener('canplaythrough', r, { once: true })));
+  // iOS Safari no precarga datos de medios sin un gesto, así que `canplaythrough` nunca llega antes del clic.
+  // Con el archivo completo en memoria (blob) basta con los metadatos; con streaming se espera lo de siempre.
+  const [need, ev] = inMemory ? [1, 'loadedmetadata'] : [3, 'canplaythrough'];
+  await new Promise(r => (video.readyState >= need ? r() : video.addEventListener(ev, r, { once: true })));
   gate.classList.add('ready');
   root.querySelectorAll('#movo-gate button').forEach(b => { b.disabled = false; });
 
