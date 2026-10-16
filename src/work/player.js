@@ -39,6 +39,8 @@ export function createPlayer({ ui, reduce, getCards }) {
 
   const video = el.querySelector('video');
   const small = matchMedia('(max-width: 1023px), (pointer: coarse)');
+  // same query as the side-by-side layout in work.css: only there is the description shown
+  const side = matchMedia('(min-width: 900px) and (orientation: landscape)');
   const $ = s => el.querySelector(s);
   const outside = () => [...document.body.children].filter(n => n !== el && n.tagName !== 'SCRIPT');
   let list = [];
@@ -48,7 +50,9 @@ export function createPlayer({ ui, reduce, getCards }) {
   function show(i) {
     index = (i + list.length) % list.length;
     const card = list[index];
-    $('[data-title]').textContent = card.dataset.title;
+    // phones: the short title if the reel has one
+    const t = $('[data-title]');
+    t.textContent = (!side.matches && card.dataset.titleShort) || card.dataset.title;
     $('[data-client]').textContent = card.dataset.client;
     $('[data-cat]').textContent = card.dataset.categoryLabel;
     const desc = $('[data-desc]');

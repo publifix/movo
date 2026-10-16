@@ -33,6 +33,8 @@ function workMarkup(t, root) {
     .join('');
   const cards = reels.map((r, i) => {
     const title = r.title[t._lang] ?? r.title.es;
+    // optional shorter title for phones (feed card + player), where a long one takes 4+ lines
+    const short = r.titleShort ? (r.titleShort[t._lang] ?? r.titleShort.es) : '';
     const desc = r.description ? (r.description[t._lang] ?? r.description.es) : '';
     const cat = t.work.categories[r.category];
     const m = reelMedia(r, { root, fullBaseUrl });
@@ -42,7 +44,7 @@ function workMarkup(t, root) {
     return `<li class="work__item" data-category="${r.category}"${ar}>
           <a class="reel" href="${esc(m.full)}" data-reel="${r.id}" data-index="${i}"
              data-poster="${esc(m.poster)}" data-preview-webm="${esc(m.previewWebm)}" data-preview-mp4="${esc(m.previewMp4)}"
-             data-full="${esc(m.full)}" data-full-mobile="${esc(m.fullMobile)}" data-title="${esc(title)}" data-client="${esc(r.client)}" data-category-label="${esc(cat)}"${desc ? ` data-desc="${esc(desc)}"` : ''}
+             data-full="${esc(m.full)}" data-full-mobile="${esc(m.fullMobile)}" data-title="${esc(title)}"${short ? ` data-title-short="${esc(short)}"` : ''} data-client="${esc(r.client)}" data-category-label="${esc(cat)}"${desc ? ` data-desc="${esc(desc)}"` : ''}
              aria-label="${esc(t.work.open)}: ${esc(title)} — ${esc(r.client)}">
             <span class="reel__media">
               <img class="reel__poster" alt="" width="${m.width}" height="${m.height}" decoding="async" data-src="${esc(m.poster)}" />
@@ -50,7 +52,7 @@ function workMarkup(t, root) {
             </span>
             <span class="reel__info">
               <span class="reel__client">${esc(r.client)}</span>
-              <span class="reel__title">${esc(title)}</span>
+              <span class="reel__title">${short ? `<span class="reel__t-full">${esc(title)}</span><span class="reel__t-short">${esc(short)}</span>` : esc(title)}</span>
               <span class="reel__cat">${esc(cat)}</span>
             </span>${tag ? `\n            <span class="reel__mock${r.pending ? ' reel__mock--pending' : ''}" aria-hidden="true">${esc(tag)}</span>` : ''}
           </a>

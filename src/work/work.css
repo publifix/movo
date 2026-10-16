@@ -374,11 +374,26 @@ html.work-feed .reel__info {
 }
 
 html.work-feed .reel__title {
-  font-size: 1.25rem;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  overflow: hidden;
+  font-size: clamp(1rem, 4.6vw, 1.25rem);
   font-weight: 900;
-  font-stretch: 118%;
+  font-stretch: 112%;
   line-height: 1.05;
   text-transform: uppercase;
+}
+
+/* a reel with a short title shows it on phones; the full one everywhere else */
+.reel__t-short,
+html.work-feed .reel__t-full {
+  display: none;
+}
+
+html.work-feed .reel__t-short {
+  display: inline;
 }
 
 /* ---------- player ---------- */
@@ -432,14 +447,35 @@ html.player-open body {
   padding: 12px var(--gutter) max(20px, env(safe-area-inset-bottom));
 }
 
+.player__meta {
+  display: contents;
+}
+
+/* Phones / portrait: count + arrows on one row, then the title across the whole width (max 3 lines). */
+.player__bar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas: 'count nav' 'title title' 'info info';
+  align-items: center;
+  gap: 0 16px;
+}
+
 .player__count {
+  grid-area: count;
   margin: 0 0 4px;
   font: 500 12px/1 ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
   color: var(--c-text-muted);
 }
 
 .player__title {
-  margin: 0;
+  grid-area: title;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  overflow: hidden;
+  margin: 6px 0 0;
+  line-height: 1.05;
   font-size: clamp(1.25rem, 2.6vw, 2rem);
   font-weight: 900;
   font-stretch: 120%;
@@ -448,7 +484,8 @@ html.player-open body {
 }
 
 .player__info {
-  margin: 4px 0 0;
+  grid-area: info;
+  margin: 6px 0 0;
   color: var(--c-text-muted);
   font-size: 0.9375rem;
 }
@@ -461,8 +498,9 @@ html.player-open body {
   line-height: 1.5;
 }
 
+.player__desc,
 .player__desc[hidden] {
-  display: none;
+  display: none; /* phones / portrait: title, client and category only, so the video keeps its size */
 }
 
 .player__cat {
@@ -470,6 +508,7 @@ html.player-open body {
 }
 
 .player__nav {
+  grid-area: nav;
   display: flex;
   gap: 10px;
 }
@@ -534,6 +573,7 @@ html.player-open body {
   }
 
   .player__bar {
+    display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
@@ -541,7 +581,13 @@ html.player-open body {
     padding: 0;
   }
 
+  .player__meta {
+    display: block;
+  }
+
   .player__title {
+    display: block;
+    margin: 0;
     font-size: clamp(1.75rem, 2.6vw, 2.75rem);
     line-height: 1;
   }
@@ -549,6 +595,10 @@ html.player-open body {
   .player__info {
     margin-top: 12px;
     font-size: 1rem;
+  }
+
+  .player__desc:not([hidden]) {
+    display: block;
   }
 
   .player__desc {

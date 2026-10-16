@@ -65,6 +65,7 @@
         "es": "¿Por qué casi todas las botellas de vino son de 750 ml?",
         "en": "Why are almost all wine bottles 750 ml?"
       },
+      "titleShort": { "es": "¿Por qué el vino viene en 750 ml?", "en": "Why wine comes in 750 ml" },
       "client": "Viviendo Vino",
       "category": "social",
       "description": {

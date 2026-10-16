@@ -50,7 +50,9 @@ Static site built with Vite, deployed to GitHub Pages: https://publifix.github.i
   Real reels: `bunny: { videoId, resolutions, desktop, mobile, width, height }` → URLs derived in
   `scripts/i18n/reel-media.mjs`: `play_{1080|720}p.mp4` (desktop | phones/tablets, chosen in player.js),
   `thumbnail.jpg` (poster), `preview_hq.mp4` (card loop). Order in the file = order on the site. Optional
-  `description` {es,en} shows in the player (beside the video on desktop). `pending: true` = title/client/category
+  `description` {es,en} shows in the player ONLY on desktop/landscape (beside the video; phones show
+  title, client and category so the video stays big). Optional `titleShort` {es,en} replaces the title on phones
+  (feed card + player) when the full one takes more than 3 lines; titles are clamped to 3 lines there anyway. `pending: true` = title/client/category
   still unknown (category `pending`, tag PENDIENTE). Cards use the real proportion (`--ar` when not 9:16).
   Bunny hotlink protection: only the site's Referer is allowed; NEVER store a Bunny API key in the repo.
   The sandbox cannot reach the CDN: check it with the manual workflow `.github/workflows/bunny.yml`
