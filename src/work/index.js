@@ -28,6 +28,15 @@ export function initWork({ ui, preferMp4 }) {
   if (!scene || !hero || !work || !track) return;
 
   initMedia({ preferMp4 });
+  // Real reels stream from the CDN (Bunny): open the connection now that Work is on its way
+  // (only after the first scroll: nothing of this happens on the first load).
+  const cdn = [...document.querySelectorAll('.reel[data-poster^="http"]')].map(c => new URL(c.dataset.poster).origin)[0];
+  if (cdn && !document.querySelector(`link[rel="preconnect"][href="${cdn}"]`)) {
+    const l = document.createElement('link');
+    l.rel = 'preconnect';
+    l.href = cdn;
+    document.head.appendChild(l);
+  }
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const items = [...track.querySelectorAll('.work__item')];
   const cards = items.map(li => li.querySelector('.reel'));

@@ -626,7 +626,7 @@ html.js [data-hero-reveal] {
 .reel__media {
   position: relative;
   display: block;
-  aspect-ratio: 9 / 16;
+  aspect-ratio: var(--ar, 9 / 16); /* --ar on the card when a video is not 9:16 */
   overflow: hidden;
   border-radius: 14px;
   background: var(--c-gray);

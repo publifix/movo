@@ -71,10 +71,12 @@
       "social": "Social",
       "branding": "Branding",
       "explainer": "Explainer",
-      "advertising": "Advertising"
+      "advertising": "Advertising",
+      "pending": "Pending"
     },
     "open": "Play reel",
-    "scrubHint": "Move the cursor to scrub the video"
+    "scrubHint": "Move the cursor to scrub the video",
+    "pendingTag": "PENDING"
   },
   "player": {
     "label": "Video player",

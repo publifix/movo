@@ -106,6 +106,8 @@ def make(reel, index):
 def main():
     data = json.loads((ROOT / 'src/data/reels.json').read_text())
     for i, reel in enumerate(data['reels']):
+        if not reel.get('mock'):  # real reels (Bunny Stream) have no local files
+            continue
         make(reel, i)
         print('ok', reel['id'])
 

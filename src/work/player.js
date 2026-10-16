@@ -37,6 +37,7 @@ export function createPlayer({ ui, reduce, getCards }) {
   document.body.appendChild(el);
 
   const video = el.querySelector('video');
+  const small = matchMedia('(max-width: 1023px), (pointer: coarse)');
   const $ = s => el.querySelector(s);
   const outside = () => [...document.body.children].filter(n => n !== el && n.tagName !== 'SCRIPT');
   let list = [];
@@ -51,7 +52,8 @@ export function createPlayer({ ui, reduce, getCards }) {
     $('[data-cat]').textContent = card.dataset.categoryLabel;
     $('[data-count]').textContent = `${String(index + 1).padStart(2, '0')} ${L.of} ${String(list.length).padStart(2, '0')}`;
     video.poster = card.dataset.poster;
-    video.src = card.dataset.full; // only now does the full video download
+    // only now does the full video download: 720p on phones/tablets, 1080p on desktop (Bunny MP4)
+    video.src = (small.matches && card.dataset.fullMobile) || card.dataset.full;
     video.muted = false;
     const p = video.play();
     if (p) p.catch(() => {}); // e.g. autoplay with sound refused: the native controls stay available

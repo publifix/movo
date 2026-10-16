@@ -10,6 +10,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import site from './site.config.mjs';
 import { servicesMarkup } from './services-markup.mjs';
+import { reelMedia } from './reel-media.mjs';
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../..');
 const PARTIALS = path.join(ROOT, 'src/partials');
@@ -23,7 +24,6 @@ const reelsData = () => JSON.parse(fs.readFileSync(REELS, 'utf8'));
 // attribute: posters and previews load from data-* only after the visitor scrolls (src/work/).
 function workMarkup(t, root) {
   const { fullBaseUrl = '', reels } = reelsData();
-  const fullUrl = r => (/^https?:\/\//.test(r.full) ? r.full : fullBaseUrl ? fullBaseUrl + r.full : root + r.full);
   const cats = [...new Set(reels.map(r => r.category))];
   // Each category takes the color of its Services pillar (brand volt, content magenta, explain violet).
   const color = c => servicesData().pillars.find(p => p.workFilter.includes(c))?.color;
@@ -33,20 +33,24 @@ function workMarkup(t, root) {
   const cards = reels.map((r, i) => {
     const title = r.title[t._lang] ?? r.title.es;
     const cat = t.work.categories[r.category];
-    return `<li class="work__item" data-category="${r.category}">
-          <a class="reel" href="${esc(fullUrl(r))}" data-reel="${r.id}" data-index="${i}"
-             data-poster="${root}${r.poster}" data-preview-webm="${root}${r.preview.webm}" data-preview-mp4="${root}${r.preview.mp4}"
-             data-full="${esc(fullUrl(r))}" data-title="${esc(title)}" data-client="${esc(r.client)}" data-category-label="${esc(cat)}"
+    const m = reelMedia(r, { root, fullBaseUrl });
+    // the card takes the video's real proportion (9:16 unless the data says otherwise)
+    const ar = m.width * 16 === m.height * 9 ? '' : ` style="--ar: ${m.width} / ${m.height}"`;
+    const tag = r.pending ? t.work.pendingTag : r.mock ? 'MOCK' : '';
+    return `<li class="work__item" data-category="${r.category}"${ar}>
+          <a class="reel" href="${esc(m.full)}" data-reel="${r.id}" data-index="${i}"
+             data-poster="${esc(m.poster)}" data-preview-webm="${esc(m.previewWebm)}" data-preview-mp4="${esc(m.previewMp4)}"
+             data-full="${esc(m.full)}" data-full-mobile="${esc(m.fullMobile)}" data-title="${esc(title)}" data-client="${esc(r.client)}" data-category-label="${esc(cat)}"
              aria-label="${esc(t.work.open)}: ${esc(title)} — ${esc(r.client)}">
             <span class="reel__media">
-              <img class="reel__poster" alt="" width="480" height="854" decoding="async" data-src="${root}${r.poster}" />
+              <img class="reel__poster" alt="" width="${m.width}" height="${m.height}" decoding="async" data-src="${esc(m.poster)}" />
               <video class="reel__video" muted loop playsinline preload="none" disablepictureinpicture tabindex="-1" aria-hidden="true"></video>
             </span>
             <span class="reel__info">
               <span class="reel__client">${esc(r.client)}</span>
               <span class="reel__title">${esc(title)}</span>
               <span class="reel__cat">${esc(cat)}</span>
-            </span>${r.mock ? '\n            <span class="reel__mock" aria-hidden="true">MOCK</span>' : ''}
+            </span>${tag ? `\n            <span class="reel__mock${r.pending ? ' reel__mock--pending' : ''}" aria-hidden="true">${esc(tag)}</span>` : ''}
           </a>
         </li>`;
   });

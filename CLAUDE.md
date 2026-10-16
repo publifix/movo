@@ -46,11 +46,17 @@ Static site built with Vite, deployed to GitHub Pages: https://publifix.github.i
 - The latest push from any of those branches wins, so keep work on one branch at a time.
 
 ## Work section (Trabajo) + "the scroll is the timeline"
-- Data: `src/data/reels.json` (id, title es/en, client, category, poster, preview webm/mp4, full). `fullBaseUrl`
-  is the ONE switch for full videos (empty = files in `public/video/work/`; set to the Bunny Stream/CDN base later).
+- Data: `src/data/reels.json`. `fullBaseUrl` = Bunny Stream CDN hostname (library 781096) — the ONE switch.
+  Real reels: `bunny: { videoId, resolutions, desktop, mobile, width, height }` → URLs derived in
+  `scripts/i18n/reel-media.mjs`: `play_{1080|720}p.mp4` (desktop | phones/tablets, chosen in player.js),
+  `thumbnail.jpg` (poster), `preview_hq.mp4` (card loop). `pending: true` = title/client/category still unknown
+  (category `pending`, tag PENDIENTE). Cards use the real proportion (`--ar` when not 9:16).
+  Bunny hotlink protection: only the site's Referer is allowed; NEVER store a Bunny API key in the repo.
+  The sandbox cannot reach the CDN: check it with the manual workflow `.github/workflows/bunny.yml`
+  (CDN probe + `scripts/perf/work-check.mjs` in real Chrome/WebKit against production and localhost).
   The i18n plugin renders cards + category filters into the HTML (`{{workReels}}`, `{{workFilters}}`).
-- Mock reels (marked MOCK): `python3 scripts/mocks/make-reels.py` → `public/video/work/<id>/` (full 540x960 with
-  audio, preview 3.5 s 480p ~35 KB webm/mp4, poster). reel-01 reuses the hero vertical loop. Replace with real work.
+- Mock reels (marked MOCK, reel-06…10 for now): `python3 scripts/mocks/make-reels.py` → `public/video/work/<id>/`
+  (skips real reels). Replace them with real ones as they are uploaded to Bunny.
 - Code: `src/work/` is a LAZY chunk (index.js + work.css + media.js + player.js), imported by `src/main.js` on the
   first scroll intent after `movo:intro-done`. Nothing from Work (code, posters, previews) loads before that.
 - Modes (rebuilt on resize/rotation): `html.work-strip` landscape (pinned scene: hero clip-path → 9:16 card →

@@ -71,10 +71,12 @@
       "social": "Social",
       "branding": "Branding",
       "explainer": "Explainer",
-      "advertising": "Publicidad"
+      "advertising": "Publicidad",
+      "pending": "Pendiente"
     },
     "open": "Ver reel",
-    "scrubHint": "Mueve el cursor para recorrer el video"
+    "scrubHint": "Mueve el cursor para recorrer el video",
+    "pendingTag": "PENDIENTE"
   },
   "player": {
     "label": "Reproductor de video",

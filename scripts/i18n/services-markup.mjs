@@ -7,6 +7,8 @@
 // real ones updates every preview automatically. The showreel (huge file) is never used as a preview.
 // No media URL is in a src attribute: everything loads from data-* when needed (src/services/).
 
+import { reelMedia } from './reel-media.mjs';
+
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
 // [CONFIRMAR …] markers stay in the text (the owner validates them later); they are only styled.
@@ -27,9 +29,13 @@ export function servicesMarkup({ t, lang, root, homeHref, servicesHref, data, re
     if (v == null || v === '') throw new Error(`[i18n] Missing string "services.${key}" in src/i18n/${lang}.json`);
     return v;
   };
-  const reels = reelsData.reels.filter(r => !r.showreel);
-  const media = r =>
-    r ? ` data-preview-webm="${root}${r.preview.webm}" data-preview-mp4="${root}${r.preview.mp4}" data-poster="${root}${r.poster}" data-reel="${r.id}"${r.mock ? ' data-mock' : ''}` : '';
+  // pending reels (no category yet) and the showreel are never pillar previews
+  const reels = reelsData.reels.filter(r => !r.showreel && !r.pending);
+  const media = r => {
+    if (!r) return '';
+    const m = reelMedia(r, { root, fullBaseUrl: reelsData.fullBaseUrl });
+    return ` data-preview-webm="${esc(m.previewWebm)}" data-preview-mp4="${esc(m.previewMp4)}" data-poster="${esc(m.poster)}" data-reel="${r.id}"${r.mock ? ' data-mock' : ''}`;
+  };
   const byCats = cats => reels.filter(r => cats.includes(r.category));
   const pillarReel = p => (p.previewReel && reels.find(r => r.id === p.previewReel)) || byCats(p.workFilter)[0];
   const workHref = cats => `${homeHref}?cat=${cats.join(',')}#${t.nav.work.id}`;

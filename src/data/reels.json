@@ -1,88 +1,132 @@
 {
-  "_note": "MOCK data: replace with real reels. Paths in poster/preview are relative to the site root; 'full' is relative to fullBaseUrl (or an absolute URL).",
-  "fullBaseUrl": "",
-  "_fullBaseUrlNote": "Single switch for the full videos. Empty = files in this repo (public/video/work/). Set to the streaming CDN base, e.g. 'https://<library>.b-cdn.net/', with a trailing slash.",
+  "_note": "Reels of the Work section. Real reels have `bunny` (Bunny Stream: URLs are derived from fullBaseUrl + videoId, see scripts/i18n/reel-media.mjs) and `pending: true` while title/client/category are not known yet. MOCK reels are files of this repo (paths from the site root).",
+  "fullBaseUrl": "https://vz-70c93c78-ad5.b-cdn.net/",
+  "_fullBaseUrlNote": "Single switch: the Bunny Stream library's CDN hostname (library 781096), with a trailing slash. Hotlink protection allows publifix.github.io and localhost only. No API key is ever stored here.",
   "reels": [
     {
       "id": "reel-01",
-      "mock": true,
-      "showreel": true,
+      "pending": true,
       "title": {
-        "es": "MOVO — Showreel 2026",
-        "en": "MOVO — Showreel 2026"
+        "es": "PENDIENTE: título del reel 01",
+        "en": "PENDING: reel 01 title"
       },
-      "client": "MOVO",
-      "category": "branding",
-      "poster": "video/hero/movo-hero-mobile-poster.jpg",
-      "preview": {
-        "webm": "video/hero/movo-hero-mobile-720x1280.webm",
-        "mp4": "video/hero/movo-hero-mobile-720x1280.mp4"
-      },
-      "full": "video/work/reel-01/full.mp4"
+      "client": "PENDIENTE: cliente",
+      "category": "pending",
+      "bunny": {
+        "videoId": "a3cf2409-8f62-412a-88d6-12e4203bec89",
+        "resolutions": [
+          240,
+          360,
+          480,
+          720,
+          1080
+        ],
+        "desktop": 1080,
+        "mobile": 720,
+        "width": 1080,
+        "height": 1920,
+        "duration": 44.52
+      }
     },
     {
       "id": "reel-02",
-      "mock": true,
+      "pending": true,
       "title": {
-        "es": "Lanzamiento de app",
-        "en": "App launch"
+        "es": "PENDIENTE: título del reel 02",
+        "en": "PENDING: reel 02 title"
       },
-      "client": "Nova Bank (MOCK)",
-      "category": "explainer",
-      "poster": "video/work/reel-02/poster.jpg",
-      "preview": {
-        "webm": "video/work/reel-02/preview.webm",
-        "mp4": "video/work/reel-02/preview.mp4"
-      },
-      "full": "video/work/reel-02/full.mp4"
+      "client": "PENDIENTE: cliente",
+      "category": "pending",
+      "bunny": {
+        "videoId": "d2ef3e51-4bf7-4eed-9367-7f0983195e95",
+        "resolutions": [
+          240,
+          360,
+          480,
+          720,
+          1080
+        ],
+        "desktop": 1080,
+        "mobile": 720,
+        "width": 1080,
+        "height": 1920,
+        "duration": 24.3
+      }
     },
     {
       "id": "reel-03",
-      "mock": true,
+      "pending": true,
       "title": {
-        "es": "Campaña de verano",
-        "en": "Summer campaign"
+        "es": "PENDIENTE: título del reel 03",
+        "en": "PENDING: reel 03 title"
       },
-      "client": "Sol & Sal (MOCK)",
-      "category": "advertising",
-      "poster": "video/work/reel-03/poster.jpg",
-      "preview": {
-        "webm": "video/work/reel-03/preview.webm",
-        "mp4": "video/work/reel-03/preview.mp4"
-      },
-      "full": "video/work/reel-03/full.mp4"
+      "client": "PENDIENTE: cliente",
+      "category": "pending",
+      "bunny": {
+        "videoId": "ea0ba0c8-34d8-42f8-a7b3-19a5d582587e",
+        "resolutions": [
+          240,
+          360,
+          480,
+          720,
+          1080
+        ],
+        "desktop": 1080,
+        "mobile": 720,
+        "width": 1080,
+        "height": 1920,
+        "duration": 61.53
+      }
     },
     {
       "id": "reel-04",
-      "mock": true,
+      "pending": true,
       "title": {
-        "es": "Rebrand animado",
-        "en": "Animated rebrand"
+        "es": "PENDIENTE: título del reel 04",
+        "en": "PENDING: reel 04 title"
       },
-      "client": "Brava Café (MOCK)",
-      "category": "branding",
-      "poster": "video/work/reel-04/poster.jpg",
-      "preview": {
-        "webm": "video/work/reel-04/preview.webm",
-        "mp4": "video/work/reel-04/preview.mp4"
-      },
-      "full": "video/work/reel-04/full.mp4"
+      "client": "PENDIENTE: cliente",
+      "category": "pending",
+      "bunny": {
+        "videoId": "c2812585-5fc2-4f2f-9c0a-71570370c938",
+        "resolutions": [
+          240,
+          360,
+          480,
+          720,
+          1080
+        ],
+        "desktop": 1080,
+        "mobile": 720,
+        "width": 1080,
+        "height": 1920,
+        "duration": 32.83
+      }
     },
     {
       "id": "reel-05",
-      "mock": true,
+      "pending": true,
       "title": {
-        "es": "Serie para TikTok",
-        "en": "TikTok series"
+        "es": "PENDIENTE: título del reel 05",
+        "en": "PENDING: reel 05 title"
       },
-      "client": "Pulse Fitness (MOCK)",
-      "category": "social",
-      "poster": "video/work/reel-05/poster.jpg",
-      "preview": {
-        "webm": "video/work/reel-05/preview.webm",
-        "mp4": "video/work/reel-05/preview.mp4"
-      },
-      "full": "video/work/reel-05/full.mp4"
+      "client": "PENDIENTE: cliente",
+      "category": "pending",
+      "bunny": {
+        "videoId": "96539d8d-f777-4f70-a0c5-a5d3d9f6ecea",
+        "resolutions": [
+          240,
+          360,
+          480,
+          720,
+          1080
+        ],
+        "desktop": 1080,
+        "mobile": 720,
+        "width": 1080,
+        "height": 1920,
+        "duration": 52.78
+      }
     },
     {
       "id": "reel-06",
