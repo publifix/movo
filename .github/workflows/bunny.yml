@@ -1,0 +1,81 @@
+name: Check Bunny Stream
+
+# Manual. The sandbox where the site is developed cannot reach the Bunny CDN, so the checks run here.
+#   cdn  — for each video ID: which play_{res}p.mp4 exist, thumbnail / preview_hq, real dimensions and
+#          duration (ffprobe), audio, and that hotlink protection behaves (allowed vs foreign Referer).
+#   site — the live site with real browsers (Chrome desktop + Pixel 7, WebKit iPhone 14): the real reels
+#          show in the strip / feed, open in the player and play with sound; no 403 from the site.
+# Only public CDN URLs are used: no Bunny API key is needed or stored.
+on:
+  workflow_dispatch:
+    inputs:
+      host:
+        description: Bunny CDN hostname
+        default: vz-70c93c78-ad5.b-cdn.net
+      ids:
+        description: Video IDs (space separated)
+        default: a3cf2409-8f62-412a-88d6-12e4203bec89 d2ef3e51-4bf7-4eed-9367-7f0983195e95 ea0ba0c8-34d8-42f8-a7b3-19a5d582587e c2812585-5fc2-4f2f-9c0a-71570370c938 96539d8d-f777-4f70-a0c5-a5d3d9f6ecea
+      site:
+        description: Site URL for the browser check (empty = skip)
+        default: https://publifix.github.io/movo/
+
+permissions:
+  contents: read
+
+jobs:
+  cdn:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install ffprobe
+        run: which ffprobe || (sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg >/dev/null)
+      - name: Probe every video
+        run: |
+          H="${{ inputs.host }}"
+          OK='https://publifix.github.io/'
+          for id in ${{ inputs.ids }}; do
+            echo "::group::$id"
+            for ref in "$OK" "http://localhost:5173/" "https://example.com/" ""; do
+              hdr=(); [ -n "$ref" ] && hdr=(-H "Referer: $ref")
+              code=$(curl -s -o /dev/null -w '%{http_code}' -r 0-0 "${hdr[@]}" "https://$H/$id/thumbnail.jpg")
+              echo "REFERER ${ref:-<none>} thumbnail -> $code"
+            done
+            res=""
+            for r in 240 360 480 720 1080 1440 2160; do
+              code=$(curl -s -o /dev/null -w '%{http_code}' -r 0-0 -H "Referer: $OK" "https://$H/$id/play_${r}p.mp4")
+              len=$(curl -sI -H "Referer: $OK" "https://$H/$id/play_${r}p.mp4" | grep -i '^content-length' | tr -dc 0-9)
+              echo "PLAY ${r}p -> $code ${len:-0} bytes"
+              [ "$code" = 206 ] || [ "$code" = 200 ] && res="$res $r"
+            done
+            for f in thumbnail.jpg preview_hq.mp4 preview.webp; do
+              code=$(curl -s -o /dev/null -w '%{http_code}' -H "Referer: $OK" "https://$H/$id/$f")
+              len=$(curl -sI -H "Referer: $OK" "https://$H/$id/$f" | grep -i '^content-length' | tr -dc 0-9)
+              echo "FILE $f -> $code ${len:-0} bytes"
+            done
+            top=$(echo $res | tr ' ' '\n' | tail -1)
+            FIELDS='stream=codec_type,codec_name,width,height,sample_aspect_ratio,display_aspect_ratio:stream_side_data=rotation:format=duration,size'
+            probe() { ffprobe -v error -headers "Referer: $OK"$'\r\n' -show_entries "$FIELDS" -of json "$1" | tr -d '\n '; echo; }
+            [ -n "$top" ] && echo "PROBE play_${top}p $(probe "https://$H/$id/play_${top}p.mp4")"
+            echo "PROBE preview_hq $(probe "https://$H/$id/preview_hq.mp4")"
+            curl -s -H "Referer: $OK" -o thumb.jpg "https://$H/$id/thumbnail.jpg" && echo "PROBE thumbnail $(ffprobe -v error -show_entries stream=width,height -of json thumb.jpg | tr -d '\n ')"
+            echo "SUMMARY $id resolutions:${res:- none}"
+            echo "::endgroup::"
+          done
+
+  site:
+    if: ${{ inputs.site != '' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright@1.64.1 install --with-deps webkit
+      - name: Real reels in the live site
+        run: |
+          for dev in desktop pixel7 iphone14; do
+            echo "::group::$dev"
+            node scripts/perf/work-check.mjs "${{ inputs.site }}" --device "$dev" || true
+            echo "::endgroup::"
+          done
