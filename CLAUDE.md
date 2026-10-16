@@ -49,8 +49,9 @@ Static site built with Vite, deployed to GitHub Pages: https://publifix.github.i
 - Data: `src/data/reels.json`. `fullBaseUrl` = Bunny Stream CDN hostname (library 781096) — the ONE switch.
   Real reels: `bunny: { videoId, resolutions, desktop, mobile, width, height }` → URLs derived in
   `scripts/i18n/reel-media.mjs`: `play_{1080|720}p.mp4` (desktop | phones/tablets, chosen in player.js),
-  `thumbnail.jpg` (poster), `preview_hq.mp4` (card loop). `pending: true` = title/client/category still unknown
-  (category `pending`, tag PENDIENTE). Cards use the real proportion (`--ar` when not 9:16).
+  `thumbnail.jpg` (poster), `preview_hq.mp4` (card loop). Order in the file = order on the site. Optional
+  `description` {es,en} shows in the player (beside the video on desktop). `pending: true` = title/client/category
+  still unknown (category `pending`, tag PENDIENTE). Cards use the real proportion (`--ar` when not 9:16).
   Bunny hotlink protection: only the site's Referer is allowed; NEVER store a Bunny API key in the repo.
   The sandbox cannot reach the CDN: check it with the manual workflow `.github/workflows/bunny.yml`
   (CDN probe + `scripts/perf/work-check.mjs` in real Chrome/WebKit against production and localhost).
@@ -79,7 +80,8 @@ Static site built with Vite, deployed to GitHub Pages: https://publifix.github.i
 - Markup: `scripts/i18n/services-markup.mjs` (home tracks, page index, pillars/rows, process, formats, FAQ, JSON-LD).
 - Pillar colors on ink: brand volt, content magenta, explain violet (`--pc`; violet text uses a lighter tint).
 - Previews come from `src/data/reels.json`: pillar = first reel of its Work categories (or `previewReel`), row =
-  n-th reel of its category; the showreel (`showreel: true`) is never a preview. Real reels → previews update.
+  n-th reel of its category, unless `src/data/services-previews.json` hand-picks a reel for that service.
+  The showreel (`showreel: true`) and pending reels are never previews. Real reels → previews update.
 - Home section: lazy chunk `src/services/home.{js,css}`, requested with Work on the first scroll intent. One track
   open at a time (hover desktop / tap mobile), magenta playhead lights keyframes, < 900px stacked cards.
 - Page: `src/services/page.{js,css}`. Max ONE preview playing; previews load on hover/open, posters when near.

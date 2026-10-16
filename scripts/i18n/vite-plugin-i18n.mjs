@@ -15,6 +15,7 @@ import { reelMedia } from './reel-media.mjs';
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../..');
 const PARTIALS = path.join(ROOT, 'src/partials');
 const SERVICES = path.join(ROOT, 'src/data/services.json');
+const PREVIEWS = path.join(ROOT, 'src/data/services-previews.json');
 const servicesData = () => JSON.parse(fs.readFileSync(SERVICES, 'utf8'));
 const strings = code => JSON.parse(fs.readFileSync(path.join(ROOT, `src/i18n/${code}.json`), 'utf8'));
 const REELS = path.join(ROOT, 'src/data/reels.json');
@@ -217,7 +218,7 @@ export default function movoI18n() {
     },
     configureServer(server) {
       // Edits to the template or the strings reload every language page
-      const watched = [...site.pages.map(p => path.join(ROOT, p.template)), REELS, SERVICES, ...site.locales.map(l => path.join(ROOT, `src/i18n/${l.code}.json`))];
+      const watched = [...site.pages.map(p => path.join(ROOT, p.template)), REELS, SERVICES, PREVIEWS, ...site.locales.map(l => path.join(ROOT, `src/i18n/${l.code}.json`))];
       server.watcher.add([...watched, PARTIALS]);
       server.watcher.on('change', file => {
         if (watched.includes(file) || file.startsWith(PARTIALS)) server.ws.send({ type: 'full-reload' });

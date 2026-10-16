@@ -1,0 +1,12 @@
+{
+  "_note": "Hand-picked preview reel per service (Services page rows). Overrides the automatic pick (n-th reel of the service's Work category). Reel ids from src/data/reels.json; remove a line to go back to automatic.",
+  "services": {
+    "reels": "reel-01",
+    "ads": "reel-04",
+    "campaigns": "reel-02",
+    "monthly-plan": "reel-03",
+    "explainers": "reel-03",
+    "product": "reel-05",
+    "events": "reel-02"
+  }
+}

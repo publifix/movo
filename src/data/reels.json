@@ -1,42 +1,20 @@
 {
-  "_note": "Reels of the Work section. Real reels have `bunny` (Bunny Stream: URLs are derived from fullBaseUrl + videoId, see scripts/i18n/reel-media.mjs) and `pending: true` while title/client/category are not known yet. MOCK reels are files of this repo (paths from the site root).",
+  "_note": "Reels of the Work section, in display order. Real reels have `bunny` (Bunny Stream: URLs are derived from fullBaseUrl + videoId, see scripts/i18n/reel-media.mjs) and an optional `description` (ES/EN, shown in the player). MOCK reels are files of this repo (paths from the site root).",
   "fullBaseUrl": "https://vz-70c93c78-ad5.b-cdn.net/",
   "_fullBaseUrlNote": "Single switch: the Bunny Stream library's CDN hostname (library 781096), with a trailing slash. Hotlink protection allows publifix.github.io and localhost only. No API key is ever stored here.",
   "reels": [
     {
       "id": "reel-01",
-      "pending": true,
       "title": {
-        "es": "PENDIENTE: título del reel 01",
-        "en": "PENDING: reel 01 title"
+        "es": "15 Esencias x Morena Mía",
+        "en": "15 Essences x Morena Mía"
       },
-      "client": "PENDIENTE: cliente",
-      "category": "pending",
-      "bunny": {
-        "videoId": "a3cf2409-8f62-412a-88d6-12e4203bec89",
-        "resolutions": [
-          240,
-          360,
-          480,
-          720,
-          1080
-        ],
-        "desktop": 1080,
-        "mobile": 720,
-        "width": 1080,
-        "height": 1920,
-        "duration": 44.52
-      }
-    },
-    {
-      "id": "reel-02",
-      "pending": true,
-      "title": {
-        "es": "PENDIENTE: título del reel 02",
-        "en": "PENDING: reel 02 title"
+      "client": "VELUMINEN",
+      "category": "social",
+      "description": {
+        "es": "Una serie de contenido vertical para presentar las 15 esencias de VELUMINEN con Morena Mía: cada una con su propio color, tipografía y ritmo, pensada para detener el scroll y quedarse en la memoria.",
+        "en": "A vertical content series introducing VELUMINEN's 15 essences with Morena Mía: each one with its own color, type and rhythm, built to stop the scroll and stick in the mind."
       },
-      "client": "PENDIENTE: cliente",
-      "category": "pending",
       "bunny": {
         "videoId": "d2ef3e51-4bf7-4eed-9367-7f0983195e95",
         "resolutions": [
@@ -54,14 +32,45 @@
       }
     },
     {
-      "id": "reel-03",
-      "pending": true,
+      "id": "reel-02",
       "title": {
-        "es": "PENDIENTE: título del reel 03",
-        "en": "PENDING: reel 03 title"
+        "es": "Fiestas de Fin de Año",
+        "en": "Year-End Celebrations"
       },
-      "client": "PENDIENTE: cliente",
-      "category": "pending",
+      "client": "Blanco Nuclear",
+      "category": "branding",
+      "description": {
+        "es": "Una pieza de marca para la temporada de fiestas: una cuenta regresiva contada con el lenguaje de la producción de eventos —invitados, concepto, brindis— que cierra con la promesa de Blanco Nuclear: tú lo imaginas.",
+        "en": "A brand piece for the party season: a countdown told in the language of event production —guests, concept, the toast— that closes on Blanco Nuclear's promise: you imagine it."
+      },
+      "bunny": {
+        "videoId": "a3cf2409-8f62-412a-88d6-12e4203bec89",
+        "resolutions": [
+          240,
+          360,
+          480,
+          720,
+          1080
+        ],
+        "desktop": 1080,
+        "mobile": 720,
+        "width": 1080,
+        "height": 1920,
+        "duration": 44.52
+      }
+    },
+    {
+      "id": "reel-03",
+      "title": {
+        "es": "¿Por qué casi todas las botellas de vino son de 750 ml?",
+        "en": "Why are almost all wine bottles 750 ml?"
+      },
+      "client": "Viviendo Vino",
+      "category": "social",
+      "description": {
+        "es": "Un video para redes que responde en un minuto una pregunta curiosa: de la barrica de 225 litros a las seis copas por botella y la norma que lo hizo oficial, todo contado con infografía animada.",
+        "en": "A social video that answers a curious question in one minute: from the 225-liter barrel to six glasses per bottle and the rule that made it official, all told with animated infographics."
+      },
       "bunny": {
         "videoId": "ea0ba0c8-34d8-42f8-a7b3-19a5d582587e",
         "resolutions": [
@@ -80,13 +89,16 @@
     },
     {
       "id": "reel-04",
-      "pending": true,
       "title": {
-        "es": "PENDIENTE: título del reel 04",
-        "en": "PENDING: reel 04 title"
+        "es": "Lanzamiento Club 57",
+        "en": "Club 57 Launch"
       },
-      "client": "PENDIENTE: cliente",
-      "category": "pending",
+      "client": "F57",
+      "category": "advertising",
+      "description": {
+        "es": "La campaña que lanza la tienda en línea de Ferretería 57 y Club 57, su programa de lealtad: sumar puntos, canjearlos por artículos promocionales y consultar tu historial, explicado en piezas cortas y directas.",
+        "en": "The campaign launching Ferretería 57's online store and Club 57, its loyalty program: earning points, redeeming them for promotional items and checking your history, explained in short, direct pieces."
+      },
       "bunny": {
         "videoId": "c2812585-5fc2-4f2f-9c0a-71570370c938",
         "resolutions": [
@@ -105,13 +117,16 @@
     },
     {
       "id": "reel-05",
-      "pending": true,
       "title": {
-        "es": "PENDIENTE: título del reel 05",
-        "en": "PENDING: reel 05 title"
+        "es": "Caso Estudio Inmobiliaria",
+        "en": "Real Estate Case Study"
       },
-      "client": "PENDIENTE: cliente",
-      "category": "pending",
+      "client": "LABS",
+      "category": "explainer",
+      "description": {
+        "es": "Un caso de estudio animado para LABS: cómo un agente de IA en WhatsApp ayudó a Arenza Desarrollos a responder a tiempo a cada interesado. Con las cifras del proyecto, la interfaz en acción y una idea clara: la tecnología abre la puerta, las personas cierran la venta.",
+        "en": "An animated case study for LABS: how an AI agent on WhatsApp helped Arenza Desarrollos answer every lead on time. With the project's numbers, the interface in action and one clear idea: technology opens the door, people close the sale."
+      },
       "bunny": {
         "videoId": "96539d8d-f777-4f70-a0c5-a5d3d9f6ecea",
         "resolutions": [

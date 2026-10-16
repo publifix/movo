@@ -7,7 +7,12 @@
 // real ones updates every preview automatically. The showreel (huge file) is never used as a preview.
 // No media URL is in a src attribute: everything loads from data-* when needed (src/services/).
 
+import fs from 'node:fs';
 import { reelMedia } from './reel-media.mjs';
+
+// Hand-picked previews per service (src/data/services-previews.json), over the automatic pick.
+const PICKS = new URL('../../src/data/services-previews.json', import.meta.url);
+const loadPicks = () => (fs.existsSync(PICKS) ? JSON.parse(fs.readFileSync(PICKS, 'utf8')).services || {} : {});
 
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
@@ -31,6 +36,7 @@ export function servicesMarkup({ t, lang, root, homeHref, servicesHref, data, re
   };
   // pending reels (no category yet) and the showreel are never pillar previews
   const reels = reelsData.reels.filter(r => !r.showreel && !r.pending);
+  const picks = loadPicks();
   const media = r => {
     if (!r) return '';
     const m = reelMedia(r, { root, fullBaseUrl: reelsData.fullBaseUrl });
@@ -103,7 +109,8 @@ export function servicesMarkup({ t, lang, root, homeHref, servicesHref, data, re
     const rows = p.services.map((s, si) => {
       const T = need(P.services?.[s.id], `pillars.${p.id}.services.${s.id}`);
       const pool = byCats([s.category]);
-      const r = pool.length ? pool[(used[s.category] = (used[s.category] ?? -1) + 1) % pool.length] : null;
+      const picked = picks[s.id] && reels.find(x => x.id === picks[s.id]);
+      const r = picked || (pool.length ? pool[(used[s.category] = (used[s.category] ?? -1) + 1) % pool.length] : null);
       const slug = s.slug[lang];
       return `<li class="row" id="${slug}"${media(r)}>
               <h3 class="row__h">
