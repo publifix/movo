@@ -61,6 +61,29 @@ jobs:
             echo "::endgroup::"
           done
 
+  # Which video is which: the title Bunny shows on its player page (normally the uploaded file name)
+  # and 5 small frames per video, printed to the log as base64 JPEG (FRAME <id> <second> <data>) so they
+  # can be looked at without access to the CDN.
+  identify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install ffmpeg
+        run: which ffmpeg || (sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg >/dev/null)
+      - name: Titles and frames
+        run: |
+          H="${{ inputs.host }}"
+          OK='https://publifix.github.io/'
+          for id in ${{ inputs.ids }}; do
+            title=$(curl -s -H "Referer: $OK" "https://iframe.mediadelivery.net/embed/781096/$id" | grep -oE '<title>[^<]*' | head -1 | sed 's/<title>//')
+            echo "TITLE $id $title"
+            dur=$(ffprobe -v error -headers "Referer: $OK"$'\r\n' -show_entries format=duration -of csv=p=0 "https://$H/$id/play_480p.mp4")
+            for f in 0.06 0.25 0.45 0.65 0.85; do
+              t=$(awk "BEGIN{printf \"%.2f\", $dur*$f}")
+              ffmpeg -v error -headers "Referer: $OK"$'\r\n' -ss "$t" -i "https://$H/$id/play_480p.mp4" -frames:v 1 -vf scale=-2:400 -q:v 7 -y frame.jpg
+              echo "FRAME $id $t $(base64 -w0 frame.jpg)"
+            done
+          done
+
   site:
     if: ${{ inputs.site != '' }}
     runs-on: ubuntu-latest
