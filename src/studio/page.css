@@ -1,0 +1,581 @@
+/* Studio page (src/studio.html): editorial, type and motion only — no images.
+   Hero (kinetic two lines + page ruler) · client marquee · manifesto (word reveal + giant close) ·
+   Publifix Network (SVG diagram on desktop, connected list on phones) · closing. */
+@import '../styles/footer.css';
+@import './marquee.css';
+
+.st {
+  overflow-x: clip;
+}
+
+.st-wrap {
+  padding-inline: var(--gutter);
+}
+
+.st-label {
+  margin: 0;
+  color: var(--c-volt);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+/* ---------- (A) hero ---------- */
+.st-hero {
+  display: grid;
+  align-content: end; /* the title grows upward when it is fitted: the text below never moves */
+  gap: clamp(28px, 5vh, 56px);
+  min-height: 100vh;
+  min-height: 100svh;
+  padding: calc(var(--nav-h) + 6vh) var(--gutter) clamp(32px, 7vh, 72px);
+}
+
+.st-hero__title {
+  margin: 0;
+  font-size: clamp(2.25rem, 5.6vw, 10rem); /* page.js fits each line exactly (any language) */
+  font-weight: 900;
+  font-stretch: 125%;
+  letter-spacing: -0.035em;
+  line-height: 0.9;
+  text-transform: uppercase;
+}
+
+.st-hero__line {
+  display: block;
+}
+
+.st-hero__line--2 {
+  color: var(--c-volt);
+  font-weight: 250;
+  font-stretch: 75%;
+}
+
+@media (min-width: 700px) {
+  .st-hero__line {
+    white-space: nowrap;
+  }
+}
+
+/* hidden only until page.js has fitted it (opacity: no layout shift) */
+html.js .st-hero__title:not(.is-ready) {
+  opacity: 0;
+}
+
+.k-word {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.k-letter {
+  display: inline-block;
+}
+
+.st-hero__foot {
+  display: grid;
+  gap: 28px;
+}
+
+.st-hero__text {
+  max-width: 34ch;
+  margin: 0;
+  color: var(--c-text-muted);
+  font-size: clamp(1.0625rem, 1.5vw, 1.375rem);
+  line-height: 1.45;
+}
+
+@media (min-width: 900px) {
+  .st-hero__foot {
+    grid-template-columns: minmax(0, 36ch) minmax(0, 1fr);
+    align-items: end;
+    gap: clamp(32px, 6vw, 120px);
+  }
+}
+
+/* the page as a timeline: one subtle marker per section, the playhead follows the scroll */
+.st-ruler {
+  position: relative;
+  height: 40px;
+  --p: 0;
+}
+
+.st-ruler__track {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 12px;
+  height: 10px;
+  background: repeating-linear-gradient(90deg, rgb(245 245 240 / 0.22) 0 1px, transparent 1px 12px);
+  mask: linear-gradient(90deg, #000 0 100%);
+}
+
+.st-ruler__fill {
+  position: absolute;
+  left: 0;
+  bottom: -1px;
+  height: 1px;
+  width: 100%;
+  background: var(--c-magenta);
+  transform-origin: left;
+  transform: scaleX(var(--p));
+}
+
+.st-ruler__head {
+  position: absolute;
+  bottom: 4px;
+  left: calc(var(--p) * 100%);
+  width: 2px;
+  height: 28px;
+  margin-left: -1px;
+  background: var(--c-magenta);
+}
+
+.st-ruler__mark {
+  position: absolute;
+  bottom: 12px;
+  left: calc(var(--x) * 100%);
+  width: 1px;
+  height: 18px;
+  background: rgb(245 245 240 / 0.5);
+  transition: background-color 0.3s;
+}
+
+.st-ruler__mark.is-on {
+  background: var(--c-volt);
+}
+
+.st-ruler__mark span {
+  position: absolute;
+  bottom: 24px;
+  left: 0;
+  color: var(--c-text-muted);
+  font: 500 10px/1 ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* the last label (at the end of the page) reads leftward so it never leaves the ruler */
+.st-ruler__mark:last-child span {
+  left: auto;
+  right: 0;
+}
+
+@media (max-width: 899px) {
+  .st-ruler__mark span {
+    display: none;
+  }
+}
+
+/* ---------- (B) clients ---------- */
+.st-clients {
+  display: grid;
+  gap: clamp(24px, 4vh, 40px);
+  padding-block: clamp(72px, 12vh, 160px);
+}
+
+/* ---------- (C) manifesto ---------- */
+.st-mf {
+  padding-block: clamp(80px, 14vh, 180px);
+}
+
+.st-mf__body {
+  position: relative;
+  max-width: 34ch;
+  margin-top: clamp(28px, 5vh, 48px);
+  padding-left: clamp(24px, 3vw, 44px);
+  font-size: clamp(1.375rem, 2.5vw, 2.375rem);
+}
+
+/* a vertical playhead along the text */
+.st-mf__rail {
+  position: absolute;
+  top: 0.35em;
+  bottom: 0.6em;
+  left: 0;
+  width: 1px;
+  background: rgb(245 245 240 / 0.14);
+  --p: 1;
+}
+
+.st-mf__rail-fill {
+  position: absolute;
+  inset: 0;
+  background: var(--c-magenta);
+  transform-origin: top;
+  transform: scaleY(var(--p));
+}
+
+.st-mf__p {
+  margin: 0 0 1em;
+  font-weight: 500;
+  line-height: 1.3;
+  letter-spacing: -0.012em;
+}
+
+.st-mf__p:last-of-type {
+  margin-bottom: 0;
+}
+
+/* words revealed with the scroll (page.js); from dim gray to white */
+.st-mf__w {
+  color: rgb(245 245 240 / 0.24);
+  transition: color 0.35s;
+}
+
+.st-mf__w.is-on {
+  color: var(--c-white);
+}
+
+.st-mf__close {
+  margin: clamp(96px, 18vh, 220px) 0 0;
+  font-size: clamp(2.25rem, 8vw, 12rem);
+  font-weight: 900;
+  font-stretch: 125%;
+  letter-spacing: -0.035em;
+  line-height: 0.9;
+  text-transform: uppercase;
+}
+
+.st-mf__close-line {
+  display: block;
+}
+
+.st-mf__close-line--accent {
+  color: var(--c-volt);
+}
+
+@media (min-width: 700px) {
+  .st-mf__close-line {
+    white-space: nowrap;
+  }
+}
+
+/* ---------- (D) Publifix Network ---------- */
+.net {
+  padding-block: clamp(80px, 14vh, 180px);
+}
+
+.net__head {
+  display: grid;
+  gap: 16px;
+  max-width: 40ch;
+}
+
+.net__title {
+  margin: 0;
+  font-size: clamp(2rem, 4.6vw, 4.5rem);
+  font-weight: 900;
+  font-stretch: 112%;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+  text-transform: uppercase;
+}
+
+.net__intro {
+  margin: 0;
+  color: var(--c-text-muted);
+  font-size: clamp(1.0625rem, 1.4vw, 1.25rem);
+  line-height: 1.45;
+}
+
+.net__map {
+  position: relative;
+  margin-top: clamp(40px, 7vh, 72px);
+}
+
+.net__svg {
+  display: none;
+}
+
+.net__center {
+  margin: 0;
+}
+
+.net__center span {
+  font-size: 1.5rem;
+  font-weight: 900;
+  font-stretch: 125%;
+  letter-spacing: -0.02em;
+}
+
+.net__list {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.net__link {
+  display: grid;
+  gap: 4px;
+  color: var(--c-white);
+  text-decoration: none;
+}
+
+.net__link-name {
+  font-size: 1.25rem;
+  font-weight: 800;
+  font-stretch: 108%;
+  transition: color 0.2s;
+}
+
+.net__link-desc {
+  color: var(--c-text-muted);
+  font-size: 0.9375rem;
+  line-height: 1.4;
+}
+
+.net__link:hover .net__link-name,
+.net__link:focus-visible .net__link-name {
+  color: var(--c-volt);
+}
+
+.net__link:focus-visible {
+  outline: 2px solid var(--c-volt);
+  outline-offset: 6px;
+  border-radius: 4px;
+}
+
+/* phones / tablets: MOVO on top, the five companies in a list joined by one line */
+@media (max-width: 899px) {
+  .net__center {
+    position: relative;
+    padding: 0 0 22px 32px;
+  }
+
+  .net__center::before {
+    content: '';
+    position: absolute;
+    left: 3px;
+    top: 0.55em;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: var(--c-volt);
+  }
+
+  .net__list {
+    padding-left: 32px;
+  }
+
+  .net__list::before {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: -22px;
+    bottom: 28px;
+    width: 1px;
+    background: rgb(245 245 240 / 0.3);
+    transform-origin: top;
+    transform: scaleY(var(--draw, 1));
+  }
+
+  .net__node {
+    position: relative;
+    padding: 18px 0;
+  }
+
+  .net__node::before {
+    content: '';
+    position: absolute;
+    left: -28px;
+    top: 26px;
+    width: 9px;
+    height: 9px;
+    border: 1px solid var(--c-volt);
+    border-radius: 50%;
+    background: var(--c-ink);
+  }
+}
+
+/* desktop: the diagram. Nodes sit on the same points as the SVG lines (percentages of the map). */
+@media (min-width: 900px) {
+  .net__map {
+    aspect-ratio: var(--ar);
+    max-width: 1280px;
+    margin-inline: auto;
+  }
+
+  .net__svg {
+    position: absolute;
+    inset: 0;
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+  }
+
+  .net__line {
+    fill: none;
+    stroke: rgb(245 245 240 / 0.3);
+    stroke-width: 1.25; /* user units (no non-scaling-stroke: it breaks pathLength-based dashes) */
+    stroke-dasharray: 100;
+    stroke-dashoffset: 0;
+  }
+
+  .net__pulse {
+    fill: none;
+    stroke: var(--c-volt);
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-dasharray: 1.6 98.4;
+    opacity: 0;
+    filter: drop-shadow(0 0 5px rgb(215 255 59 / 0.8));
+  }
+
+  .net.is-drawn .net__pulse {
+    opacity: 1;
+    animation: net-pulse 3.6s linear infinite;
+    animation-delay: calc(var(--i) * -0.73s);
+  }
+
+  .net__center {
+    position: absolute;
+    left: var(--x);
+    top: var(--y);
+    display: grid;
+    place-items: center;
+    width: clamp(120px, 12vw, 168px);
+    aspect-ratio: 1;
+    border: 1px solid rgb(245 245 240 / 0.24);
+    border-radius: 50%;
+    background: var(--c-ink);
+    transform: translate(-50%, -50%);
+  }
+
+  /* a slow ring of ticks around MOVO, like a jog wheel */
+  .net__center::after {
+    content: '';
+    position: absolute;
+    inset: -12px;
+    border-radius: 50%;
+    background: repeating-conic-gradient(rgb(245 245 240 / 0.35) 0 0.6deg, transparent 0.6deg 10deg);
+    mask: radial-gradient(closest-side, transparent calc(100% - 7px), #000 calc(100% - 6px));
+    animation: net-spin 40s linear infinite;
+  }
+
+  .net__center span {
+    font-size: clamp(1.375rem, 2vw, 2rem);
+  }
+
+  .net__list {
+    position: absolute;
+    inset: 0;
+  }
+
+  .net__node {
+    position: absolute;
+    left: var(--x);
+    top: var(--y);
+    width: clamp(200px, 19vw, 260px);
+    padding-top: 22px;
+    text-align: center;
+    transform: translate(-50%, -6px);
+    transition: opacity 0.5s, transform 0.5s var(--ease-out);
+  }
+
+  .net__node::before {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: 12px;
+    height: 12px;
+    margin-left: -6px;
+    border: 1px solid var(--c-volt);
+    border-radius: 50%;
+    background: var(--c-ink);
+    transition: background-color 0.3s;
+  }
+
+  .net__node:hover::before,
+  .net__node:focus-within::before {
+    background: var(--c-volt);
+  }
+
+  .net__link {
+    justify-items: center;
+  }
+
+  /* before the scroll draws it (page.js adds .net--anim): lines undrawn, nodes waiting */
+  .net--anim .net__line {
+    stroke-dashoffset: 100;
+  }
+
+  .net--anim .net__node:not(.is-on) {
+    opacity: 0;
+    transform: translate(-50%, 6px);
+  }
+
+  .net--anim .net__node:not(.is-on):focus-within {
+    opacity: 1; /* keyboard users always see where the focus is */
+  }
+}
+
+@keyframes net-pulse {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: -100;
+  }
+}
+
+@keyframes net-spin {
+  to {
+    transform: rotate(1turn);
+  }
+}
+
+/* ---------- (E) closing ---------- */
+.st-close {
+  display: grid;
+  justify-items: start;
+  gap: clamp(20px, 3vh, 32px);
+  padding-block: clamp(120px, 20vh, 240px);
+  border-top: 1px solid rgb(245 245 240 / 0.1);
+}
+
+.st-close__title {
+  max-width: 13ch;
+  margin: 0;
+  font-size: clamp(2.25rem, 7vw, 8.5rem);
+  font-weight: 900;
+  font-stretch: 125%;
+  letter-spacing: -0.035em;
+  line-height: 0.92;
+  text-transform: uppercase;
+  overflow-wrap: break-word;
+}
+
+.st-close__text {
+  max-width: 32ch;
+  margin: 0 0 12px;
+  color: var(--c-text-muted);
+  font-size: clamp(1.125rem, 1.6vw, 1.5rem);
+  line-height: 1.4;
+}
+
+/* ---------- reduced motion: everything static and legible ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .st-ruler__head,
+  .st-ruler__fill,
+  .st-mf__rail-fill {
+    display: none;
+  }
+
+  .st-mf__w {
+    color: inherit;
+    transition: none;
+  }
+
+  .net__center::after,
+  .net.is-drawn .net__pulse {
+    animation: none;
+  }
+
+  .net__pulse {
+    display: none;
+  }
+}

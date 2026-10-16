@@ -1,0 +1,10 @@
+{
+  "_note": "Publifix Network: sister companies (Studio page diagram + site footer). Links open in a new tab.",
+  "companies": [
+    { "id": "labs", "name": "LABS by Publifix", "url": "https://labs.publifix.net", "description": { "es": "Desarrollo web y software", "en": "Web & software development" } },
+    { "id": "agents", "name": "Publifix Agents", "url": "https://agents.publifix.net", "description": { "es": "Agentes de IA", "en": "AI agents" } },
+    { "id": "launch", "name": "Publifix Launch", "url": "https://launch.publifix.net", "description": { "es": "Distribución de contenido de PR", "en": "PR content distribution" } },
+    { "id": "suite", "name": "Publifix Suite", "url": "https://suite.publifix.net", "description": { "es": "Social listening para empresas", "en": "Social listening for companies" } },
+    { "id": "continental", "name": "Continental Media", "url": "https://continentalmedia.com.mx", "description": { "es": "Agencia integral de marketing y comunicación", "en": "Full-service marketing & communications agency" } }
+  ]
+}

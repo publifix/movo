@@ -106,18 +106,30 @@
         <a class="btn btn--volt svc__cta" href="{{servicesHref}}">{{services.home.cta}}</a>
       </section>
 
-      <!-- PLACEHOLDER sections: to be designed and built. -->
-      <section class="soon" id="{{nav.studio.id}}" aria-labelledby="studio-title" data-clip="studio" data-clip-label="{{nav.studio.label}}">
-        <p class="soon__eyebrow">{{sections.soon}}</p>
-        <h2 class="soon__title" id="studio-title">{{nav.studio.label}}</h2>
-        <p class="soon__text">{{sections.studioText}}</p>
+      <!-- Studio (home teaser). Copy: src/i18n/*.json → studio; band: src/data/clients.json. Styles and motion
+           load lazily on the first scroll (src/studio/home.*). Full page: src/studio.html. -->
+      <section class="stt" id="{{nav.studio.id}}" aria-labelledby="studio-title" data-studio-teaser data-clip="studio" data-clip-label="{{nav.studio.label}}">
+        <div class="stt__head">
+          <p class="stt__label">{{studio.label}}</p>
+          <h2 class="stt__title" id="studio-title">
+            <span class="stt__line">{{studio.hero.line1}}</span>
+            <span class="stt__line stt__line--2">{{studio.hero.line2}}</span>
+          </h2>
+          <p class="stt__text">{{studio.home.line}}</p>
+        </div>
+        {{studioTeaserBand}}
+        <a class="stt__cta" href="{{studioHref}}">{{studio.home.cta}} <span aria-hidden="true">→</span></a>
       </section>
+
+      <!-- PLACEHOLDER section: to be designed and built. -->
       <section class="soon" id="{{nav.contact.id}}" aria-labelledby="contact-title" data-clip="contact" data-clip-label="{{nav.contact.label}}">
         <p class="soon__eyebrow">{{sections.soon}}</p>
         <h2 class="soon__title" id="contact-title">{{nav.contact.label}}</h2>
         <p class="soon__text">{{sections.contactText}}</p>
       </section>
     </main>
+
+    {{> footer}}
 
     {{> timecode}}
 

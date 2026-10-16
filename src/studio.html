@@ -1,0 +1,94 @@
+<!doctype html>
+<!-- Studio page template for every language. Do not edit estudio/index.html / en/studio/index.html:
+     they are generated from this file by scripts/i18n/vite-plugin-i18n.mjs. Copy: src/i18n/*.json → studio;
+     data: src/data/clients.json (marquee), src/data/network.json (Publifix Network). Type and motion only. -->
+<html lang="{{lang}}" data-root="{{root}}" data-page="studio">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{{page.title}}</title>
+    <meta name="description" content="{{page.description}}" />
+    {{seo}}
+    <meta name="theme-color" content="#0B0B10" />
+    <!-- No intro on inner pages. -->
+    <script>
+      document.documentElement.classList.add('js');
+      document.documentElement.dataset.intro = 'none';
+    </script>
+
+    {{> head-links}}
+
+    <link rel="stylesheet" href="/src/styles/main.css" />
+    <link rel="stylesheet" href="/src/studio/page.css" />
+
+    <script type="application/json" id="movo-i18n">{{uiJson}}</script>
+  </head>
+  <body>
+    {{> header}}
+
+    <main id="main" class="st">
+      <!-- (A) Editorial hero: two lines on purpose; the letters change width and weight with the scroll. -->
+      <header class="st-hero" data-clip="intro" data-clip-start="0" data-clip-label="{{studio.label}}">
+        <p class="st-label">{{studio.hero.label}}</p>
+        <h1 class="st-hero__title" data-st-kinetic>
+          <span class="st-hero__line" data-st-line>{{studio.hero.line1}}</span>
+          <span class="st-hero__line st-hero__line--2" data-st-line>{{studio.hero.line2}}</span>
+        </h1>
+        <div class="st-hero__foot">
+          <p class="st-hero__text">{{studio.hero.text}}</p>
+          <div class="st-ruler" aria-hidden="true" data-st-ruler>
+            <span class="st-ruler__track"><span class="st-ruler__fill"></span></span>
+            <span class="st-ruler__head"></span>
+            <span class="st-ruler__tc" data-st-ruler-tc>00:00:00:00</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- (B) Brands the team has worked with: names as type, two bands running in opposite directions. -->
+      <section class="st-clients" aria-labelledby="clients-title" data-clip="clients" data-clip-label="{{studioUi.clients}}">
+        <h2 class="st-label st-wrap" id="clients-title">{{studio.clients.label}}</h2>
+        {{studioBandA}}
+        {{studioBandB}}
+      </section>
+
+      <!-- (C) Manifesto: revealed word by word with the scroll; the last line closes in giant type. -->
+      <section class="st-mf st-wrap" aria-labelledby="mf-title" data-clip="manifesto" data-clip-label="{{studioUi.manifesto}}">
+        <h2 class="st-label" id="mf-title">{{studioUi.manifesto}}</h2>
+        <div class="st-mf__body" data-st-mf>
+          <span class="st-mf__rail" aria-hidden="true"><span class="st-mf__rail-fill"></span></span>
+          <p class="st-mf__p" data-st-reveal>{{studio.manifesto.p1}}</p>
+          <p class="st-mf__p" data-st-reveal>{{studio.manifesto.p2}}</p>
+          <p class="st-mf__p" data-st-reveal>{{studio.manifesto.p3}}</p>
+          <p class="st-mf__p" data-st-reveal>{{studio.manifesto.p4}}</p>
+        </div>
+        <p class="st-mf__close" data-st-close>
+          <span class="st-mf__close-line" data-st-line>{{studio.manifesto.closing1}}</span>
+          <span class="st-mf__close-line" data-st-line>{{studio.manifesto.closing2}}</span>
+          <span class="st-mf__close-line st-mf__close-line--accent" data-st-line>{{studio.manifesto.closing3}}</span>
+        </p>
+      </section>
+
+      <!-- (D) Publifix Network: diagram on desktop (lines drawn with the scroll), connected list on phones. -->
+      <section class="net st-wrap" aria-labelledby="net-title" data-clip="network" data-clip-label="{{studioUi.network}}">
+        <div class="net__head">
+          <h2 class="net__title" id="net-title">{{studio.network.title}}</h2>
+          <p class="net__intro">{{studio.network.intro}}</p>
+        </div>
+        {{studioNetwork}}
+      </section>
+
+      <!-- (E) Closing: same CTA (text and destination) as the rest of the site. -->
+      <section class="st-close st-wrap" aria-labelledby="st-close-title" data-clip="closing" data-clip-label="{{studioUi.closing}}">
+        <h2 class="st-close__title" id="st-close-title">{{studio.closing.title}}</h2>
+        <p class="st-close__text">{{studio.closing.text}}</p>
+        <a class="btn btn--volt" href="{{nav.contact.href}}">{{hero.cta}}</a>
+      </section>
+    </main>
+
+    {{> footer}}
+
+    {{> timecode}}
+
+    <script type="module" src="/src/studio/page.js"></script>
+  </body>
+</html>

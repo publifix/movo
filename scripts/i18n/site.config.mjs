@@ -18,6 +18,7 @@ export default {
   pages: [
     { id: 'home', template: 'src/page.html', path: { es: '', en: '' }, meta: 'meta' },
     { id: 'services', template: 'src/services.html', path: { es: 'servicios/', en: 'services/' }, meta: 'services.meta' },
+    { id: 'studio', template: 'src/studio.html', path: { es: 'estudio/', en: 'studio/' }, meta: 'studio.meta' },
   ],
 
   org: {

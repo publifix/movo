@@ -1,0 +1,108 @@
+/* Client marquee (Studio page: two bands; home teaser: one). Names are type only, separated by volt
+   keyframe diamonds. The loop is a CSS transform; src/studio/marquee.js clones the list (aria-hidden)
+   and sets --mq-shift (one list width, px) and --mq-dur. Without JS or with reduced motion: static list. */
+.mq {
+  position: relative;
+  overflow: hidden;
+  padding-block: clamp(14px, 2.2vw, 28px);
+  border-block: 1px solid rgb(245 245 240 / 0.16);
+}
+
+.mq + .mq {
+  border-top: 0;
+}
+
+.mq__track {
+  display: flex;
+  width: max-content;
+}
+
+.mq__list {
+  display: flex;
+  flex: none;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mq__item {
+  display: flex;
+  align-items: center;
+  font-size: clamp(1.625rem, 4vw, 4.5rem);
+  line-height: 1.05;
+  letter-spacing: -0.015em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+/* four type styles in a fixed rhythm: black wide · thin condensed · semibold · light extra-condensed */
+.mq__item--0 { font-weight: 900; font-stretch: 125%; }
+.mq__item--1 { font-weight: 200; font-stretch: 75%; }
+.mq__item--2 { font-weight: 600; font-stretch: 100%; color: var(--c-text-muted); }
+.mq__item--3 { font-weight: 350; font-stretch: 62%; }
+
+.mq__kf {
+  flex: none;
+  width: 0.22em;
+  height: 0.22em;
+  margin-inline: 0.7em;
+  background: var(--c-volt);
+  transform: rotate(45deg);
+}
+
+@keyframes mq-loop {
+  to {
+    transform: translate3d(calc(-1 * var(--mq-shift, 50%)), 0, 0);
+  }
+}
+
+.mq.is-running .mq__track {
+  animation: mq-loop var(--mq-dur, 80s) linear infinite;
+  will-change: transform;
+}
+
+.mq.is-running[data-dir='1'] .mq__track {
+  animation-direction: reverse;
+}
+
+.mq.is-paused .mq__track {
+  animation-play-state: paused;
+}
+
+/* no JS: a static list that wraps (with JS the band is one line from the first paint: no layout shift) */
+html:not(.js) .mq__track {
+  display: block;
+  width: auto;
+  padding-inline: var(--gutter);
+}
+
+html:not(.js) .mq__list {
+  flex-wrap: wrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mq__track,
+  .mq__list {
+    width: auto;
+    flex-wrap: wrap;
+    row-gap: 6px;
+  }
+
+  .mq__track {
+    display: block; /* the list is no longer a flex item sized to its content: it wraps */
+    padding-inline: var(--gutter);
+  }
+
+  .mq .mq__track {
+    animation: none !important;
+  }
+
+  .mq__list[aria-hidden='true'] {
+    display: none;
+  }
+
+  .mq__item {
+    font-size: clamp(1.25rem, 3vw, 2.5rem);
+  }
+}

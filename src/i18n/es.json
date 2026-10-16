@@ -89,7 +89,6 @@
     "_note": "PLACEHOLDER: secciones por construir.",
     "soon": "Próximamente",
     "servicesText": "Motion graphics, branding animado, explainers y contenido para redes.",
-    "studioText": "Un estudio pequeño, obsesionado con el movimiento.",
     "contactText": "Cuéntanos qué quieres poner en movimiento."
   },
   "services": {
@@ -296,5 +295,54 @@
     "faq": "Preguntas frecuentes",
     "closing": "Cierre",
     "index": "Índice de pilares"
+  },
+  "studio": {
+    "_note": "Sección Estudio (teaser en la home + página /estudio/). Textos del dueño, literales.",
+    "meta": {
+      "title": "Estudio · MOVO Motion Design Studio",
+      "description": "Conoce MOVO, un estudio de motion design que crea historias visuales con motion graphics, animación y diseño para marcas de México y Estados Unidos."
+    },
+    "label": "Estudio",
+    "home": {
+      "line": "Comunicación, dirección de arte, diseño y tecnología al servicio de historias que se mueven.",
+      "cta": "Conoce el estudio"
+    },
+    "hero": {
+      "label": "MOVO / Estudio de motion design",
+      "line1": "Ideas en movimiento.",
+      "line2": "Historias que mueven.",
+      "text": "Un estudio de motion design especializado en contar historias visuales con motion graphics, animación y diseño."
+    },
+    "clients": {
+      "label": "Marcas con las que ha trabajado nuestro equipo"
+    },
+    "manifesto": {
+      "p1": "MOVO es un estudio de motion design especializado en contar historias visuales a través de motion graphics, animación y diseño.",
+      "p2": "Reunimos comunicación, dirección de arte, diseño y tecnología para transformar ideas en experiencias visuales que conectan. Desde la conceptualización hasta la producción final, combinamos pensamiento creativo con flujos de animación modernos para crear contenido que capta la atención, comunica con claridad y hace que las marcas destaquen.",
+      "p3": "Nuestro equipo ha colaborado en proyectos de marketing y comunicación para marcas líderes en México y Estados Unidos, en moda, hospitalidad de lujo, retail, automotriz, finanzas, alimentos y bienes raíces.",
+      "p4": "MOVO forma parte del ecosistema creativo y tecnológico de Publifix Network, en alianza con Continental Media.",
+      "closing1": "Industrias distintas.",
+      "closing2": "Historias únicas.",
+      "closing3": "Ideas en movimiento."
+    },
+    "network": {
+      "title": "Parte de Publifix Network",
+      "intro": "Un ecosistema de empresas hermanas para llevar tu marca más lejos."
+    },
+    "closing": {
+      "title": "¿Tienes una historia que contar?",
+      "text": "Convirtamos tu próxima idea en algo que se mueva."
+    }
+  },
+  "studioUi": {
+    "_note": "Etiquetas de interfaz de Estudio (no son copy nuevo).",
+    "manifesto": "Manifiesto",
+    "network": "Publifix Network",
+    "clients": "Marcas",
+    "closing": "Cierre",
+    "newTab": "(se abre en una pestaña nueva)"
+  },
+  "footer": {
+    "network": "Publifix Network"
   }
 }

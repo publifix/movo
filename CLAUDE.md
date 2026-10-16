@@ -23,10 +23,11 @@ Static site built with Vite, deployed to GitHub Pages: https://publifix.github.i
 
 ## Bilingual (ES + EN) — every new section/page must ship in both languages
 - Pages are declared in `scripts/i18n/site.config.mjs` → `pages` (one template each: home `src/page.html`,
-  services `src/services.html`; URL = locale path + page path: `/`, `/en/`, `/servicios/`, `/en/services/`).
+  services `src/services.html`, studio `src/studio.html`; URL = locale path + page path: `/`, `/en/`,
+  `/servicios/`, `/en/services/`, `/estudio/`, `/en/studio/`).
   The `index.html` files at those paths are stubs: the plugin `scripts/i18n/vite-plugin-i18n.mjs` renders one
   static HTML page per page × language (content in the HTML, indexable). Shared pieces live in `src/partials/`
-  (`{{> header}}`, `{{> head-links}}`, `{{> timecode}}`). A new page = template + stub + entry in `pages`.
+  (`{{> header}}`, `{{> head-links}}`, `{{> timecode}}`, `{{> footer}}`). A new page = template + stub + entry in `pages`.
 - Strings live in `src/i18n/es.json` and `src/i18n/en.json` (same keys; a missing key fails the build).
   In the template use `{{key.path}}`; public files use `{{root}}` (e.g. `{{root}}favicon.ico`); scripts read the
   page root from `<html data-root>` and UI strings from `#movo-i18n`.
@@ -94,3 +95,18 @@ Static site built with Vite, deployed to GitHub Pages: https://publifix.github.i
   the home skips the intro (deep link).
 - Reduced motion: no playheads, no cursor preview, no morphing formats; everything open and static.
 - Build: `vite.config.js` puts GSAP core + nav + timecode in one shared `core` chunk; no modulepreload polyfill.
+
+## Studio (Estudio) — type and motion only (no photos, no stock, no client logos)
+- Copy: `src/i18n/*.json → studio` (owner's text, verbatim; manifesto p1–p4 + closing1–3), UI labels `studioUi`,
+  footer title `footer`. Data: `src/data/clients.json` (marquee names, editable; order = order in the bands),
+  `src/data/network.json` (Publifix Network: name, description ES/EN, URL). Markup: `scripts/i18n/studio-markup.mjs`.
+- Page `src/studio/page.{js,css}`: kinetic two-line hero (letters change wdth/wght with the scroll) + page
+  ruler; two client bands in opposite directions; manifesto revealed word by word + giant closing lines;
+  network diagram (SVG lines drawn by ScrollTrigger, CSS pulses) on >= 900px, connected list below;
+  closing CTA = the site CTA (`hero.cta` → `nav.contact.href`). Nav "Estudio" links to the page.
+- Marquee `src/studio/marquee.{js,css}`: list once in the HTML, cloned (aria-hidden) by JS; CSS transform
+  loop shifted by exactly one list width (seamless); hover slows it (playbackRate); off screen pauses.
+  No JS / reduced motion: static wrapped list.
+- Home teaser `src/studio/home.{js,css}`: lazy chunk with Work/Services on the first scroll intent (also
+  carries the footer styles for the home). Footer `src/partials/footer.html` + `src/styles/footer.css`
+  (imported by each page's CSS) on every page: Publifix Network links (new tab, rel=noopener).

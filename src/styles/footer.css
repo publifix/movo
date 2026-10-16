@@ -1,0 +1,43 @@
+/* Site footer (every page): Publifix Network links, discreet. Imported by the page CSS of each page
+   (home: src/studio/home.css, lazy; services / studio: their page.css). */
+.site-footer {
+  padding: clamp(40px, 7vh, 72px) var(--gutter) calc(clamp(40px, 7vh, 72px) + 48px); /* room for the timecode */
+  border-top: 1px solid rgb(245 245 240 / 0.1);
+}
+
+.site-footer__title {
+  margin: 0 0 14px;
+  color: var(--c-text-muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.site-footer__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 28px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.site-footer__link {
+  display: inline-block;
+  padding: 6px 0;
+  color: var(--c-text-muted);
+  font-size: 0.875rem;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.site-footer__link:hover {
+  color: var(--c-white);
+}
+
+.site-footer__link:focus-visible {
+  outline: 2px solid var(--c-volt);
+  outline-offset: 3px;
+  color: var(--c-white);
+}

@@ -1,6 +1,7 @@
 /* ===== Services page (/servicios/, /en/services/) =====
    The services are the tracks of a video editor: pillars = tracks (volt / magenta / violet on ink),
    services = keyframes. Text lives in the HTML; src/services/page.js adds the motion. */
+@import '../styles/footer.css';
 
 .sp {
   overflow-x: clip;

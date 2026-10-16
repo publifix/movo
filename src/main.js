@@ -21,7 +21,8 @@ initNav({ labels: UI.a11y });
 initHero({ base: `${ROOT}video/hero/` });
 initTimecode();
 
-// Work (scene, strip/feed, player, ScrollTrigger) and Services (tracks, playhead) are separate chunks
+// Work (scene, strip/feed, player, ScrollTrigger), Services (tracks, playhead) and Studio (teaser, client
+// band, footer styles) are separate chunks
 // with their own CSS. Nothing of them — code, styles, posters, previews — loads before the visitor
 // shows intent to scroll (or arrives scrolled / with a #hash), and never during the intro.
 let workRequested = false;
@@ -32,10 +33,11 @@ const loadWork = () => {
   removeEventListener('wheel', onIntent);
   removeEventListener('touchmove', onIntent);
   removeEventListener('keydown', onKey);
-  // Services (home preview) is its own small chunk, requested at the same moment.
+  // Services and Studio (home previews) are their own small chunks, requested at the same moment.
   Promise.all([
     import('./work/index.js').then(m => m.initWork({ root: ROOT, ui: UI, preferMp4 })),
     import('./services/home.js').then(m => m.initServicesHome()),
+    import('./studio/home.js').then(m => m.initStudioHome()),
   ]).then(() => {
     // A #hash to a section below the pinned scene: its position is only final now.
     const target = location.hash.length > 1 && document.getElementById(decodeURIComponent(location.hash.slice(1)));

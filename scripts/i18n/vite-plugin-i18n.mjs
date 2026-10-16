@@ -1,9 +1,9 @@
 // Bilingual static pages for Vite.
 //
-// Every page in site.config.mjs (home: src/page.html, services: src/services.html) has one template.
-// For every page × locale this plugin serves/builds a real HTML file (es → /index.html, /servicios/;
-// en → /en/, /en/services/) with the strings of src/i18n/<code>.json baked in, plus per-page SEO:
-// canonical, hreflang alternates, Open Graph, Twitter card, JSON-LD and robots. Templates can include
+// Every page in site.config.mjs (home: src/page.html, services: src/services.html, studio:
+// src/studio.html) has one template. For every page × locale this plugin serves/builds a real HTML file
+// (es → /index.html, /servicios/, /estudio/; en → /en/, /en/services/, /en/studio/) with the strings of
+// src/i18n/<code>.json baked in, plus per-page SEO: canonical, hreflang alternates, Open Graph, Twitter card, JSON-LD and robots. Templates can include
 // shared pieces from src/partials/ with {{> name}}. At build time it also emits robots.txt,
 // sitemap.xml and a bilingual 404.html. Content is in the HTML itself (not injected by JS).
 import fs from 'node:fs';
@@ -11,6 +11,7 @@ import path from 'node:path';
 import site from './site.config.mjs';
 import { servicesMarkup } from './services-markup.mjs';
 import { reelMedia } from './reel-media.mjs';
+import { studioMarkup, STUDIO_DATA } from './studio-markup.mjs';
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../..');
 const PARTIALS = path.join(ROOT, 'src/partials');
@@ -88,6 +89,7 @@ function render(page, locale) {
   const pageHref = (id, l = locale) => root + urlPath(site.pages.find(p => p.id === id), l);
   const homeHref = pageHref('home');
   const servicesHref = pageHref('services');
+  const studioHref = pageHref('studio');
   const isHome = page.id === 'home';
 
   const alternates = site.locales
@@ -151,26 +153,30 @@ function render(page, locale) {
   const ui = { intro: t.intro, a11y: { menu: t.a11y.menu, closeMenu: t.a11y.closeMenu }, player: t.player, work: { scrubHint: t.work.scrubHint } };
   const work = workMarkup(t, root);
   // Nav: section anchors on the home, links back to the home's sections elsewhere; Services → its page.
+  // Studio → its page too (the home keeps a teaser at #estudio / #studio).
   const anchor = key => (isHome ? `#${t.nav[key].id}` : `${homeHref}#${t.nav[key].id}`);
   const vars = {
     lang: locale.code,
     root,
     homeHref,
     servicesHref,
+    studioHref,
     seo,
     'page.title': esc(meta.title),
     'page.description': esc(meta.description),
     'nav.work.href': anchor('work'),
     'nav.services.href': servicesHref,
-    'nav.studio.href': anchor('studio'),
+    'nav.studio.href': studioHref,
     'nav.contact.href': anchor('contact'),
     'navCurrent.work': '',
     'navCurrent.services': page.id === 'services' ? ' aria-current="page"' : '',
+    'navCurrent.studio': page.id === 'studio' ? ' aria-current="page"' : '',
     langSwitch: `<span class="sr-only">${esc(t.a11y.language)}:</span> ${langSwitch}`,
     uiJson: JSON.stringify(ui).replace(/</g, '\\u003c'),
     workFilters: work.filters,
     workReels: work.cards,
     ...svc,
+    ...studioMarkup({ t, lang: locale.code }),
   };
 
   const template = includePartials(fs.readFileSync(path.join(ROOT, page.template), 'utf8'));
@@ -220,7 +226,7 @@ export default function movoI18n() {
     },
     configureServer(server) {
       // Edits to the template or the strings reload every language page
-      const watched = [...site.pages.map(p => path.join(ROOT, p.template)), REELS, SERVICES, PREVIEWS, ...site.locales.map(l => path.join(ROOT, `src/i18n/${l.code}.json`))];
+      const watched = [...site.pages.map(p => path.join(ROOT, p.template)), REELS, SERVICES, PREVIEWS, ...STUDIO_DATA, ...site.locales.map(l => path.join(ROOT, `src/i18n/${l.code}.json`))];
       server.watcher.add([...watched, PARTIALS]);
       server.watcher.on('change', file => {
         if (watched.includes(file) || file.startsWith(PARTIALS)) server.ws.send({ type: 'full-reload' });

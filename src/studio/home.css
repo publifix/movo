@@ -1,0 +1,115 @@
+/* Studio teaser on the home (lazy, with Work and Services on the first scroll intent). Also brings the
+   site footer styles for the home. Type and motion only. */
+@import '../styles/footer.css';
+@import './marquee.css';
+
+.stt {
+  display: grid;
+  gap: clamp(40px, 7vh, 72px);
+  padding-block: clamp(96px, 16vh, 200px);
+  overflow-x: clip;
+}
+
+.stt__head {
+  display: grid;
+  gap: clamp(18px, 3vh, 28px);
+  padding-inline: var(--gutter);
+}
+
+.stt__label {
+  margin: 0;
+  color: var(--c-volt);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.stt__title {
+  margin: 0;
+  font-size: clamp(2.125rem, 5.8vw, 8.5rem);
+  font-weight: 900;
+  font-stretch: 125%;
+  letter-spacing: -0.035em;
+  line-height: 0.92;
+  text-transform: uppercase;
+}
+
+.stt__line {
+  display: block;
+  transition: font-stretch 1.1s var(--ease-out), font-weight 1.1s var(--ease-out), opacity 0.8s;
+}
+
+.stt__line--2 {
+  color: var(--c-volt);
+  font-weight: 250;
+  font-stretch: 75%;
+}
+
+/* before it enters (home.js): both lines condensed and thin; on enter they take their final shape */
+.stt.is-waiting .stt__line {
+  opacity: 0;
+  font-weight: 100;
+  font-stretch: 62%;
+}
+
+.stt.is-waiting .stt__line--2 {
+  font-weight: 900;
+  font-stretch: 125%;
+}
+
+.stt__line--2 {
+  transition-delay: 0.12s;
+}
+
+.stt__text {
+  max-width: 44ch;
+  margin: 0;
+  color: var(--c-text-muted);
+  font-size: clamp(1.0625rem, 1.5vw, 1.375rem);
+  line-height: 1.45;
+}
+
+.stt__cta {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-inline: var(--gutter);
+  padding: 10px 0;
+  color: var(--c-white);
+  font-size: 1.0625rem;
+  font-weight: 700;
+  text-decoration: none;
+  background: linear-gradient(var(--c-volt), var(--c-volt)) left bottom / 100% 1px no-repeat;
+  transition: background-size 0.35s var(--ease-out), color 0.2s;
+}
+
+.stt__cta:hover {
+  color: var(--c-volt);
+  background-size: 40% 1px;
+}
+
+.stt__cta:focus-visible {
+  outline: 2px solid var(--c-volt);
+  outline-offset: 4px;
+}
+
+@media (min-width: 900px) {
+  .stt__line {
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 899px) {
+  .stt__title {
+    font-size: min(9vw, 3.5rem); /* "MOVIMIENTO." fits a 360px phone */
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stt__line,
+  .stt__cta {
+    transition: none;
+  }
+}
