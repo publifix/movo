@@ -93,7 +93,7 @@ export function initWork({ ui, preferMp4 }) {
     el.className = 'scene-card';
     el.innerHTML = '<video data-card-video muted loop playsinline preload="auto" aria-hidden="true" tabindex="-1"></video>';
     const v = el.querySelector('video');
-    // the transition lands on the first visible reel (reel-01, the hero's vertical loop, unless filtered)
+    // the transition lands on the first visible reel (reel-01 unless filtered): same preview file
     const first = visibleCards()[0];
     v.src = (preferMp4 || document.createElement('video').canPlayType('video/webm; codecs="vp9"') === '')
       ? first.dataset.previewMp4 : first.dataset.previewWebm;
@@ -243,8 +243,10 @@ export function initWork({ ui, preferMp4 }) {
     tl.to(copy, { opacity: 0, y: '-=40', duration: T1 * 0.3 }, 0)
       .fromTo(media, { clipPath: clipFor(asRect({ left: 0, top: 0, width: innerWidth, height: innerHeight }), 0) },
         { clipPath: clipFor(asRect(Cr), 18), duration: T1 * 0.75, ease: 'power2.inOut' }, 0)
-      .to(card.el, { opacity: 1, duration: T1 * 0.25 }, T1 * 0.55)
-      .set(media, { autoAlpha: 0 }, T1 * 0.95)
+      // the card only appears once the hero's clip has landed exactly on it (a cross-fade on one rectangle):
+      // fading it in while the clip was still shrinking showed its empty frame as a "ghost" inside the hero
+      .to(card.el, { opacity: 1, duration: T1 * 0.15 }, T1 * 0.75)
+      .set(media, { autoAlpha: 0 }, T1 * 0.92)
       // phase 2 — the card slides into the first slot while the other reels enter; manifesto leaves
       .to(card.el, { ...S0, duration: T2, ease: 'power3.inOut' }, T1)
       .to(manifesto.box, { opacity: 0, scale: 1.06, duration: T2 * 0.35, ease: 'power2.in' }, T1)

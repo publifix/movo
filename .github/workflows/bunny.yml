@@ -14,7 +14,7 @@ on:
         default: vz-70c93c78-ad5.b-cdn.net
       ids:
         description: Video IDs (space separated)
-        default: a3cf2409-8f62-412a-88d6-12e4203bec89 d2ef3e51-4bf7-4eed-9367-7f0983195e95 ea0ba0c8-34d8-42f8-a7b3-19a5d582587e c2812585-5fc2-4f2f-9c0a-71570370c938 96539d8d-f777-4f70-a0c5-a5d3d9f6ecea
+        default: 624d5677-01dc-44d4-a11c-68ee3c267de4 0dc61580-bf8a-4ff3-ba4d-fa0f94d485f8 50d010af-c26f-4890-9616-89734f093e19 fd1390d5-432f-4a5f-abfa-2696030b2e09 ea0ce3dc-7027-4a1e-9dac-81d40fdb9e85 d2ef3e51-4bf7-4eed-9367-7f0983195e95 a3cf2409-8f62-412a-88d6-12e4203bec89 ea0ba0c8-34d8-42f8-a7b3-19a5d582587e c2812585-5fc2-4f2f-9c0a-71570370c938 96539d8d-f777-4f70-a0c5-a5d3d9f6ecea
       site:
         description: Site URL for the browser check (empty = skip)
         default: https://publifix.github.io/movo/
@@ -99,10 +99,12 @@ jobs:
         env:
           CHROME_PATH: /usr/bin/google-chrome   # real Chrome: H.264/AAC like the visitors' browsers
         run: |
-          for dev in desktop pixel7 iphone14; do
-            echo "::group::production $dev"
-            node scripts/perf/work-check.mjs "${{ inputs.site }}" --device "$dev" || true
-            echo "::endgroup::"
+          for lang in "" en/; do
+            for dev in desktop pixel7 iphone14; do
+              echo "::group::production ${lang:-es/} $dev"
+              node scripts/perf/work-check.mjs "${{ inputs.site }}$lang" --device "$dev" --reels 10 || true
+              echo "::endgroup::"
+            done
           done
       # Bunny's allowed domain "localhost" matches http://localhost/ only (port 80): a referer with a port
       # (vite's :5173 / :4173) gets 403. So the local build is served on port 80 here.
@@ -113,8 +115,10 @@ jobs:
           npm run build
           sudo "$(which node)" node_modules/vite/bin/vite.js preview --port 80 --strictPort --host localhost > preview.log 2>&1 &
           sleep 4
-          for dev in desktop pixel7; do
-            echo "::group::localhost $dev"
-            node scripts/perf/work-check.mjs "http://localhost/" --device "$dev" || true
-            echo "::endgroup::"
+          for lang in "" en/; do
+            for dev in desktop pixel7 iphone14; do
+              echo "::group::localhost ${lang:-es/} $dev"
+              node scripts/perf/work-check.mjs "http://localhost/$lang" --device "$dev" --reels 10 || true
+              echo "::endgroup::"
+            done
           done

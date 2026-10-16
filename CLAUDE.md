@@ -58,8 +58,8 @@ Static site built with Vite, deployed to GitHub Pages: https://publifix.github.i
   The sandbox cannot reach the CDN: check it with the manual workflow `.github/workflows/bunny.yml`
   (CDN probe + `scripts/perf/work-check.mjs` in real Chrome/WebKit against production and localhost).
   The i18n plugin renders cards + category filters into the HTML (`{{workReels}}`, `{{workFilters}}`).
-- Mock reels (marked MOCK, reel-06…10 for now): `python3 scripts/mocks/make-reels.py` → `public/video/work/<id>/`
-  (skips real reels). Replace them with real ones as they are uploaded to Bunny.
+- All 10 reels are real (Bunny); there are no MOCK reels or local reel files any more. A new reel = upload to
+  Bunny, probe it with `bunny.yml` (resolutions, size, audio) and add an entry to `reels.json` in display order.
 - Code: `src/work/` is a LAZY chunk (index.js + work.css + media.js + player.js), imported by `src/main.js` on the
   first scroll intent after `movo:intro-done`. Nothing from Work (code, posters, previews) loads before that.
 - Modes (rebuilt on resize/rotation): `html.work-strip` landscape (pinned scene: hero clip-path → 9:16 card →
@@ -83,8 +83,9 @@ Static site built with Vite, deployed to GitHub Pages: https://publifix.github.i
   MOVO validates them. UI labels that are not copy live in `servicesUi`.
 - Markup: `scripts/i18n/services-markup.mjs` (home tracks, page index, pillars/rows, process, formats, FAQ, JSON-LD).
 - Pillar colors on ink: brand volt, content magenta, explain violet (`--pc`; violet text uses a lighter tint).
-- Previews come from `src/data/reels.json`: pillar = first reel of its Work categories (or `previewReel`), row =
-  n-th reel of its category, unless `src/data/services-previews.json` hand-picks a reel for that service.
+- Previews come from `src/data/reels.json`: pillar = first reel of its Work categories, row = n-th reel of its
+  category, unless `src/data/services-previews.json` hand-picks one (`pillars`: home teaser tracks — brand =
+  Blanco Nuclear, content = Tommy Hilfiger, explain = LABS; `services`: page rows, first row = pillar's reel).
   The showreel (`showreel: true`) and pending reels are never previews. Real reels → previews update.
 - Home section: lazy chunk `src/services/home.{js,css}`, requested with Work on the first scroll intent. One track
   open at a time (hover desktop / tap mobile), magenta playhead lights keyframes, < 900px stacked cards.

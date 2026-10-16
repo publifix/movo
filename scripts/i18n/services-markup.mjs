@@ -3,16 +3,15 @@
 // official document by scripts/services/import-doc.py) · Previews: src/data/reels.json.
 //
 // Previews come from the Work data: each pillar uses the first reel of its Work categories (or
-// `previewReel` if set), each service row the n-th reel of its category. Replacing the MOCK reels with
-// real ones updates every preview automatically. The showreel (huge file) is never used as a preview.
+// a hand-pick), each service row the n-th reel of its category (or a hand-pick). The showreel (huge file) is never used as a preview.
 // No media URL is in a src attribute: everything loads from data-* when needed (src/services/).
 
 import fs from 'node:fs';
 import { reelMedia } from './reel-media.mjs';
 
-// Hand-picked previews per service (src/data/services-previews.json), over the automatic pick.
+// Hand-picked previews per pillar / service (src/data/services-previews.json), over the automatic pick.
 const PICKS = new URL('../../src/data/services-previews.json', import.meta.url);
-const loadPicks = () => (fs.existsSync(PICKS) ? JSON.parse(fs.readFileSync(PICKS, 'utf8')).services || {} : {});
+const loadPicks = () => (fs.existsSync(PICKS) ? JSON.parse(fs.readFileSync(PICKS, 'utf8')) : {});
 
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
@@ -36,14 +35,15 @@ export function servicesMarkup({ t, lang, root, homeHref, servicesHref, data, re
   };
   // pending reels (no category yet) and the showreel are never pillar previews
   const reels = reelsData.reels.filter(r => !r.showreel && !r.pending);
-  const picks = loadPicks();
+  const { services: picks = {}, pillars: pillarPicks = {} } = loadPicks();
   const media = r => {
     if (!r) return '';
     const m = reelMedia(r, { root, fullBaseUrl: reelsData.fullBaseUrl });
     return ` data-preview-webm="${esc(m.previewWebm)}" data-preview-mp4="${esc(m.previewMp4)}" data-poster="${esc(m.poster)}" data-reel="${r.id}"${r.mock ? ' data-mock' : ''}`;
   };
   const byCats = cats => reels.filter(r => cats.includes(r.category));
-  const pillarReel = p => (p.previewReel && reels.find(r => r.id === p.previewReel)) || byCats(p.workFilter)[0];
+  const pick = id => id && reels.find(r => r.id === id);
+  const pillarReel = p => pick(pillarPicks[p.id]) || pick(p.previewReel) || byCats(p.workFilter)[0];
   const workHref = cats => `${homeHref}?cat=${cats.join(',')}#${t.nav.work.id}`;
   const mock = '<span class="svc-mock" aria-hidden="true">MOCK</span>';
 

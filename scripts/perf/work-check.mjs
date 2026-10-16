@@ -1,6 +1,6 @@
 // Real reels (Bunny Stream) on the live site: do they show, preview and play with sound?
 //
-//   node scripts/perf/work-check.mjs <url> --device desktop|pixel7|iphone14 [--reels 5]
+//   node scripts/perf/work-check.mjs <url> --device desktop|pixel7|iphone14 [--reels 10]
 //
 // For the first N reels: poster loaded, preview playing when the reel is the active one (strip on
 // desktop, feed on phones), then the player: full video from the CDN playing, unmuted, with audio.
@@ -12,7 +12,7 @@ const args = process.argv.slice(2);
 const url = args[0];
 const opt = (n, d) => { const i = args.indexOf(`--${n}`); return i === -1 ? d : args[i + 1]; };
 const dev = opt('device', 'desktop');
-const N = Number(opt('reels', 5));
+const N = Number(opt('reels', 10));
 const DEV = { desktop: { viewport: { width: 1440, height: 900 } }, pixel7: devices['Pixel 7'], iphone14: devices['iPhone 14'] };
 const ctxOpts = { ...DEV[dev] };
 const useWebkit = dev === 'iphone14';

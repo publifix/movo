@@ -1,10 +1,134 @@
 {
-  "_note": "Reels of the Work section, in display order. Real reels have `bunny` (Bunny Stream: URLs are derived from fullBaseUrl + videoId, see scripts/i18n/reel-media.mjs) and an optional `description` (ES/EN, shown in the player). MOCK reels are files of this repo (paths from the site root).",
+  "_note": "Reels of the Work section, in display order (strip, feed and player). All are real: `bunny` (Bunny Stream: URLs are derived from fullBaseUrl + videoId, see scripts/i18n/reel-media.mjs), optional `description` (ES/EN, player on desktop only) and `titleShort` (phones).",
   "fullBaseUrl": "https://vz-70c93c78-ad5.b-cdn.net/",
   "_fullBaseUrlNote": "Single switch: the Bunny Stream library's CDN hostname (library 781096), with a trailing slash. Hotlink protection allows publifix.github.io and localhost only. No API key is ever stored here.",
   "reels": [
     {
       "id": "reel-01",
+      "title": {
+        "es": "Concepto: colección Austin × Cadillac F1 Team",
+        "en": "Concept: Austin × Cadillac F1 Team collection"
+      },
+      "titleShort": {
+        "es": "Austin × Cadillac F1 Team",
+        "en": "Austin × Cadillac F1 Team"
+      },
+      "client": "Tommy Hilfiger",
+      "category": "advertising",
+      "bunny": {
+        "videoId": "624d5677-01dc-44d4-a11c-68ee3c267de4",
+        "resolutions": [
+          240,
+          360,
+          480,
+          720,
+          1080
+        ],
+        "desktop": 1080,
+        "mobile": 720,
+        "width": 1080,
+        "height": 1920,
+        "duration": 16.83
+      }
+    },
+    {
+      "id": "reel-02",
+      "title": {
+        "es": "Campaña Mystery Gift",
+        "en": "Mystery Gift campaign"
+      },
+      "client": "Sephora",
+      "category": "advertising",
+      "bunny": {
+        "videoId": "0dc61580-bf8a-4ff3-ba4d-fa0f94d485f8",
+        "resolutions": [
+          240,
+          360,
+          480,
+          720,
+          1080
+        ],
+        "desktop": 1080,
+        "mobile": 720,
+        "width": 1080,
+        "height": 1920,
+        "duration": 13.93
+      }
+    },
+    {
+      "id": "reel-03",
+      "title": {
+        "es": "Nueva apertura: Candiles",
+        "en": "Grand opening: Candiles"
+      },
+      "client": "Tim Hortons",
+      "category": "advertising",
+      "bunny": {
+        "videoId": "50d010af-c26f-4890-9616-89734f093e19",
+        "resolutions": [
+          240,
+          360,
+          480,
+          720,
+          1080
+        ],
+        "desktop": 1080,
+        "mobile": 720,
+        "width": 1080,
+        "height": 1920,
+        "duration": 17.54
+      }
+    },
+    {
+      "id": "reel-04",
+      "title": {
+        "es": "Coffee at Gate Speed",
+        "en": "Coffee at Gate Speed"
+      },
+      "client": "Sip & Fly",
+      "category": "social",
+      "bunny": {
+        "videoId": "fd1390d5-432f-4a5f-abfa-2696030b2e09",
+        "resolutions": [
+          240,
+          360,
+          480,
+          720,
+          1080
+        ],
+        "desktop": 1080,
+        "mobile": 720,
+        "width": 1080,
+        "height": 1920,
+        "duration": 25.62
+      }
+    },
+    {
+      "id": "reel-05",
+      "title": {
+        "es": "Mexican Soul in San Antonio",
+        "en": "Mexican Soul in San Antonio"
+      },
+      "client": "Mae Dunne",
+      "category": "social",
+      "bunny": {
+        "videoId": "ea0ce3dc-7027-4a1e-9dac-81d40fdb9e85",
+        "resolutions": [
+          240,
+          360,
+          480,
+          720,
+          1080
+        ],
+        "desktop": 1080,
+        "mobile": 720,
+        "width": 1080,
+        "height": 1920,
+        "duration": 21.03
+      }
+    },
+    {
+      "id": "reel-06",
       "title": {
         "es": "15 Esencias x Morena Mía",
         "en": "15 Essences x Morena Mía"
@@ -32,7 +156,7 @@
       }
     },
     {
-      "id": "reel-02",
+      "id": "reel-07",
       "title": {
         "es": "Fiestas de Fin de Año",
         "en": "Year-End Celebrations"
@@ -60,12 +184,15 @@
       }
     },
     {
-      "id": "reel-03",
+      "id": "reel-08",
       "title": {
         "es": "¿Por qué casi todas las botellas de vino son de 750 ml?",
         "en": "Why are almost all wine bottles 750 ml?"
       },
-      "titleShort": { "es": "¿Por qué el vino viene en 750 ml?", "en": "Why wine comes in 750 ml" },
+      "titleShort": {
+        "es": "¿Por qué el vino viene en 750 ml?",
+        "en": "Why wine comes in 750 ml"
+      },
       "client": "Viviendo Vino",
       "category": "social",
       "description": {
@@ -89,7 +216,7 @@
       }
     },
     {
-      "id": "reel-04",
+      "id": "reel-09",
       "title": {
         "es": "Lanzamiento Club 57",
         "en": "Club 57 Launch"
@@ -117,7 +244,7 @@
       }
     },
     {
-      "id": "reel-05",
+      "id": "reel-10",
       "title": {
         "es": "Caso Estudio Inmobiliaria",
         "en": "Real Estate Case Study"
@@ -143,86 +270,6 @@
         "height": 1920,
         "duration": 52.78
       }
-    },
-    {
-      "id": "reel-06",
-      "mock": true,
-      "title": {
-        "es": "Explainer de producto",
-        "en": "Product explainer"
-      },
-      "client": "Orbita (MOCK)",
-      "category": "explainer",
-      "poster": "video/work/reel-06/poster.jpg",
-      "preview": {
-        "webm": "video/work/reel-06/preview.webm",
-        "mp4": "video/work/reel-06/preview.mp4"
-      },
-      "full": "video/work/reel-06/full.mp4"
-    },
-    {
-      "id": "reel-07",
-      "mock": true,
-      "title": {
-        "es": "Spot de lanzamiento",
-        "en": "Launch spot"
-      },
-      "client": "Andes Motors (MOCK)",
-      "category": "advertising",
-      "poster": "video/work/reel-07/poster.jpg",
-      "preview": {
-        "webm": "video/work/reel-07/preview.webm",
-        "mp4": "video/work/reel-07/preview.mp4"
-      },
-      "full": "video/work/reel-07/full.mp4"
-    },
-    {
-      "id": "reel-08",
-      "mock": true,
-      "title": {
-        "es": "Reels de producto",
-        "en": "Product reels"
-      },
-      "client": "Lumen Skincare (MOCK)",
-      "category": "social",
-      "poster": "video/work/reel-08/poster.jpg",
-      "preview": {
-        "webm": "video/work/reel-08/preview.webm",
-        "mp4": "video/work/reel-08/preview.mp4"
-      },
-      "full": "video/work/reel-08/full.mp4"
-    },
-    {
-      "id": "reel-09",
-      "mock": true,
-      "title": {
-        "es": "Identidad en movimiento",
-        "en": "Identity in motion"
-      },
-      "client": "Kairo Studio (MOCK)",
-      "category": "branding",
-      "poster": "video/work/reel-09/poster.jpg",
-      "preview": {
-        "webm": "video/work/reel-09/preview.webm",
-        "mp4": "video/work/reel-09/preview.mp4"
-      },
-      "full": "video/work/reel-09/full.mp4"
-    },
-    {
-      "id": "reel-10",
-      "mock": true,
-      "title": {
-        "es": "Teaser de festival",
-        "en": "Festival teaser"
-      },
-      "client": "Fest Norte (MOCK)",
-      "category": "social",
-      "poster": "video/work/reel-10/poster.jpg",
-      "preview": {
-        "webm": "video/work/reel-10/preview.webm",
-        "mp4": "video/work/reel-10/preview.mp4"
-      },
-      "full": "video/work/reel-10/full.mp4"
     }
   ]
 }
