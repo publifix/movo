@@ -338,6 +338,29 @@ function faq() {
   });
 }
 
+// Giant headlines never cut a word: if the longest word is wider than its box, shrink just enough.
+function fitWords(el) {
+  if (!el) return;
+  const fit = () => {
+    el.style.fontSize = '';
+    const probe = document.createElement('span');
+    probe.style.cssText = 'position:absolute;visibility:hidden;white-space:nowrap;font:inherit;letter-spacing:inherit;text-transform:inherit';
+    el.appendChild(probe);
+    let widest = 0;
+    for (const w of el.textContent.trim().split(/\s+/)) {
+      probe.textContent = w;
+      widest = Math.max(widest, probe.getBoundingClientRect().width);
+    }
+    probe.remove();
+    const max = el.clientWidth;
+    if (widest > max) el.style.fontSize = `${parseFloat(getComputedStyle(el).fontSize) * (max / widest) * 0.97}px`;
+  };
+  fit();
+  addEventListener('resize', fit);
+  document.fonts?.ready.then(fit);
+}
+
+fitWords(document.querySelector('.sp-close__title'));
 kinetic();
 pillarsIndex();
 rows();

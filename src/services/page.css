@@ -1049,9 +1049,10 @@ html.js .faq__item:not(.is-open) .faq__a {
 }
 
 .sp-close__title {
-  max-width: 16ch;
+  max-width: min(16ch, 100%);
   margin: 0;
-  font-size: clamp(2.75rem, 8.2vw, 10.5rem);
+  /* phones: small enough that the longest word ("MOVIMIENTO.") fits; page.js fine-tunes any language */
+  font-size: clamp(1.75rem, 8.2vw, 10.5rem);
   font-weight: 900;
   font-stretch: 125%;
   letter-spacing: -0.04em;
