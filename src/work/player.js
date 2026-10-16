@@ -20,6 +20,7 @@ export function createPlayer({ ui, reduce, getCards }) {
         <p class="player__count" data-count></p>
         <h2 class="player__title" id="player-title" data-title></h2>
         <p class="player__info"><span data-client></span> · <span class="player__cat" data-cat></span></p>
+        <p class="player__desc" data-desc hidden></p>
       </div>
       <div class="player__nav">
         <button type="button" class="player__btn" data-prev aria-label="${L.prev}">
@@ -50,6 +51,9 @@ export function createPlayer({ ui, reduce, getCards }) {
     $('[data-title]').textContent = card.dataset.title;
     $('[data-client]').textContent = card.dataset.client;
     $('[data-cat]').textContent = card.dataset.categoryLabel;
+    const desc = $('[data-desc]');
+    desc.textContent = card.dataset.desc || '';
+    desc.hidden = !card.dataset.desc;
     $('[data-count]').textContent = `${String(index + 1).padStart(2, '0')} ${L.of} ${String(list.length).padStart(2, '0')}`;
     video.poster = card.dataset.poster;
     // the card's real proportion (set on its item when the video is not 9:16)

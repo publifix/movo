@@ -443,6 +443,18 @@ html.player-open body {
   font-size: 0.9375rem;
 }
 
+.player__desc {
+  max-width: 46ch;
+  margin: 10px 0 0;
+  color: var(--c-text-muted);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.player__desc[hidden] {
+  display: none;
+}
+
 .player__cat {
   color: var(--c-volt);
 }
@@ -527,6 +539,11 @@ html.player-open body {
   .player__info {
     margin-top: 12px;
     font-size: 1rem;
+  }
+
+  .player__desc {
+    margin-top: 20px;
+    font-size: 1.0625rem;
   }
 }
 

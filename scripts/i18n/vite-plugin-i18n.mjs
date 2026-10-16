@@ -32,6 +32,7 @@ function workMarkup(t, root) {
     .join('');
   const cards = reels.map((r, i) => {
     const title = r.title[t._lang] ?? r.title.es;
+    const desc = r.description ? (r.description[t._lang] ?? r.description.es) : '';
     const cat = t.work.categories[r.category];
     const m = reelMedia(r, { root, fullBaseUrl });
     // the card takes the video's real proportion (9:16 unless the data says otherwise)
@@ -40,7 +41,7 @@ function workMarkup(t, root) {
     return `<li class="work__item" data-category="${r.category}"${ar}>
           <a class="reel" href="${esc(m.full)}" data-reel="${r.id}" data-index="${i}"
              data-poster="${esc(m.poster)}" data-preview-webm="${esc(m.previewWebm)}" data-preview-mp4="${esc(m.previewMp4)}"
-             data-full="${esc(m.full)}" data-full-mobile="${esc(m.fullMobile)}" data-title="${esc(title)}" data-client="${esc(r.client)}" data-category-label="${esc(cat)}"
+             data-full="${esc(m.full)}" data-full-mobile="${esc(m.fullMobile)}" data-title="${esc(title)}" data-client="${esc(r.client)}" data-category-label="${esc(cat)}"${desc ? ` data-desc="${esc(desc)}"` : ''}
              aria-label="${esc(t.work.open)}: ${esc(title)} — ${esc(r.client)}">
             <span class="reel__media">
               <img class="reel__poster" alt="" width="${m.width}" height="${m.height}" decoding="async" data-src="${esc(m.poster)}" />
