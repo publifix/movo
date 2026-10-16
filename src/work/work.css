@@ -253,10 +253,10 @@ html.work-feed .work__head {
   top: var(--nav-h);
   z-index: 20;
   display: grid;
-  grid-template-columns: 1fr auto;
-  align-items: baseline;
-  gap: 10px 16px;
-  margin: 0 0 20px;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 10px 12px;
+  margin: 0 0 18px;
   padding: 14px var(--gutter) 12px;
   background: rgb(11 11 16 / 0.92);
   -webkit-backdrop-filter: blur(10px);
@@ -302,22 +302,71 @@ html.work-feed .work__filter {
   font-size: 0.6875rem;
 }
 
-/* one project per block: the vertical video sized to fit the screen under the sticky header,
-   its client / title / category below */
+/* a swipe carousel: one project centered (neighbours peeking in), snapping left / right; the section
+   stays about one screen tall however many reels there are */
 html.work-feed .work__track {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: clamp(40px, 7svh, 64px);
-  padding: 0 var(--gutter);
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  padding: 0 calc((100% - var(--card-w)) / 2);
+  --card-w: min(76vw, calc((100svh - var(--nav-h) - 250px) * 9 / 16));
+}
+
+html.work-feed .work__track::-webkit-scrollbar {
+  display: none;
 }
 
 html.work-feed .work__item {
-  scroll-margin-top: calc(var(--nav-h) + 110px);
+  flex: none;
+  width: calc(var(--card-w) * var(--ar, 9 / 16) / (9 / 16));
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+  transition: opacity 0.35s;
+}
+
+/* the neighbours step back */
+html.work-feed .work__item:not(.is-current) {
+  opacity: 0.45;
 }
 
 html.work-feed .reel {
-  width: min(100%, calc((100svh - var(--nav-h) - 220px) * var(--ar, 9 / 16)));
-  margin: 0 auto;
+  width: 100%;
+}
+
+/* previous / next for those who don't swipe (and keyboard) */
+html.work-feed .work__nav {
+  display: flex;
+  gap: 6px;
+}
+
+html.work-feed .work__arrow {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgb(245 245 240 / 0.25);
+  border-radius: 50%;
+  background: none;
+  color: var(--c-white);
+  cursor: pointer;
+}
+
+html.work-feed .work__arrow:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+html.work-feed .work__arrow svg {
+  width: 16px;
+  height: 16px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 html.work-feed .reel__info {

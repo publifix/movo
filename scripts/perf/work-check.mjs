@@ -49,9 +49,13 @@ const cardState = i => page.evaluate(i => {
     card: `${Math.round(r.width)}x${Math.round(r.height)}`, playingNow: [...document.querySelectorAll('video')].filter(x => !x.paused).length };
 }, i);
 
-// bring card i to the screen: one reel per screen in the feed, centered (active) in the strip
+// bring card i to the screen: centered in the feed's horizontal carousel, centered (active) in the strip
 const show = i => (R.mode === 'work-feed'
-  ? page.evaluate(i => document.querySelectorAll('.work__item')[i].scrollIntoView({ block: 'center' }), i)
+  ? page.evaluate(i => {
+      const track = document.querySelector('.work__track'), li = document.querySelectorAll('.work__item')[i];
+      track.scrollIntoView({ block: 'center' });
+      track.scrollTo({ left: li.offsetLeft - (track.clientWidth - li.offsetWidth) / 2, behavior: 'instant' });
+    }, i)
   : page.evaluate(i => {
       const items = [...document.querySelectorAll('.work__item')];
       const c = items.map(li => li.offsetLeft + li.offsetWidth / 2);

@@ -401,6 +401,22 @@ export function initWork({ ui, preferMp4 }) {
     count.className = 'work__count';
     count.setAttribute('aria-hidden', 'true');
     head.insertBefore(count, head.querySelector('[data-work-filters]'));
+    // previous / next (the carousel also swipes)
+    const L = { prev: 'Previous', next: 'Next', ...ui.player };
+    const nav = document.createElement('div');
+    nav.className = 'work__nav';
+    nav.innerHTML = `<button type="button" class="work__arrow" data-dir="-1" aria-label="${L.prev}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>`
+      + `<button type="button" class="work__arrow" data-dir="1" aria-label="${L.next}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>`;
+    head.insertBefore(nav, head.querySelector('[data-work-filters]'));
+    const [prevBtn, nextBtn] = nav.querySelectorAll('button');
+    const goTo = i => {
+      const li = visibleCards()[i]?.closest('.work__item');
+      if (li) track.scrollTo({ left: li.offsetLeft - (track.clientWidth - li.offsetWidth) / 2, behavior: reduce ? 'instant' : 'smooth' });
+    };
+    nav.addEventListener('click', e => {
+      const b = e.target.closest('[data-dir]');
+      if (b) goTo(Math.max(0, current) + Number(b.dataset.dir));
+    });
     const pad = n => String(n).padStart(2, '0');
     let current = -1;
 
@@ -423,6 +439,9 @@ export function initWork({ ui, preferMp4 }) {
       if (i === current || i < 0 || i >= vis.length) return;
       current = i;
       count.innerHTML = `<b>${pad(i + 1)}</b> / ${pad(vis.length)}`;
+      items.forEach(li => li.classList.toggle('is-current', li === vis[i].closest('.work__item')));
+      prevBtn.disabled = i === 0;
+      nextBtn.disabled = i === vis.length - 1;
       cards.forEach(c => {
         const j = vis.indexOf(c);
         if (j === i) { loadPoster(c); playPreview(c); }
@@ -432,18 +451,22 @@ export function initWork({ ui, preferMp4 }) {
       });
     }
     count.innerHTML = `<b>01</b> / ${pad(visibleCards().length)}`;
-    // the reel that occupies the middle band of the screen is the current one
+    track.scrollLeft = 0;
+    // the card in the middle of the carousel is the current one (it plays; the next one preloads)
     const io = new IntersectionObserver(entries => {
       entries.forEach(e => {
         if (e.isIntersecting) setCurrent(visibleCards().indexOf(e.target.querySelector('.reel')));
       });
-    }, { rootMargin: '-45% 0px -45% 0px' });
+    }, { root: track, rootMargin: '0px -45% 0px -45%' });
     items.forEach(li => io.observe(li));
+    // the carousel only plays while it is on screen
+    const onScreenIo = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting && current >= 0) { const c = visibleCards()[current]; c && playPreview(c); }
+    }, { threshold: 0.4 });
+    onScreenIo.observe(track);
     // leaving Work (up to the hero or down to the next sections): nothing keeps playing
     const away = new IntersectionObserver(([e]) => {
-      if (e.isIntersecting) return;
-      cards.forEach(c => pausePreview(c));
-      current = -1;
+      if (!e.isIntersecting) cards.forEach(c => pausePreview(c)); // the current one resumes on return
     });
     away.observe(track);
     // the hero loop only runs while the hero is on screen
@@ -457,8 +480,11 @@ export function initWork({ ui, preferMp4 }) {
       removeEventListener('scroll', onScroll);
       io.disconnect();
       away.disconnect();
+      onScreenIo.disconnect();
       heroIo.disconnect();
       count.remove();
+      nav.remove();
+      items.forEach(li => li.classList.remove('is-current'));
       cards.forEach(c => pausePreview(c));
     });
   }

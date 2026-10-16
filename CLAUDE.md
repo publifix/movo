@@ -62,9 +62,10 @@ Static site built with Vite, deployed to GitHub Pages: https://publifix.github.i
   first scroll intent after `movo:intro-done`. Nothing from Work (code, posters, previews) loads before that.
 - Modes (rebuilt on resize/rotation): `html.work-strip` landscape (pinned scene: hero clip-path → 9:16 card →
   film strip, horizontal by vertical scroll, hover scrub + play cursor, filters with Flip); `html.work-feed`
-  portrait (NO pin, NO nested scroller: hero → manifesto (inflates in flow, height reserved) → Work with a sticky
-  header "TRABAJO · 03 / 10" + filters and one vertical card per reel; the reel in the middle of the screen
-  plays, only the next one is preloaded); `html.work-grid` reduced motion (no pin, no scrub, poster grid).
+  portrait (NO pin: hero → manifesto (inflates in flow, height reserved) → Work with a sticky header
+  "TRABAJO · 03 / 10" + ‹ › arrows + filters, then a horizontal swipe CAROUSEL (scroll-snap, one card centered,
+  neighbors peek; the section is ~one viewport tall whatever the number of reels); the centered reel plays,
+  only the next one is preloaded); `html.work-grid` reduced motion (no pin, no scrub, poster grid).
 - Playback is driven by the TIMELINE's onUpdate (smoothed scrub), not the trigger's. Video budget: max 3 playing
   (global guard in `media.js`). Full videos download only when the player opens (src removed on close).
 - Player: dialog + aria-modal, page `inert`, focus trap, Esc / ← → / swipe (down closes), focus returns to the card.
