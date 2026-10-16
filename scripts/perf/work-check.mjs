@@ -51,7 +51,7 @@ const cardState = i => page.evaluate(i => {
 
 // bring card i to the screen: one reel per screen in the feed, centered (active) in the strip
 const show = i => (R.mode === 'work-feed'
-  ? page.evaluate(i => { const t = document.querySelector('[data-work-track]'); t.scrollTo({ top: i * t.clientHeight }); }, i)
+  ? page.evaluate(i => document.querySelectorAll('.work__item')[i].scrollIntoView({ block: 'center' }), i)
   : page.evaluate(i => {
       const items = [...document.querySelectorAll('.work__item')];
       const c = items.map(li => li.offsetLeft + li.offsetWidth / 2);

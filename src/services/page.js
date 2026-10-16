@@ -248,27 +248,24 @@ function processRuler() {
     steps.forEach(s => s.classList.toggle('is-on', s.offsetTop + 10 <= y));
   };
 
-  ScrollTrigger.matchMedia({
-    '(min-width: 900px)': () => {
+  // No pin: the playhead runs while the ruler crosses the screen (from 85% to 30% of the viewport),
+  // so the block never freezes in place. Horizontal ruler ≥ 900px, vertical rail below.
+  let raf = 0;
+  const update = () => {
+    raf = 0;
+    if (wide.matches) {
       playhead.style.height = '';
-      const st = ScrollTrigger.create({
-        trigger: pin,
-        start: 'top top',
-        end: () => `+=${innerHeight * 1.4}`,
-        pin: true,
-        scrub: true,
-        onUpdate: self => horizontal(self.progress),
-      });
-      horizontal(st.progress);
-    },
-    '(max-width: 899px)': () => {
+      const r = rail.getBoundingClientRect();
+      horizontal(clamp01((innerHeight * 0.85 - r.top) / (innerHeight * 0.55)));
+    } else {
       playhead.style.transform = '';
-      const onScroll = () => requestAnimationFrame(vertical);
-      addEventListener('scroll', onScroll, { passive: true });
       vertical();
-      return () => removeEventListener('scroll', onScroll);
-    },
-  });
+    }
+  };
+  const onScroll = () => { if (!raf) raf = requestAnimationFrame(update); };
+  addEventListener('scroll', onScroll, { passive: true });
+  addEventListener('resize', onScroll);
+  update();
 }
 
 // ---------- formats: one frame morphs 9:16 → 1:1 → 4:5 → 16:9 → custom ----------

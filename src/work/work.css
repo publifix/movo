@@ -1,6 +1,7 @@
 /* ===== Work — cinematic layouts (loaded with the Work chunk on first scroll) =====
    html.work-strip  landscape: pinned scene, film strip
-   html.work-feed   portrait: pinned scene, full-screen reels feed
+   html.work-feed   portrait: plain page flow — hero, manifesto, then Work with a sticky header
+                    ("TRABAJO · 03 / 10" + filters) and one vertical card per reel (no pin, no nested scroll)
    html.work-grid   reduced motion: base flow from main.css (poster grid) */
 
 /* each category carries the color of its Services pillar (brand volt, content magenta, explain violet) */
@@ -46,8 +47,7 @@
 }
 
 /* ---------- the pinned scene: hero, card, manifesto and work stacked ---------- */
-html.work-strip .scene,
-html.work-feed .scene {
+html.work-strip .scene {
   position: relative;
   height: 100vh;
   height: 100svh;
@@ -55,21 +55,18 @@ html.work-feed .scene {
   background: var(--c-ink);
 }
 
-html.work-strip .scene > .hero,
-html.work-feed .scene > .hero {
+html.work-strip .scene > .hero {
   position: absolute;
   inset: 0;
   z-index: 1;
   background: transparent; /* the scene's ink shows around the shrinking video */
 }
 
-html.work-strip .hero__media,
-html.work-feed .hero__media {
+html.work-strip .hero__media {
   will-change: clip-path;
 }
 
-html.work-strip .manifesto,
-html.work-feed .manifesto {
+html.work-strip .manifesto {
   position: absolute;
   inset: 0;
   z-index: 3; /* kinetic type runs over the card */
@@ -82,8 +79,7 @@ html.work-feed .manifesto {
   font-size: clamp(2.5rem, 9vw, 11rem);
 }
 
-html.work-strip .manifesto__line,
-html.work-feed .manifesto__line {
+html.work-strip .manifesto__line {
   font-size: 1em;
   line-height: 0.92;
 }
@@ -156,13 +152,6 @@ html.work-strip .work__item {
 /* a reel that is not 9:16 keeps the strip's height and takes its own width */
 html.work-strip .work__item[style*='--ar'] {
   width: calc(var(--card-h) * var(--ar));
-}
-
-/* the feed is full screen: a non-vertical reel is shown whole (letterboxed), never cropped */
-html.work-feed .work__item[style*='--ar'] .reel__video,
-html.work-feed .work__item[style*='--ar'] .reel__poster {
-  object-fit: contain;
-  object-position: center;
 }
 
 /* real reels whose title / client / category are still unknown */
@@ -247,45 +236,59 @@ html.work-strip .reel:focus-visible {
   transform: scaleX(0);
 }
 
-/* ---------- feed (portrait): one reel per screen, like Reels ---------- */
-html.work-feed .work {
-  position: absolute;
-  inset: 0;
-  z-index: 4;
-  padding: 0;
+/* ---------- feed (portrait): the page's own scroll, a sticky Work header, one card per reel ---------- */
+html.work-feed .manifesto {
+  padding-top: clamp(72px, 12svh, 120px);
+  padding-bottom: clamp(48px, 8svh, 80px);
 }
 
+html.work-feed .work {
+  padding: 0 0 clamp(56px, 10svh, 96px);
+  scroll-margin-top: var(--nav-h);
+}
+
+/* where am I: Work's title, the current reel and the filters stay under the navbar */
 html.work-feed .work__head {
-  position: absolute;
-  top: calc(var(--nav-h) + 4px);
-  left: var(--gutter);
-  z-index: 2;
-  margin: 0;
-  pointer-events: none;
+  position: sticky;
+  top: var(--nav-h);
+  z-index: 20;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: baseline;
+  gap: 10px 16px;
+  margin: 0 0 20px;
+  padding: 14px var(--gutter) 12px;
+  background: rgb(11 11 16 / 0.92);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgb(245 245 240 / 0.08);
 }
 
 html.work-feed .work__title {
-  font-size: 0.8125rem;
-  font-weight: 700;
-  font-stretch: 112%;
-  letter-spacing: 0.22em;
-  color: var(--c-volt);
+  font-size: clamp(1.5rem, 7vw, 2rem);
+  line-height: 1;
 }
 
-/* filters as a compact chip bar (the Services page links here already filtered) */
-html.work-feed .work__head {
-  right: 0;
-  display: block;
+html.work-feed .work__count {
+  color: var(--c-text-muted);
+  font: 500 12px/1 ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  letter-spacing: 0.06em;
+  font-variant-numeric: tabular-nums;
+}
+
+html.work-feed .work__count b {
+  color: var(--c-volt);
+  font-weight: 600;
 }
 
 html.work-feed .work__filters {
+  grid-column: 1 / -1;
   flex-wrap: nowrap;
   gap: 6px;
-  margin: 10px 0 0;
-  padding-right: var(--gutter);
+  margin: 0 calc(var(--gutter) * -1);
+  padding: 0 var(--gutter);
   overflow-x: auto;
   scrollbar-width: none;
-  pointer-events: auto;
 }
 
 html.work-feed .work__filters::-webkit-scrollbar {
@@ -296,79 +299,37 @@ html.work-feed .work__filter {
   flex: none;
   min-height: 32px;
   padding: 0 12px;
-  background: rgb(11 11 16 / 0.55);
   font-size: 0.6875rem;
 }
 
+/* one project per block: the vertical video sized to fit the screen under the sticky header,
+   its client / title / category below */
 html.work-feed .work__track {
-  display: block;
-  height: 100%;
-  overflow-y: auto;
-  overscroll-behavior-y: auto;
-  scroll-snap-type: y mandatory;
-  scrollbar-width: none;
-}
-
-html.work-feed .work__track::-webkit-scrollbar {
-  display: none;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: clamp(40px, 7svh, 64px);
+  padding: 0 var(--gutter);
 }
 
 html.work-feed .work__item {
-  position: relative;
-  height: 100%;
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
-}
-
-/* top scrim: keeps the navbar (volt wordmark) legible over bright reels */
-html.work-feed .work__item::before {
-  content: '';
-  position: absolute;
-  inset: 0 0 auto;
-  z-index: 1;
-  height: calc(var(--nav-h) + 110px);
-  background: linear-gradient(to bottom, rgb(11 11 16 / 0.8), rgb(11 11 16 / 0));
-  pointer-events: none;
+  scroll-margin-top: calc(var(--nav-h) + 110px);
 }
 
 html.work-feed .reel {
-  position: absolute;
-  inset: 0;
-  border-radius: 0;
-}
-
-html.work-feed .reel__media {
-  position: absolute;
-  inset: 0;
-  aspect-ratio: auto;
-  border-radius: 0;
-}
-
-html.work-feed .reel__video,
-html.work-feed .reel__poster {
-  object-position: center top;
+  width: min(100%, calc((100svh - var(--nav-h) - 220px) * var(--ar, 9 / 16)));
+  margin: 0 auto;
 }
 
 html.work-feed .reel__info {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  padding: 120px var(--gutter) calc(56px + env(safe-area-inset-bottom));
-  background: linear-gradient(to top, rgb(11 11 16 / 0.85), rgb(11 11 16 / 0));
+  padding-top: 14px;
 }
 
 html.work-feed .reel__title {
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: 900;
-  font-stretch: 120%;
+  font-stretch: 118%;
+  line-height: 1.05;
   text-transform: uppercase;
-  letter-spacing: -0.01em;
-}
-
-html.work-feed .reel__mock {
-  top: calc(var(--nav-h) + 60px);
-  right: var(--gutter);
 }
 
 /* ---------- player ---------- */

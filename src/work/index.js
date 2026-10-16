@@ -55,7 +55,7 @@ export function initWork({ ui, preferMp4 }) {
   let mode = null;
   let ctx = null;          // gsap.context of the current mode (reverted on rebuild)
   let cleanup = [];        // listeners / observers of the current mode
-  let stripStart = 0;      // scroll position where the strip / feed starts (nav links, #hash)
+  let stripStart = 0;      // scroll position where the strip starts (nav links, #hash; phones use Work's top)
 
   const modeFor = () => (reduce ? 'grid' : innerHeight > innerWidth ? 'feed' : 'strip');
 
@@ -134,7 +134,9 @@ export function initWork({ ui, preferMp4 }) {
       const maxW = box.clientWidth;
       const widest = Math.max(...[...box.querySelectorAll('[data-manifesto-line]')].map(p => p.scrollWidth));
       if (widest > maxW) box.style.fontSize = `${parseFloat(getComputedStyle(box).fontSize) * (maxW / widest) * 0.98}px`;
+      fullHeight = box.offsetHeight; // height at the widest state (in page flow it is reserved: no shift)
     };
+    let fullHeight = 0;
     fit();
     const n = letters.length;
     // p: 0..1 through the manifesto's life. Letters inflate one after another (thin/condensed →
@@ -155,7 +157,7 @@ export function initWork({ ui, preferMp4 }) {
       box.querySelectorAll('[data-manifesto-line]').forEach((p, i) => { p.innerHTML = originals[i]; p.removeAttribute('aria-label'); });
       box.style.fontSize = '';
     });
-    return { box, render };
+    return { box, render, fullHeight };
   }
 
   const rectOf = el => el.getBoundingClientRect();
@@ -385,90 +387,42 @@ export function initWork({ ui, preferMp4 }) {
   }
 
   // ---------- feed (portrait) ----------
+  // Portrait (phones): no pin and no nested scroller — the page's own scroll. Hero, then the manifesto
+  // (its letters inflate as it crosses the screen), then Work: a sticky header under the navbar
+  // ("TRABAJO · 03 / 10" + filters) and one vertical card per reel. The most visible reel plays; only
+  // the next one is preloaded; far ones are unloaded.
   function buildFeed() {
-    const media = hero.querySelector('.hero__media');
-    const copy = hero.querySelector('.hero__content');
     const manifesto = makeManifesto();
-    const card = makeSceneCard();
-    const vh = innerHeight;
-
-    const C = () => {
-      const w = Math.min(innerWidth * 0.62, (innerHeight * 0.62 * 9) / 16);
-      const h = (w * 16) / 9;
-      return { left: (innerWidth - w) / 2, top: (innerHeight - h) / 2, width: w, height: h, right: (innerWidth + w) / 2, bottom: (innerHeight + h) / 2 };
-    };
-    gsap.set(card.el, { left: C().left, top: C().top, width: C().width, height: C().height, opacity: 0 });
-    gsap.set(work, { autoAlpha: 0 });
-    track.setAttribute('data-timecode-scroll', ''); // feed scrolling also advances the timecode
-    let feedOn = false;
-    let io = null;
+    // the letters inflate while scrolling: the block keeps its final height so nothing below moves
+    manifesto.box.style.height = `${manifesto.fullHeight}px`;
+    cleanup.push(() => { manifesto.box.style.height = ''; });
+    const head = work.querySelector('.work__head');
+    const count = document.createElement('span');
+    count.className = 'work__count';
+    count.setAttribute('aria-hidden', 'true');
+    head.insertBefore(count, head.querySelector('[data-work-filters]'));
+    const pad = n => String(n).padStart(2, '0');
     let current = -1;
 
-    const tl = gsap.timeline({
-      defaults: { ease: 'none' },
-      scrollTrigger: {
-        trigger: scene,
-        start: 'top top',
-        end: () => `+=${(T1 + T2) * vh}`,
-        pin: true,
-        scrub: 0.5,
-      },
-      onUpdate() { onFeedUpdate(this.progress()); },
-    });
-    tl.to(copy, { opacity: 0, y: '-=30', duration: T1 * 0.3 }, 0)
-      .fromTo(media, { clipPath: clipFor({ left: 0, top: 0, right: innerWidth, bottom: innerHeight }, 0) },
-        { clipPath: () => clipFor(C(), 16), duration: T1 * 0.75, ease: 'power2.inOut' }, 0)
-      .to(card.el, { opacity: 1, duration: T1 * 0.25 }, T1 * 0.55)
-      .to(card.el, { left: 0, top: 0, width: () => innerWidth, height: () => innerHeight, borderRadius: 0,
-        duration: T2, ease: 'power3.inOut' }, T1)
-      .to(manifesto.box, { opacity: 0, duration: T2 * 0.5 }, T1 + T2 * 0.2);
+    // manifesto: progress while it crosses the screen
+    let raf = 0;
+    const onScroll = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        const r = manifesto.box.getBoundingClientRect();
+        manifesto.render(Math.min(1, Math.max(0, (innerHeight - r.top) / (r.height + innerHeight * 0.45))));
+      });
+    };
+    addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
 
-    const st = tl.scrollTrigger;
-    // (st.end is only known after the refresh: compute it — the pin starts at the scene's top)
-    stripStart = (st.start || 0) + (T1 + T2) * vh;
-    work.dataset.clipStart = String(Math.round(st.start + T1 * vh));
-
-    function onFeedUpdate(p) {
-      manifesto.render(Math.max(0, Math.min(1, (p - 0.08) / 0.75)));
-      const done = p >= 0.995;
-      if (done !== feedOn) {
-        feedOn = done;
-        gsap.set(work, { autoAlpha: done ? 1 : 0 });
-        gsap.set(card.el, { visibility: done ? 'hidden' : 'visible' });
-        if (done) {
-          // hand-off to the first reel of the feed, same frame
-          const first = visibleCards()[0];
-          const v = loadPreview(first, 'auto');
-          loadPoster(first);
-          if (v && card.video.readyState > 0) { try { v.currentTime = card.video.currentTime; } catch {} }
-          card.video.pause();
-          observeFeed();
-        } else {
-          stopFeed();
-          track.scrollTop = 0; // back in the transition: the feed restarts at the first reel
-        }
-      }
-      if (!done && p > T1 * 0.45 / (T1 + T2)) { card.video.paused && card.video.play().catch(() => {}); }
-      if (p > 0.3) heroVideo && !heroVideo.paused && heroVideo.pause();
-      else heroVideo?.getAttribute('src') && heroVideo.paused && heroVideo.play().catch(() => {});
-    }
-
-    // One reel per screen: the visible one plays; only the next one is preloaded; far ones unload.
-    function observeFeed() {
-      if (io) return;
-      io = new IntersectionObserver(entries => {
-        entries.forEach(e => {
-          if (e.isIntersecting && e.intersectionRatio >= 0.6) setCurrent(visibleCards().indexOf(e.target.querySelector('.reel')));
-        });
-      }, { root: track, threshold: [0.6] });
-      items.forEach(li => io.observe(li));
-      setCurrent(Math.round(track.scrollTop / track.clientHeight));
-    }
     // i: position among the visible (filtered) reels
     function setCurrent(i) {
       const vis = visibleCards();
       if (i === current || i < 0 || i >= vis.length) return;
       current = i;
+      count.innerHTML = `<b>${pad(i + 1)}</b> / ${pad(vis.length)}`;
       cards.forEach(c => {
         const j = vis.indexOf(c);
         if (j === i) { loadPoster(c); playPreview(c); }
@@ -477,35 +431,35 @@ export function initWork({ ui, preferMp4 }) {
         else unloadPreview(c);
       });
     }
-    function stopFeed() {
-      io?.disconnect();
-      io = null;
-      current = -1;
+    count.innerHTML = `<b>01</b> / ${pad(visibleCards().length)}`;
+    // the reel that occupies the middle band of the screen is the current one
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) setCurrent(visibleCards().indexOf(e.target.querySelector('.reel')));
+      });
+    }, { rootMargin: '-45% 0px -45% 0px' });
+    items.forEach(li => io.observe(li));
+    // leaving Work (up to the hero or down to the next sections): nothing keeps playing
+    const away = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting) return;
       cards.forEach(c => pausePreview(c));
-    }
-    // Momentum can carry the page past the end of the pin, leaving the feed half off screen:
-    // when the scroll settles in the first half screen after it, glide back so the feed fills it.
-    let settle = 0;
-    const onSettle = () => {
-      clearTimeout(settle);
-      settle = setTimeout(() => {
-        const over = scrollY - st.end;
-        if (feedOn && over > 1 && over < vh * 0.5) scrollTo({ top: st.end, behavior: 'smooth' });
-      }, 140);
-    };
-    addEventListener('scroll', onSettle, { passive: true });
-    cleanup.push(() => { clearTimeout(settle); removeEventListener('scroll', onSettle); });
-
-    watchScene(on => {
-      if (!on) { stopFeed(); card.video.pause(); heroVideo?.pause(); }
-      else if (feedOn) observeFeed();
+      current = -1;
     });
+    away.observe(track);
+    // the hero loop only runs while the hero is on screen
+    const heroIo = new IntersectionObserver(([e]) => {
+      if (!heroVideo?.getAttribute('src')) return;
+      if (e.isIntersecting) heroVideo.play().catch(() => {}); else heroVideo.pause();
+    });
+    heroIo.observe(hero);
 
     cleanup.push(() => {
-      stopFeed();
-      track.removeAttribute('data-timecode-scroll');
-      gsap.set([media, copy, work, ...cards], { clearProps: 'all' });
-      heroVideo?.getAttribute('src') && heroVideo.paused && heroVideo.play().catch(() => {});
+      removeEventListener('scroll', onScroll);
+      io.disconnect();
+      away.disconnect();
+      heroIo.disconnect();
+      count.remove();
+      cards.forEach(c => pausePreview(c));
     });
   }
 
@@ -533,7 +487,7 @@ export function initWork({ ui, preferMp4 }) {
     const cats = btn.dataset.filter === 'all' ? [] : [btn.dataset.filter];
     const now = activeCats();
     if (now.length === cats.length && cats.every(c => now.includes(c))) return; // already exactly this
-    const land = () => { if (mode === 'feed') track.scrollTop = 0; if (mode !== 'grid') scrollTo({ top: stripStart, behavior: 'instant' }); };
+    const land = () => { if (mode !== 'grid') scrollTo({ top: landY(), behavior: 'instant' }); };
     if (mode === 'strip' && !reduce) {
       // the strip reorganizes (Flip), then the scene is rebuilt for its new length
       const state = Flip.getState(items);
@@ -555,17 +509,19 @@ export function initWork({ ui, preferMp4 }) {
 
   // Nav links / #hash to Work land where the strip or feed starts, not at the pinned hero.
   const workHref = `#${work.id}`;
+  const landY = () => (mode === 'feed' ? work.getBoundingClientRect().top + scrollY - (parseFloat(getComputedStyle(html).getPropertyValue('--nav-h')) || 0) : stripStart);
   document.querySelectorAll(`a[href="${workHref}"]`).forEach(a =>
     a.addEventListener('click', e => {
       if (mode === 'grid') return;
       e.preventDefault();
-      scrollTo({ top: stripStart, behavior: reduce ? 'instant' : 'smooth' });
+      // two frames later: the mobile menu has closed and released its scroll lock
+      requestAnimationFrame(() => requestAnimationFrame(() => scrollTo({ top: landY(), behavior: reduce ? 'instant' : 'smooth' })));
       history.replaceState(null, '', workHref);
     }),
   );
 
   build();
-  if (location.hash === workHref && mode !== 'grid') scrollTo({ top: stripStart, behavior: 'instant' });
+  if (location.hash === workHref && mode !== 'grid') scrollTo({ top: landY(), behavior: 'instant' });
 
   // Rebuild when the layout family changes (rotation) or the size changes a lot.
   let lastW = innerWidth, lastH = innerHeight, t = 0;

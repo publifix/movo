@@ -564,9 +564,7 @@ html:not(.js) .row__panel {
   display: grid;
   align-content: center;
   gap: clamp(40px, 7vh, 88px);
-  min-height: 100vh;
-  min-height: 100svh;
-  padding: calc(var(--nav-h) + 24px) 0 clamp(48px, 8vh, 96px);
+  padding: clamp(80px, 12vh, 140px) 0;
 }
 
 .process__rail {
