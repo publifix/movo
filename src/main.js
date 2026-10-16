@@ -21,9 +21,9 @@ initNav({ labels: UI.a11y });
 initHero({ base: `${ROOT}video/hero/` });
 initTimecode();
 
-// Work (scene, strip/feed, player, ScrollTrigger) is a separate chunk with its own CSS. Nothing of it
-// — code, posters, previews — loads before the visitor shows intent to scroll (or arrives scrolled /
-// with a #hash), and never during the intro.
+// Work (scene, strip/feed, player, ScrollTrigger) and Services (tracks, playhead) are separate chunks
+// with their own CSS. Nothing of them — code, styles, posters, previews — loads before the visitor
+// shows intent to scroll (or arrives scrolled / with a #hash), and never during the intro.
 let workRequested = false;
 const loadWork = () => {
   if (workRequested) return;
@@ -32,7 +32,15 @@ const loadWork = () => {
   removeEventListener('wheel', onIntent);
   removeEventListener('touchmove', onIntent);
   removeEventListener('keydown', onKey);
-  import('./work/index.js').then(m => m.initWork({ root: ROOT, ui: UI, preferMp4 }));
+  // Services (home preview) is its own small chunk, requested at the same moment.
+  Promise.all([
+    import('./work/index.js').then(m => m.initWork({ root: ROOT, ui: UI, preferMp4 })),
+    import('./services/home.js').then(m => m.initServicesHome()),
+  ]).then(() => {
+    // A #hash to a section below the pinned scene: its position is only final now.
+    const target = location.hash.length > 1 && document.getElementById(decodeURIComponent(location.hash.slice(1)));
+    if (target && !target.matches('[data-work]')) target.scrollIntoView({ behavior: 'instant' });
+  });
 };
 const onIntent = () => loadWork();
 const onKey = e => { if (['ArrowDown', 'PageDown', ' ', 'End', 'Tab'].includes(e.key)) loadWork(); };
@@ -52,7 +60,8 @@ initMovoIntro({
   base: `${ROOT}video/intro/`,
   logoBase: `${ROOT}logo/`,
   mainSelector: 'main, .site-header',
-  skip: introState === 'touch',
+  // not 'play': touch device, already seen, reduced motion or a deep link to a section (#hash)
+  skip: introState !== 'play',
   labels: UI.intro,
   forceMp4: preferMp4,
 });

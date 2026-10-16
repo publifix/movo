@@ -22,8 +22,11 @@ Static site built with Vite, deployed to GitHub Pages: https://publifix.github.i
   Switch: `INTRO_ON_TOUCH` in the inline `<head>` script of `src/page.html`.
 
 ## Bilingual (ES + EN) — every new section/page must ship in both languages
-- `src/page.html` is the ONLY page template. `index.html` (es, root) and `en/index.html` are stubs: the plugin
-  `scripts/i18n/vite-plugin-i18n.mjs` renders one static HTML page per language (content in the HTML, indexable).
+- Pages are declared in `scripts/i18n/site.config.mjs` → `pages` (one template each: home `src/page.html`,
+  services `src/services.html`; URL = locale path + page path: `/`, `/en/`, `/servicios/`, `/en/services/`).
+  The `index.html` files at those paths are stubs: the plugin `scripts/i18n/vite-plugin-i18n.mjs` renders one
+  static HTML page per page × language (content in the HTML, indexable). Shared pieces live in `src/partials/`
+  (`{{> header}}`, `{{> head-links}}`, `{{> timecode}}`). A new page = template + stub + entry in `pages`.
 - Strings live in `src/i18n/es.json` and `src/i18n/en.json` (same keys; a missing key fails the build).
   In the template use `{{key.path}}`; public files use `{{root}}` (e.g. `{{root}}favicon.ico`); scripts read the
   page root from `<html data-root>` and UI strings from `#movo-i18n`.
@@ -58,3 +61,21 @@ Static site built with Vite, deployed to GitHub Pages: https://publifix.github.i
 - Timecode (`src/timecode.js`): 24 fps, 4 s per viewport; clips are `[data-clip]` (`data-clip-start` overrides
   the measured start — needed for anything inside the pinned scene); nested scrollers with
   `[data-timecode-scroll]` (the feed) add their scroll; `movo:clips` re-measures.
+
+## Services (Servicios) — "the services are the tracks of a video editor"
+- SOURCE OF TRUTH: `docs/MOVO-Servicios-textos-ES-EN-y-direccion-de-diseno.docx` (owner's document; `.md` copy next
+  to it for reading). Texts are used verbatim. `python3 scripts/services/import-doc.py` regenerates
+  `src/i18n/*.json → services` and `src/data/services.json` (pillars, slugs, anchors, colors, Work filters) from it.
+  Never edit those generated parts by hand. `[CONFIRMAR …]` markers stay in the text (styled `.confirm`) until
+  MOVO validates them. UI labels that are not copy live in `servicesUi`.
+- Markup: `scripts/i18n/services-markup.mjs` (home tracks, page index, pillars/rows, process, formats, FAQ, JSON-LD).
+- Pillar colors on ink: brand volt, content magenta, explain violet (`--pc`; violet text uses a lighter tint).
+- Previews come from `src/data/reels.json`: pillar = first reel of its Work categories (or `previewReel`), row =
+  n-th reel of its category; the showreel (`showreel: true`) is never a preview. Real reels → previews update.
+- Home section: lazy chunk `src/services/home.{js,css}`, requested with Work on the first scroll intent. One track
+  open at a time (hover desktop / tap mobile), magenta playhead lights keyframes, < 900px stacked cards.
+- Page: `src/services/page.{js,css}`. Max ONE preview playing; previews load on hover/open, posters when near.
+- Work filters from links: `?cat=social,advertising#trabajo` (several categories pressed at once). A #hash on
+  the home skips the intro (deep link).
+- Reduced motion: no playheads, no cursor preview, no morphing formats; everything open and static.
+- Build: `vite.config.js` puts GSAP core + nav + timecode in one shared `core` chunk; no modulepreload polyfill.

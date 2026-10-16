@@ -1,4 +1,5 @@
 import { gsap } from 'gsap';
+import { preferMp4 } from './video-format.js';
 
 // One file per orientation. Nothing is in the HTML: a single src is assigned here, and only on
 // movo:intro-done, so the loop never competes with first paint and a device never fetches two cuts.
@@ -11,11 +12,8 @@ const FILES = {
 const portraitQuery = matchMedia('(orientation: portrait)');
 export const isPortrait = () => portraitQuery.matches || innerHeight > innerWidth;
 
-// All iOS browsers are WebKit, and Safari's WebM support is unreliable: use H.264 there.
-const ua = navigator.userAgent;
-const isIOS = /iP(hone|ad|od)/.test(ua) || (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1);
-const isSafari = /Safari/.test(ua) && !/Chrome|Chromium|CriOS|FxiOS|EdgiOS|Edg|Android/.test(ua);
-export const preferMp4 = isIOS || isSafari;
+// MP4 on iOS/Safari, WebM elsewhere (shared with Work and Services previews).
+export { preferMp4 };
 
 // Where the animation sits in each cut, as a fraction of the rendered video height: in the vertical
 // cut the ring ends at 48.6 %; the copy must stay below it (portrait) or below the navbar (landscape).

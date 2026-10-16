@@ -43,7 +43,6 @@ export function initWork({ ui, preferMp4 }) {
   });
 
   const heroVideo = hero.querySelector('[data-hero-video]');
-  const vertical = cards[0]; // reel-01: the hero's vertical loop — the transition lands on it
   let mode = null;
   let ctx = null;          // gsap.context of the current mode (reverted on rebuild)
   let cleanup = [];        // listeners / observers of the current mode
@@ -85,9 +84,11 @@ export function initWork({ ui, preferMp4 }) {
     el.className = 'scene-card';
     el.innerHTML = '<video data-card-video muted loop playsinline preload="auto" aria-hidden="true" tabindex="-1"></video>';
     const v = el.querySelector('video');
+    // the transition lands on the first visible reel (reel-01, the hero's vertical loop, unless filtered)
+    const first = visibleCards()[0];
     v.src = (preferMp4 || document.createElement('video').canPlayType('video/webm; codecs="vp9"') === '')
-      ? vertical.dataset.previewMp4 : vertical.dataset.previewWebm;
-    v.poster = vertical.dataset.poster;
+      ? first.dataset.previewMp4 : first.dataset.previewWebm;
+    v.poster = first.dataset.poster;
     scene.appendChild(el);
     cleanup.push(() => { v.pause(); v.removeAttribute('src'); v.load(); el.remove(); });
     return { el, video: v };
@@ -366,30 +367,6 @@ export function initWork({ ui, preferMp4 }) {
     track.addEventListener('focusin', onFocus);
     cleanup.push(() => track.removeEventListener('focusin', onFocus));
 
-    // Category filters reorganize the strip (Flip), then the scene is rebuilt for the new length.
-    const filters = work.querySelector('[data-work-filters]');
-    const onFilter = e => {
-      const btn = e.target.closest('[data-filter]');
-      if (!btn || btn.getAttribute('aria-pressed') === 'true') return;
-      filters.querySelectorAll('[data-filter]').forEach(b => b.setAttribute('aria-pressed', String(b === btn)));
-      const cat = btn.dataset.filter;
-      const state = Flip.getState(items);
-      items.forEach(li => { li.hidden = cat !== 'all' && li.dataset.category !== cat; });
-      Flip.from(state, {
-        duration: 0.7,
-        ease: 'power3.inOut',
-        absolute: true,
-        onEnter: els => gsap.fromTo(els, { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.5 }),
-        onLeave: els => gsap.to(els, { opacity: 0, scale: 0.85, duration: 0.4 }),
-        onComplete: () => {
-          build();
-          scrollTo({ top: stripStart, behavior: 'instant' });
-        },
-      });
-    };
-    filters.addEventListener('click', onFilter);
-    cleanup.push(() => filters.removeEventListener('click', onFilter));
-
     cleanup.push(() => {
       gsap.set([media, copy, head, track, ...items, ...cards], { clearProps: 'all' });
       items.forEach(li => { li.classList.remove('is-active'); li.style.removeProperty('--k'); });
@@ -438,7 +415,8 @@ export function initWork({ ui, preferMp4 }) {
       .to(manifesto.box, { opacity: 0, duration: T2 * 0.5 }, T1 + T2 * 0.2);
 
     const st = tl.scrollTrigger;
-    stripStart = st.end;
+    // (st.end is only known after the refresh: compute it — the pin starts at the scene's top)
+    stripStart = (st.start || 0) + (T1 + T2) * vh;
     work.dataset.clipStart = String(Math.round(st.start + T1 * vh));
 
     function onFeedUpdate(p) {
@@ -450,7 +428,7 @@ export function initWork({ ui, preferMp4 }) {
         gsap.set(card.el, { visibility: done ? 'hidden' : 'visible' });
         if (done) {
           // hand-off to the first reel of the feed, same frame
-          const first = cards[0];
+          const first = visibleCards()[0];
           const v = loadPreview(first, 'auto');
           loadPoster(first);
           if (v && card.video.readyState > 0) { try { v.currentTime = card.video.currentTime; } catch {} }
@@ -471,19 +449,22 @@ export function initWork({ ui, preferMp4 }) {
       if (io) return;
       io = new IntersectionObserver(entries => {
         entries.forEach(e => {
-          if (e.isIntersecting && e.intersectionRatio >= 0.6) setCurrent(cards.indexOf(e.target.querySelector('.reel')));
+          if (e.isIntersecting && e.intersectionRatio >= 0.6) setCurrent(visibleCards().indexOf(e.target.querySelector('.reel')));
         });
       }, { root: track, threshold: [0.6] });
       items.forEach(li => io.observe(li));
       setCurrent(Math.round(track.scrollTop / track.clientHeight));
     }
+    // i: position among the visible (filtered) reels
     function setCurrent(i) {
-      if (i === current || i < 0) return;
+      const vis = visibleCards();
+      if (i === current || i < 0 || i >= vis.length) return;
       current = i;
-      cards.forEach((c, j) => {
+      cards.forEach(c => {
+        const j = vis.indexOf(c);
         if (j === i) { loadPoster(c); playPreview(c); }
         else if (j === i + 1) { loadPoster(c); pausePreview(c); loadPreview(c, 'auto'); }
-        else if (j === i - 1) { loadPoster(c); pausePreview(c); }
+        else if (j === i - 1 && j >= 0) { loadPoster(c); pausePreview(c); }
         else unloadPreview(c);
       });
     }
@@ -518,6 +499,50 @@ export function initWork({ ui, preferMp4 }) {
       heroVideo?.getAttribute('src') && heroVideo.paused && heroVideo.play().catch(() => {});
     });
   }
+
+  // ---------- category filters (every mode) ----------
+  // Several categories can be active at once: the Services page links to Work already filtered,
+  // e.g. ?cat=social,advertising#trabajo. A click selects one category (or all).
+  const filters = work.querySelector('[data-work-filters]');
+  const CATS = [...filters.querySelectorAll('[data-filter]')].map(b => b.dataset.filter).filter(c => c !== 'all');
+  const activeCats = () => [...filters.querySelectorAll('[aria-pressed="true"]')].map(b => b.dataset.filter).filter(c => c !== 'all');
+  function setFilter(cats) {
+    const all = !cats.length;
+    filters.querySelectorAll('[data-filter]').forEach(b =>
+      b.setAttribute('aria-pressed', String(all ? b.dataset.filter === 'all' : cats.includes(b.dataset.filter))));
+    items.forEach(li => { li.hidden = !all && !cats.includes(li.dataset.category); });
+    const url = new URL(location.href);
+    if (all) url.searchParams.delete('cat'); else url.searchParams.set('cat', cats.join(','));
+    history.replaceState(history.state, '', url.toString().replace(/%2C/g, ','));
+  }
+  const fromUrl = (new URLSearchParams(location.search).get('cat') || '').split(',').filter(c => CATS.includes(c));
+  if (fromUrl.length) setFilter(fromUrl);
+
+  filters.addEventListener('click', e => {
+    const btn = e.target.closest('[data-filter]');
+    if (!btn) return;
+    const cats = btn.dataset.filter === 'all' ? [] : [btn.dataset.filter];
+    const now = activeCats();
+    if (now.length === cats.length && cats.every(c => now.includes(c))) return; // already exactly this
+    const land = () => { if (mode === 'feed') track.scrollTop = 0; if (mode !== 'grid') scrollTo({ top: stripStart, behavior: 'instant' }); };
+    if (mode === 'strip' && !reduce) {
+      // the strip reorganizes (Flip), then the scene is rebuilt for its new length
+      const state = Flip.getState(items);
+      setFilter(cats);
+      Flip.from(state, {
+        duration: 0.7,
+        ease: 'power3.inOut',
+        absolute: true,
+        onEnter: els => gsap.fromTo(els, { opacity: 0, scale: 0.85 }, { opacity: 1, scale: 1, duration: 0.5 }),
+        onLeave: els => gsap.to(els, { opacity: 0, scale: 0.85, duration: 0.4 }),
+        onComplete: () => { build(); land(); },
+      });
+    } else {
+      setFilter(cats);
+      build();
+      land();
+    }
+  });
 
   // Nav links / #hash to Work land where the strip or feed starts, not at the pinned hero.
   const workHref = `#${work.id}`;

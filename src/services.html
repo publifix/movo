@@ -1,0 +1,59 @@
+<!doctype html>
+<!-- Services page template for every language. Do not edit servicios/index.html / en/services/index.html:
+     they are generated from this file by scripts/i18n/vite-plugin-i18n.mjs. Copy comes from the official
+     document (docs/MOVO-Servicios-…) via scripts/services/import-doc.py → src/i18n/*.json → services. -->
+<html lang="{{lang}}" data-root="{{root}}" data-page="services">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{{page.title}}</title>
+    <meta name="description" content="{{page.description}}" />
+    {{seo}}
+    <meta name="theme-color" content="#0B0B10" />
+    <!-- No intro on inner pages. -->
+    <script>
+      document.documentElement.classList.add('js');
+      document.documentElement.dataset.intro = 'none';
+    </script>
+
+    {{> head-links}}
+
+    <link rel="stylesheet" href="/src/styles/main.css" />
+    <link rel="stylesheet" href="/src/services/page.css" />
+
+    <script type="application/json" id="movo-i18n">{{uiJson}}</script>
+  </head>
+  <body>
+    {{> header}}
+
+    <main id="main" class="sp">
+      <header class="sp-hero sp-wrap" data-clip="intro" data-clip-start="0" data-clip-label="{{services.page.label}}">
+        <p class="sp-label">{{services.page.label}}</p>
+        <h1 class="sp-hero__title" data-kinetic>{{services.page.h1}}</h1>
+        <p class="sp-hero__sub">{{services.page.subtitle}}</p>
+      </header>
+
+      <div class="sp-body" data-sp-body>
+        {{svcIndex}}
+        <div class="sp-pillars">
+        {{svcPillars}}
+        </div>
+      </div>
+
+      {{svcProcess}}
+
+      {{svcFormats}}
+
+      {{svcFaq}}
+
+      <section class="sp-close" aria-labelledby="close-title" data-clip="closing" data-clip-label="{{servicesUi.closing}}">
+        <h2 class="sp-close__title" id="close-title">{{services.closing.title}}</h2>
+        <a class="btn btn--ink" href="{{nav.contact.href}}">{{services.closing.cta}}</a>
+      </section>
+    </main>
+
+    {{> timecode}}
+
+    <script type="module" src="/src/services/page.js"></script>
+  </body>
+</html>

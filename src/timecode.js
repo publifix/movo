@@ -20,7 +20,9 @@ export function initTimecode() {
       .map((c, i) => ({
         n: i + 1,
         label: c.dataset.clipLabel || c.dataset.clip,
-        start: c.dataset.clipStart != null ? Number(c.dataset.clipStart) : c.getBoundingClientRect().top + scrollY,
+        // a pinned clip is measured through its pin-spacer (its own box moves while pinned)
+        start: c.dataset.clipStart != null ? Number(c.dataset.clipStart)
+          : (c.parentElement?.classList.contains('pin-spacer') ? c.parentElement : c).getBoundingClientRect().top + scrollY,
       }))
       .sort((a, b) => a.start - b.start);
   };

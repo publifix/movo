@@ -3,6 +3,48 @@
    html.work-feed   portrait: pinned scene, full-screen reels feed
    html.work-grid   reduced motion: base flow from main.css (poster grid) */
 
+/* each category carries the color of its Services pillar (brand volt, content magenta, explain violet) */
+.work__filter[data-color] {
+  --fc: var(--c-volt);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.work__filter[data-color='magenta'] {
+  --fc: var(--c-magenta);
+}
+
+.work__filter[data-color='violet'] {
+  --fc: var(--c-violet);
+}
+
+.work__filter[data-color]::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--fc);
+}
+
+.work__filter[data-color]:hover {
+  border-color: var(--fc);
+}
+
+.work__filter[data-color][aria-pressed='true'] {
+  background: var(--fc);
+  border-color: var(--fc);
+  color: var(--c-ink);
+}
+
+.work__filter[data-color='violet'][aria-pressed='true'] {
+  color: var(--c-white);
+}
+
+.work__filter[data-color][aria-pressed='true']::before {
+  background: currentColor;
+}
+
 /* ---------- the pinned scene: hero, card, manifesto and work stacked ---------- */
 html.work-strip .scene,
 html.work-feed .scene {
@@ -212,8 +254,32 @@ html.work-feed .work__title {
   color: var(--c-volt);
 }
 
+/* filters as a compact chip bar (the Services page links here already filtered) */
+html.work-feed .work__head {
+  right: 0;
+  display: block;
+}
+
 html.work-feed .work__filters {
+  flex-wrap: nowrap;
+  gap: 6px;
+  margin: 10px 0 0;
+  padding-right: var(--gutter);
+  overflow-x: auto;
+  scrollbar-width: none;
+  pointer-events: auto;
+}
+
+html.work-feed .work__filters::-webkit-scrollbar {
   display: none;
+}
+
+html.work-feed .work__filter {
+  flex: none;
+  min-height: 32px;
+  padding: 0 12px;
+  background: rgb(11 11 16 / 0.55);
+  font-size: 0.6875rem;
 }
 
 html.work-feed .work__track {
@@ -242,7 +308,7 @@ html.work-feed .work__item::before {
   position: absolute;
   inset: 0 0 auto;
   z-index: 1;
-  height: calc(var(--nav-h) + 72px);
+  height: calc(var(--nav-h) + 110px);
   background: linear-gradient(to bottom, rgb(11 11 16 / 0.8), rgb(11 11 16 / 0));
   pointer-events: none;
 }
@@ -283,7 +349,7 @@ html.work-feed .reel__title {
 }
 
 html.work-feed .reel__mock {
-  top: calc(var(--nav-h) + 4px);
+  top: calc(var(--nav-h) + 60px);
   right: var(--gutter);
 }
 

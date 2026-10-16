@@ -6,6 +6,7 @@
     {
       "id": "reel-01",
       "mock": true,
+      "showreel": true,
       "title": {
         "es": "MOVO — Showreel 2026",
         "en": "MOVO — Showreel 2026"

@@ -1,0 +1,573 @@
+/* ===== Services on the home: the pillars are tracks of a video editor, the services are keyframes =====
+   Loaded with src/services/home.js on the first scroll (nothing of Services loads before that).
+   Desktop: three full-width tracks, a magenta playhead crosses them with the scroll and lights the
+   keyframes; hovering a track expands it (phrase, tags under the keyframes, looping preview).
+   Mobile (< 900px): stacked cards that expand on tap; the playhead runs down a vertical rail. */
+
+.svc {
+  --head-w: clamp(230px, 23vw, 340px);
+  position: relative;
+  padding: clamp(96px, 14vh, 168px) var(--gutter);
+  border-top: 1px solid var(--c-gray);
+}
+
+[data-color] {
+  --pc-text: var(--pc);
+}
+
+/* violet is too dark for small text on ink: a lighter tint of the same hue for text */
+[data-color='violet'] {
+  --pc-text: #a48cff;
+}
+
+.svc__head {
+  max-width: 1100px;
+  margin-bottom: clamp(56px, 9vh, 104px);
+}
+
+.svc__label {
+  margin: 0 0 18px;
+  color: var(--c-volt);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.svc__title {
+  max-width: 14ch;
+  margin: 0 0 28px;
+  font-size: clamp(2.5rem, 6.6vw, 7rem);
+  font-weight: 900;
+  font-stretch: 125%;
+  letter-spacing: -0.035em;
+  line-height: 0.92;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+.svc__intro {
+  max-width: 48ch;
+  margin: 0;
+  color: var(--c-text-muted);
+  font-size: clamp(1.0625rem, 1.35vw, 1.3125rem);
+  line-height: 1.5;
+}
+
+/* ---------- timeline ---------- */
+.svc__timeline {
+  position: relative;
+}
+
+.svc__ruler {
+  position: relative;
+  height: 34px;
+  margin-left: var(--head-w);
+  border-bottom: 1px solid rgb(245 245 240 / 0.2);
+  background: repeating-linear-gradient(to right, rgb(245 245 240 / 0.25) 0 1px, transparent 1px calc(100% / 48))
+    left bottom / 100% 7px no-repeat;
+}
+
+.svc__ruler span {
+  position: absolute;
+  left: calc(var(--x) * 100%);
+  bottom: 12px;
+  transform: translateX(-50%);
+  color: rgb(245 245 240 / 0.45);
+  font: 500 11px/1 ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
+}
+
+.svc__ruler span::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 1px);
+  width: 1px;
+  height: 11px;
+  background: rgb(245 245 240 / 0.5);
+}
+
+.svc__ruler span:first-child {
+  transform: none;
+}
+
+.svc__ruler span:first-child::after {
+  left: 0;
+}
+
+.svc__ruler span:last-child {
+  transform: translateX(-100%);
+}
+
+.svc__ruler span:last-child::after {
+  left: auto;
+  right: 0;
+}
+
+.svc__tracks {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.track {
+  display: grid;
+  grid-template-columns: var(--head-w) minmax(0, 1fr);
+  border-bottom: 1px solid rgb(245 245 240 / 0.1);
+  transition: background-color 0.35s;
+}
+
+.track.is-open {
+  background: linear-gradient(to right, color-mix(in srgb, var(--pc) 7%, transparent), transparent 70%);
+}
+
+.track__head {
+  margin: 0;
+  font: inherit;
+}
+
+.track__toggle {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  min-height: 100px;
+  padding: 0 20px 0 0;
+  border: 0;
+  background: none;
+  color: var(--c-white);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.track__toggle:focus-visible {
+  outline-offset: -2px;
+}
+
+/* layer color label, like the color chip of a layer in an editor */
+.track__num {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--pc-text);
+  font: 600 12px/1 ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  letter-spacing: 0.06em;
+}
+
+.track__num::before {
+  content: '';
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  background: var(--pc);
+}
+
+.track__name {
+  flex: 1;
+  font-size: clamp(1rem, 1.45vw, 1.375rem);
+  font-weight: 800;
+  font-stretch: 115%;
+  letter-spacing: 0.01em;
+  line-height: 1.1;
+  text-transform: uppercase;
+  transition: color 0.3s;
+}
+
+.track.is-open .track__name {
+  color: var(--pc-text);
+}
+
+/* + that turns into − */
+.track__icon {
+  position: relative;
+  flex: none;
+  width: 14px;
+  height: 14px;
+}
+
+.track__icon::before,
+.track__icon::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 6px;
+  width: 14px;
+  height: 2px;
+  background: currentColor;
+  transition: transform 0.35s var(--ease-out);
+}
+
+.track__icon::after {
+  transform: rotate(90deg);
+}
+
+.track.is-open .track__icon::after {
+  transform: rotate(0deg);
+}
+
+/* lane: the line of the pillar's color, a clip block and one diamond keyframe per service */
+.track__lane {
+  position: relative;
+  min-height: 100px;
+}
+
+.track__line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 2px;
+  margin-top: -1px;
+  background: color-mix(in srgb, var(--pc) 22%, transparent);
+}
+
+/* rendered part of the track: grows with the playhead */
+.track__line::after {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: calc(var(--p, 0) * 100%);
+  background: var(--pc);
+}
+
+/* the clip on the track, from its first to its last keyframe */
+.track__lane::before {
+  content: '';
+  position: absolute;
+  left: calc(var(--a) * 100% - 26px);
+  width: calc((var(--b) - var(--a)) * 100% + 52px);
+  top: 50%;
+  height: 34px;
+  margin-top: -17px;
+  border: 1px solid color-mix(in srgb, var(--pc) 45%, transparent);
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--pc) 9%, transparent);
+}
+
+.kf {
+  position: absolute;
+  left: calc(var(--x) * 100%);
+  top: 50%;
+  width: 14px;
+  height: 14px;
+  margin: -7px 0 0 -7px;
+  border: 2px solid var(--pc);
+  background: var(--c-ink);
+  transform: rotate(45deg) scale(0.85);
+  transition: background-color 0.25s, box-shadow 0.35s, transform 0.35s var(--ease-out);
+}
+
+.kf.is-on {
+  background: var(--pc);
+  transform: rotate(45deg) scale(1.15);
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--pc) 18%, transparent), 0 0 22px color-mix(in srgb, var(--pc) 55%, transparent);
+}
+
+/* ---------- expanded track ---------- */
+.track__panel {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-rows: 0fr;
+  visibility: hidden;
+  transition: grid-template-rows 0.45s var(--ease-out), visibility 0s 0.45s;
+}
+
+.track.is-open .track__panel {
+  grid-template-rows: 1fr;
+  visibility: visible;
+  transition: grid-template-rows 0.45s var(--ease-out), visibility 0s;
+}
+
+.track__inner {
+  display: grid;
+  grid-template-columns: var(--head-w) minmax(0, 1fr);
+  min-height: 0;
+  overflow: hidden;
+}
+
+.track__thumb {
+  position: relative;
+  align-self: start;
+  width: 118px;
+  margin: -6px 0 32px 24px;
+  aspect-ratio: 9 / 16;
+  overflow: hidden;
+  border-radius: 10px;
+  background: var(--c-gray);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--pc) 55%, transparent);
+}
+
+.track__thumb video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.svc-mock {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 3px 6px;
+  border-radius: 4px;
+  background: rgb(11 11 16 / 0.7);
+  color: var(--c-white);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+
+.track__body {
+  padding: 6px 0 36px;
+}
+
+/* the tags sit under their keyframes */
+.track__tags {
+  position: relative;
+  height: 30px;
+  margin: -6px 0 22px;
+  padding: 0;
+  list-style: none;
+}
+
+.track__tags li {
+  position: absolute;
+  left: calc(var(--x) * 100%);
+  top: 0;
+  max-width: 180px;
+  transform: translateX(-50%);
+  color: var(--pc-text);
+  font: 600 11px/1.25 ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  letter-spacing: 0.06em;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.track__phrase {
+  max-width: 50ch;
+  margin: 0 0 18px;
+  font-size: clamp(1.125rem, 1.55vw, 1.5rem);
+  font-weight: 500;
+  line-height: 1.35;
+  text-wrap: pretty;
+}
+
+.track__more {
+  display: inline-flex;
+  gap: 8px;
+  padding: 6px 0;
+  color: var(--pc-text);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  font-stretch: 110%;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  border-bottom: 1px solid currentColor;
+}
+
+.track__more:hover {
+  color: var(--c-white);
+}
+
+/* ---------- playhead ---------- */
+.svc__playhead {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: var(--head-w);
+  width: 0;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.svc__playhead::before {
+  content: '';
+  position: absolute;
+  top: 26px;
+  bottom: 0;
+  left: -1px;
+  width: 2px;
+  background: var(--c-magenta);
+  box-shadow: 0 0 12px rgb(255 45 135 / 0.6);
+}
+
+.svc__playhead-tc {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translateX(-50%);
+  padding: 5px 7px;
+  border-radius: 4px;
+  background: var(--c-magenta);
+  color: var(--c-ink);
+  font: 700 10px/1 ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.svc__playhead-tc::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  margin-left: -5px;
+  border: 5px solid transparent;
+  border-top-color: var(--c-magenta);
+}
+
+.svc__cta {
+  margin-top: clamp(48px, 8vh, 80px);
+}
+
+.confirm {
+  padding: 0 4px;
+  border-radius: 3px;
+  background: rgb(245 245 240 / 0.1);
+  color: var(--c-volt);
+  font-size: 0.85em;
+}
+
+/* ---------- mobile: stacked cards, vertical playhead ---------- */
+@media (max-width: 899px) {
+  .svc__timeline {
+    padding-left: 26px;
+  }
+
+  /* the rail */
+  .svc__timeline::before {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: rgb(245 245 240 / 0.12);
+  }
+
+  .svc__ruler {
+    display: none;
+  }
+
+  .track {
+    display: block;
+    margin-bottom: 12px;
+    padding: 0 18px;
+    border: 1px solid rgb(245 245 240 / 0.12);
+    border-radius: 16px;
+    background: rgb(245 245 240 / 0.025);
+  }
+
+  .track.is-open {
+    border-color: color-mix(in srgb, var(--pc) 50%, transparent);
+    background: color-mix(in srgb, var(--pc) 6%, var(--c-ink));
+  }
+
+  .track__toggle {
+    min-height: 72px;
+    padding: 0;
+  }
+
+  .track__lane {
+    min-height: 34px;
+    margin-top: -6px;
+  }
+
+  .track__lane::before {
+    height: 24px;
+    margin-top: -12px;
+    left: calc(var(--a) * 100% - 16px);
+    width: calc((var(--b) - var(--a)) * 100% + 32px);
+  }
+
+  .kf {
+    width: 12px;
+    height: 12px;
+    margin: -6px 0 0 -6px;
+  }
+
+  .track__inner {
+    grid-template-columns: 92px minmax(0, 1fr);
+    gap: 16px;
+  }
+
+  .track__thumb {
+    width: 92px;
+    margin: 14px 0 20px;
+  }
+
+  .track__body {
+    padding: 14px 0 22px;
+  }
+
+  .track__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    height: auto;
+    margin: 0 0 14px;
+  }
+
+  .track__tags li {
+    position: static;
+    max-width: none;
+    padding: 5px 9px;
+    border: 1px solid color-mix(in srgb, var(--pc) 45%, transparent);
+    border-radius: 999px;
+    transform: none;
+    font-size: 10px;
+  }
+
+  .track__phrase {
+    font-size: 1rem;
+  }
+
+  /* the playhead runs down the rail */
+  .svc__playhead {
+    left: 0;
+    top: 0;
+    bottom: auto;
+    width: 14px;
+    height: 0;
+  }
+
+  .svc__playhead::before {
+    top: -1px;
+    bottom: auto;
+    left: 0;
+    width: 16px;
+    height: 2px;
+  }
+
+  .svc__playhead::after {
+    content: '';
+    position: absolute;
+    left: 2px;
+    top: -5px;
+    width: 10px;
+    height: 10px;
+    background: var(--c-magenta);
+    transform: rotate(45deg);
+  }
+
+  .svc__playhead-tc {
+    display: none;
+  }
+}
+
+/* ---------- reduced motion: everything open and static, no playhead ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .svc__playhead {
+    display: none;
+  }
+
+  .track__panel,
+  .track.is-open .track__panel,
+  .kf,
+  .track__icon::before,
+  .track__icon::after {
+    transition: none;
+  }
+}

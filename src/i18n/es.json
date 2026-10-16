@@ -89,5 +89,210 @@
     "servicesText": "Motion graphics, branding animado, explainers y contenido para redes.",
     "studioText": "Un estudio pequeño, obsesionado con el movimiento.",
     "contactText": "Cuéntanos qué quieres poner en movimiento."
+  },
+  "services": {
+    "_note": "GENERATED from the Services document by scripts/services/import-doc.py. Do not edit by hand: edit the document and re-run the script.",
+    "label": "Servicios",
+    "home": {
+      "heading": "Todo lo que tu marca necesita para moverse.",
+      "intro": "Somos un estudio especializado en motion graphics. Hacemos una sola cosa y la hacemos a fondo: poner en movimiento marcas, ideas y productos.",
+      "more": "Ver más",
+      "cta": "Ver todos los servicios"
+    },
+    "pillars": {
+      "brand": {
+        "title": "Marca en movimiento",
+        "phrase": "Tu identidad, viva. Logos animados y sistemas de movimiento que hacen reconocible a tu marca en cualquier pantalla.",
+        "tags": [
+          "Logo animado",
+          "Identidad animada",
+          "Kit de marca"
+        ],
+        "services": {
+          "animated-logo": {
+            "name": "Logo animado",
+            "description": "Tu logo con personalidad propia. Una animación de 3 a 6 segundos para abrir y cerrar videos, presentaciones y redes.",
+            "deliverables": "Versión principal y corta, en vertical, cuadrado y horizontal, con fondo transparente"
+          },
+          "motion-identity": {
+            "name": "Identidad animada",
+            "description": "El sistema de movimiento de tu marca: ritmos, transiciones, tipografía animada y elementos gráficos, documentados para que todo lo que publiques se mueva igual.",
+            "deliverables": "Guía de motion, biblioteca de animaciones y ejemplos aplicados"
+          },
+          "brand-kit": {
+            "name": "Kit de marca animado",
+            "description": "Intros, cierres, cintillos, títulos y transiciones listos para que tu equipo los use en su contenido diario.",
+            "deliverables": "Plantillas editables para el software de tu equipo y archivos Lottie para web y apps"
+          }
+        },
+        "intro": "Una marca que se mueve se recuerda. Le damos a tu identidad un comportamiento: cómo aparece, cómo transiciona y cómo se despide.",
+        "link": "Ver proyectos de marca"
+      },
+      "content": {
+        "title": "Contenido y campañas",
+        "phrase": "Reels, anuncios y campañas animadas que detienen el scroll y mueven resultados.",
+        "tags": [
+          "Reels",
+          "Anuncios",
+          "Campañas",
+          "Plan mensual"
+        ],
+        "services": {
+          "reels": {
+            "name": "Reels y contenido vertical",
+            "description": "Videos animados en vertical para Instagram, TikTok, YouTube Shorts y Stories, con ritmo, subtítulos y gancho desde el primer segundo.",
+            "deliverables": "Video 9:16 listo para publicar, con portada"
+          },
+          "ads": {
+            "name": "Anuncios animados",
+            "description": "Piezas para pauta en Meta, TikTok y YouTube, en varias versiones y duraciones para probar qué funciona mejor.",
+            "deliverables": "Variantes por formato y duración (6, 15 y 30 s)"
+          },
+          "campaigns": {
+            "name": "Campañas y spots",
+            "description": "Lanzamientos, temporadas y fechas clave: el concepto animado y todas sus piezas, del spot principal a los formatos de cada canal.",
+            "deliverables": "Spot principal y adaptaciones por canal"
+          },
+          "monthly-plan": {
+            "name": "Plan mensual de contenido",
+            "description": "Un paquete fijo de piezas animadas cada mes, con calendario, dirección creativa y estilo consistente. Tu marca siempre en movimiento, sin cotizar cada video.",
+            "deliverables": "Paquete mensual de piezas según el plan [CONFIRMAR número de piezas]"
+          }
+        },
+        "intro": "Las redes se mueven rápido y tu contenido también. Producimos piezas animadas pensadas para cada plataforma, que detienen el scroll y dicen lo importante en los primeros segundos.",
+        "link": "Ver proyectos de redes y publicidad"
+      },
+      "explain": {
+        "title": "Explicar y presentar",
+        "phrase": "Lo complejo, claro en segundos. Explainers, animación de producto y visuales para eventos que se entienden y se recuerdan.",
+        "tags": [
+          "Explainers",
+          "Producto y software",
+          "Eventos"
+        ],
+        "services": {
+          "explainers": {
+            "name": "Videos explicativos",
+            "description": "De 60 a 120 segundos para contar qué haces, cómo funciona y por qué importa. Guion, ilustración y animación.",
+            "deliverables": "Video final con música y versión corta para redes"
+          },
+          "product": {
+            "name": "Animación de producto y software",
+            "description": "Tu app, plataforma o producto en acción: recorridos de interfaz, funciones clave y demos para ventas, lanzamientos y onboarding.",
+            "deliverables": "Video de producto y clips por función"
+          },
+          "events": {
+            "name": "Visuales para eventos y pantallas",
+            "description": "Contenido para escenarios, pantallas LED, stands y conferencias: aperturas, cortinillas, fondos animados y presentaciones que se ven en grande.",
+            "deliverables": "Archivos a la medida de cada pantalla"
+          }
+        },
+        "intro": "Si tu producto necesita explicación, la animación la da en segundos. Convertimos procesos, datos y servicios complejos en historias claras.",
+        "link": "Ver explainers"
+      }
+    },
+    "page": {
+      "label": "Servicios",
+      "h1": "Si se puede mover, lo animamos.",
+      "subtitle": "Somos un estudio especializado en motion graphics. Diseñamos y animamos piezas para marcas que quieren verse vivas en redes, en pantallas y en cada punto de contacto."
+    },
+    "process": {
+      "title": "Cinco keyframes, del brief al archivo final.",
+      "intro": "Sabes en todo momento en qué punto va tu proyecto.",
+      "steps": {
+        "brief": {
+          "number": "01",
+          "name": "Brief",
+          "text": "Entendemos tu objetivo, tu audiencia y dónde vivirá el video."
+        },
+        "script": {
+          "number": "02",
+          "name": "Guion y storyboard",
+          "text": "Definimos el mensaje y el recorrido cuadro por cuadro antes de animar."
+        },
+        "styleframes": {
+          "number": "03",
+          "name": "Styleframes",
+          "text": "Diseñamos los cuadros clave para que apruebes el look antes del movimiento."
+        },
+        "animation": {
+          "number": "04",
+          "name": "Animación",
+          "text": "Le damos vida, con rondas de revisión incluidas."
+        },
+        "delivery": {
+          "number": "05",
+          "name": "Entrega",
+          "text": "Recibes cada pieza en los formatos y medidas de cada plataforma."
+        }
+      }
+    },
+    "formats": {
+      "title": "Listo para cada pantalla.",
+      "note": "Entregamos MP4 optimizado para redes, archivos de alta calidad para televisión y pantallas, y Lottie para web y apps.",
+      "items": {
+        "vertical": {
+          "name": "Vertical 9:16",
+          "use": "Reels, TikTok, Shorts y Stories"
+        },
+        "square": {
+          "name": "Cuadrado 1:1 y 4:5",
+          "use": "Feed de Instagram, Facebook y LinkedIn"
+        },
+        "landscape": {
+          "name": "Horizontal 16:9",
+          "use": "YouTube, sitios web y presentaciones"
+        },
+        "custom": {
+          "name": "A la medida",
+          "use": "Pantallas LED, escenarios y stands"
+        }
+      }
+    },
+    "faq": {
+      "items": [
+        {
+          "q": "¿Cuánto tarda un proyecto?",
+          "a": "Depende del alcance. Un logo animado puede estar en una a dos semanas y un explainer en tres a cinco. Te damos un calendario desde la propuesta. [CONFIRMAR]"
+        },
+        {
+          "q": "¿Cuántas revisiones incluye?",
+          "a": "Dos rondas en cada etapa clave: guion, styleframes y animación. [CONFIRMAR]"
+        },
+        {
+          "q": "¿Qué necesitan de mí?",
+          "a": "Tu objetivo, tu logo, tu manual de marca si existe y referencias de lo que te gusta. Del resto nos encargamos."
+        },
+        {
+          "q": "¿Cuánto cuesta?",
+          "a": "Cada proyecto se cotiza según duración, complejidad y número de piezas. Cuéntanos qué necesitas y te enviamos una propuesta en 48 horas. [CONFIRMAR]"
+        },
+        {
+          "q": "¿Incluyen música y voz?",
+          "a": "Sí. Musicalizamos con librerías con licencia y coordinamos locución profesional cuando el proyecto lo pide. [CONFIRMAR]"
+        },
+        {
+          "q": "¿Trabajan con clientes fuera de México?",
+          "a": "Sí. Trabajamos a distancia, en español y en inglés. [CONFIRMAR]"
+        }
+      ]
+    },
+    "closing": {
+      "title": "¿Tienes una idea quieta? La ponemos en movimiento.",
+      "cta": "Empieza un proyecto"
+    },
+    "meta": {
+      "title": "Servicios de motion graphics y animación · MOVO",
+      "description": "Logos animados, reels, anuncios, explainers y visuales para eventos. MOVO es un estudio especializado en motion graphics para marcas."
+    }
+  },
+  "servicesUi": {
+    "_note": "Etiquetas de interfaz de Servicios (encabezados del documento; no son copy nuevo).",
+    "deliverables": "Entregables",
+    "process": "Cómo trabajamos",
+    "formats": "Formatos",
+    "faq": "Preguntas frecuentes",
+    "closing": "Cierre",
+    "index": "Índice de pilares"
   }
 }
