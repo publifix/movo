@@ -22,12 +22,30 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 4
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
       - run: npm ci
       - run: npm run build
+      # GitHub Pages lets browsers cache HTML for 10 min and every deploy replaces ALL files: a visitor still
+      # holding the previous HTML would request hashed CSS/JS that no longer exist (unstyled page). So the
+      # assets of the previous 3 builds ship too (hashed names never collide; current files are not touched).
+      - name: Keep the assets of the previous builds
+        run: |
+          for rev in HEAD~1 HEAD~2 HEAD~3; do
+            git rev-parse -q --verify "$rev^{commit}" >/dev/null || break
+            rm -rf "$RUNNER_TEMP/prev" "$RUNNER_TEMP/prev-dist"
+            git worktree add -f "$RUNNER_TEMP/prev" "$rev" >/dev/null 2>&1 || continue
+            ln -s "$PWD/node_modules" "$RUNNER_TEMP/prev/node_modules"
+            if (cd "$RUNNER_TEMP/prev" && npx vite build --logLevel error --emptyOutDir --outDir "$RUNNER_TEMP/prev-dist"); then
+              cp -r --update=none "$RUNNER_TEMP/prev-dist/assets/." dist/assets/
+            fi
+            git worktree remove --force "$RUNNER_TEMP/prev"
+          done
+          ls dist/assets | wc -l
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:

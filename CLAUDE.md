@@ -37,6 +37,8 @@ Static site built with Vite, deployed to GitHub Pages: https://publifix.github.i
 - Measuring: `node scripts/perf/measure.mjs <url> --device pixel7|iphone14|desktop [--landscape] [--enter]`;
   production is measured by the manual workflow `.github/workflows/measure.yml` (the sandbox cannot reach github.io).
 - Hosting (GitHub Pages) serves everything with `cache-control: max-age=600`; headers cannot be configured there.
+  Because a browser may hold the previous HTML for 10 min, `deploy.yml` also ships the hashed assets of the
+  previous 3 builds (otherwise a deploy that changes CSS/JS leaves those visitors with an unstyled page).
 
 ## Deploy workflow (agreed with the owner)
 - Every push to `main` or any `claude/**` branch triggers `.github/workflows/deploy.yml`, which builds and publishes to GitHub Pages (production).
