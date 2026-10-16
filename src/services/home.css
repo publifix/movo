@@ -1,11 +1,13 @@
-/* ===== Services on the home: the pillars are tracks of a video editor, the services are keyframes =====
+/* ===== Services on the home: the pillars are tracks of a video editor =====
    Loaded with src/services/home.js on the first scroll (nothing of Services loads before that).
-   Desktop: three full-width tracks, a magenta playhead crosses them with the scroll and lights the
-   keyframes; hovering a track expands it (phrase, tags under the keyframes, looping preview).
-   Mobile (< 900px): stacked cards that expand on tap; the playhead runs down a vertical rail. */
+   Editorial and quiet: hairlines, mono labels, thin keyframe markers; color only where the playhead has
+   passed. Desktop: full-width tracks, a magenta playhead crosses them with the scroll; hover expands one.
+   Mobile (< 900px): a typographic list on a hairline rail; the playhead runs down it; tap expands. */
 
 .svc {
-  --head-w: clamp(230px, 23vw, 340px);
+  --head-w: clamp(250px, 24vw, 360px);
+  --hair: rgb(245 245 240 / 0.12);
+  --mono: 500 11px/1 ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
   position: relative;
   padding: clamp(96px, 14vh, 168px) var(--gutter);
   border-top: 1px solid var(--c-gray);
@@ -20,90 +22,78 @@
   --pc-text: #a48cff;
 }
 
+/* ---------- heading ---------- */
 .svc__head {
-  max-width: 1100px;
-  margin-bottom: clamp(56px, 9vh, 104px);
+  display: grid;
+  grid-template-columns: minmax(0, 8fr) minmax(0, 4fr);
+  align-items: end;
+  gap: 32px clamp(32px, 5vw, 96px);
+  margin-bottom: clamp(56px, 9vh, 112px);
 }
 
 .svc__label {
-  margin: 0 0 18px;
+  grid-column: 1 / -1;
+  margin: 0;
   color: var(--c-volt);
-  font-size: 0.8125rem;
-  font-weight: 600;
-  letter-spacing: 0.22em;
+  font: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
 }
 
 .svc__title {
-  max-width: 14ch;
-  margin: 0 0 28px;
-  font-size: clamp(2.5rem, 6.6vw, 7rem);
+  max-width: 13ch;
+  margin: 0;
+  font-size: clamp(2.75rem, 6.6vw, 7rem);
   font-weight: 900;
   font-stretch: 125%;
   letter-spacing: -0.035em;
-  line-height: 0.92;
+  line-height: 0.9;
   text-transform: uppercase;
   text-wrap: balance;
 }
 
 .svc__intro {
-  max-width: 48ch;
-  margin: 0;
+  max-width: 36ch;
+  margin: 0 0 0.4em;
   color: var(--c-text-muted);
-  font-size: clamp(1.0625rem, 1.35vw, 1.3125rem);
+  font-size: clamp(1.0625rem, 1.25vw, 1.25rem);
   line-height: 1.5;
 }
 
 /* ---------- timeline ---------- */
 .svc__timeline {
   position: relative;
+  border-bottom: 1px solid var(--hair);
 }
 
 .svc__ruler {
   position: relative;
-  height: 34px;
+  height: 30px;
   margin-left: var(--head-w);
-  border-bottom: 1px solid rgb(245 245 240 / 0.2);
-  background: repeating-linear-gradient(to right, rgb(245 245 240 / 0.25) 0 1px, transparent 1px calc(100% / 48))
-    left bottom / 100% 7px no-repeat;
+  border-bottom: 1px solid var(--hair);
+  background: repeating-linear-gradient(to right, rgb(245 245 240 / 0.18) 0 1px, transparent 1px calc(100% / 48))
+    left bottom / 100% 5px no-repeat;
 }
 
 .svc__ruler span {
   position: absolute;
   left: calc(var(--x) * 100%);
-  bottom: 12px;
+  bottom: 10px;
   transform: translateX(-50%);
-  color: rgb(245 245 240 / 0.45);
-  font: 500 11px/1 ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  color: rgb(245 245 240 / 0.38);
+  font: var(--mono);
+  font-size: 10px;
   letter-spacing: 0.04em;
   font-variant-numeric: tabular-nums;
-}
-
-.svc__ruler span::after {
-  content: '';
-  position: absolute;
-  left: 50%;
-  top: calc(100% + 1px);
-  width: 1px;
-  height: 11px;
-  background: rgb(245 245 240 / 0.5);
 }
 
 .svc__ruler span:first-child {
   transform: none;
 }
 
-.svc__ruler span:first-child::after {
-  left: 0;
-}
-
 .svc__ruler span:last-child {
   transform: translateX(-100%);
-}
-
-.svc__ruler span:last-child::after {
-  left: auto;
-  right: 0;
 }
 
 .svc__tracks {
@@ -115,12 +105,16 @@
 .track {
   display: grid;
   grid-template-columns: var(--head-w) minmax(0, 1fr);
-  border-bottom: 1px solid rgb(245 245 240 / 0.1);
-  transition: background-color 0.35s;
+  border-top: 1px solid var(--hair);
+  transition: background-color 0.4s;
+}
+
+.track:first-child {
+  border-top: 0;
 }
 
 .track.is-open {
-  background: linear-gradient(to right, color-mix(in srgb, var(--pc) 7%, transparent), transparent 70%);
+  background: rgb(245 245 240 / 0.025);
 }
 
 .track__head {
@@ -129,12 +123,13 @@
 }
 
 .track__toggle {
-  display: flex;
+  display: grid;
+  grid-template-columns: 2.25rem minmax(0, 1fr) 14px;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
   width: 100%;
-  min-height: 100px;
-  padding: 0 20px 0 0;
+  min-height: 104px;
+  padding: 0 24px 0 0;
   border: 0;
   background: none;
   color: var(--c-white);
@@ -147,33 +142,33 @@
   outline-offset: -2px;
 }
 
-/* layer color label, like the color chip of a layer in an editor */
+/* layer number: lights in the pillar's color once the playhead reaches the track */
 .track__num {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  color: var(--pc-text);
-  font: 600 12px/1 ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  color: rgb(245 245 240 / 0.4);
+  font: var(--mono);
+  font-size: 12px;
   letter-spacing: 0.06em;
+  transition: color 0.4s;
 }
 
-.track__num::before {
-  content: '';
-  width: 10px;
-  height: 10px;
-  border-radius: 2px;
-  background: var(--pc);
+.track.is-lit .track__num,
+.track.is-open .track__num {
+  color: var(--pc-text);
 }
 
 .track__name {
-  flex: 1;
-  font-size: clamp(1rem, 1.45vw, 1.375rem);
+  font-size: clamp(1.0625rem, 1.5vw, 1.5rem);
   font-weight: 800;
-  font-stretch: 115%;
-  letter-spacing: 0.01em;
-  line-height: 1.1;
+  font-stretch: 112%;
+  letter-spacing: -0.005em;
+  line-height: 1.08;
   text-transform: uppercase;
-  transition: color 0.3s;
+  transition: color 0.3s, font-stretch 0.5s var(--ease-out);
+}
+
+.track__toggle:hover .track__name,
+.track.is-open .track__name {
+  font-stretch: 125%;
 }
 
 .track.is-open .track__name {
@@ -183,9 +178,9 @@
 /* + that turns into − */
 .track__icon {
   position: relative;
-  flex: none;
   width: 14px;
   height: 14px;
+  opacity: 0.6;
 }
 
 .track__icon::before,
@@ -193,9 +188,9 @@
   content: '';
   position: absolute;
   left: 0;
-  top: 6px;
+  top: 6.5px;
   width: 14px;
-  height: 2px;
+  height: 1px;
   background: currentColor;
   transition: transform 0.35s var(--ease-out);
 }
@@ -208,62 +203,46 @@
   transform: rotate(0deg);
 }
 
-/* lane: the line of the pillar's color, a clip block and one diamond keyframe per service */
+/* lane: one clip per pillar (a thin bar that fills where the playhead has passed) + keyframe markers */
 .track__lane {
   position: relative;
-  min-height: 100px;
+  min-height: 104px;
 }
 
-.track__line {
+.track__clip {
   position: absolute;
-  left: 0;
-  right: 0;
+  left: calc(var(--a) * 100% - 20px);
+  width: calc((var(--b) - var(--a)) * 100% + 40px);
   top: 50%;
-  height: 2px;
-  margin-top: -1px;
-  background: color-mix(in srgb, var(--pc) 22%, transparent);
+  height: 4px;
+  margin-top: -2px;
+  overflow: hidden;
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--pc) 18%, transparent);
 }
 
-/* rendered part of the track: grows with the playhead */
-.track__line::after {
-  content: '';
+.track__fill {
   position: absolute;
   inset: 0 auto 0 0;
-  width: calc(var(--p, 0) * 100%);
+  width: calc(var(--fill, 0) * 100%);
   background: var(--pc);
-}
-
-/* the clip on the track, from its first to its last keyframe */
-.track__lane::before {
-  content: '';
-  position: absolute;
-  left: calc(var(--a) * 100% - 26px);
-  width: calc((var(--b) - var(--a)) * 100% + 52px);
-  top: 50%;
-  height: 34px;
-  margin-top: -17px;
-  border: 1px solid color-mix(in srgb, var(--pc) 45%, transparent);
-  border-radius: 6px;
-  background: color-mix(in srgb, var(--pc) 9%, transparent);
 }
 
 .kf {
   position: absolute;
   left: calc(var(--x) * 100%);
   top: 50%;
-  width: 14px;
-  height: 14px;
-  margin: -7px 0 0 -7px;
-  border: 2px solid var(--pc);
-  background: var(--c-ink);
-  transform: rotate(45deg) scale(0.85);
-  transition: background-color 0.25s, box-shadow 0.35s, transform 0.35s var(--ease-out);
+  width: 1px;
+  height: 12px;
+  margin: -6px 0 0;
+  background: rgb(245 245 240 / 0.35);
+  transition: height 0.4s var(--ease-out), margin 0.4s var(--ease-out), background-color 0.3s;
 }
 
 .kf.is-on {
+  height: 22px;
+  margin-top: -11px;
   background: var(--pc);
-  transform: rotate(45deg) scale(1.15);
-  box-shadow: 0 0 0 5px color-mix(in srgb, var(--pc) 18%, transparent), 0 0 22px color-mix(in srgb, var(--pc) 55%, transparent);
 }
 
 /* ---------- expanded track ---------- */
@@ -272,13 +251,13 @@
   display: grid;
   grid-template-rows: 0fr;
   visibility: hidden;
-  transition: grid-template-rows 0.45s var(--ease-out), visibility 0s 0.45s;
+  transition: grid-template-rows 0.5s var(--ease-out), visibility 0s 0.5s;
 }
 
 .track.is-open .track__panel {
   grid-template-rows: 1fr;
   visibility: visible;
-  transition: grid-template-rows 0.45s var(--ease-out), visibility 0s;
+  transition: grid-template-rows 0.5s var(--ease-out), visibility 0s;
 }
 
 .track__inner {
@@ -291,13 +270,12 @@
 .track__thumb {
   position: relative;
   align-self: start;
-  width: 118px;
-  margin: -6px 0 32px 24px;
+  width: 112px;
+  margin: 0 0 36px calc(2.25rem + 12px);
   aspect-ratio: 9 / 16;
   overflow: hidden;
-  border-radius: 10px;
+  border-radius: 6px;
   background: var(--c-gray);
-  box-shadow: 0 0 0 1px color-mix(in srgb, var(--pc) 55%, transparent);
 }
 
 .track__thumb video {
@@ -308,26 +286,23 @@
 
 .svc-mock {
   position: absolute;
-  top: 8px;
-  right: 8px;
-  padding: 3px 6px;
-  border-radius: 4px;
-  background: rgb(11 11 16 / 0.7);
-  color: var(--c-white);
-  font-size: 9px;
-  font-weight: 800;
-  letter-spacing: 0.12em;
+  left: 6px;
+  bottom: 6px;
+  color: rgb(245 245 240 / 0.8);
+  font: var(--mono);
+  font-size: 8px;
+  letter-spacing: 0.14em;
 }
 
 .track__body {
-  padding: 6px 0 36px;
+  padding: 0 0 40px;
 }
 
-/* the tags sit under their keyframes */
+/* the tags sit under their keyframe markers */
 .track__tags {
   position: relative;
-  height: 30px;
-  margin: -6px 0 22px;
+  height: 24px;
+  margin: 0 0 24px;
   padding: 0;
   list-style: none;
 }
@@ -336,35 +311,39 @@
   position: absolute;
   left: calc(var(--x) * 100%);
   top: 0;
-  max-width: 180px;
+  max-width: 170px;
   transform: translateX(-50%);
-  color: var(--pc-text);
-  font: 600 11px/1.25 ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
-  letter-spacing: 0.06em;
+  color: var(--c-text-muted);
+  font: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  line-height: 1.3;
   text-align: center;
   text-transform: uppercase;
 }
 
 .track__phrase {
-  max-width: 50ch;
-  margin: 0 0 18px;
-  font-size: clamp(1.125rem, 1.55vw, 1.5rem);
-  font-weight: 500;
-  line-height: 1.35;
+  max-width: 46ch;
+  margin: 0 0 20px;
+  font-size: clamp(1.125rem, 1.5vw, 1.4375rem);
+  font-weight: 400;
+  line-height: 1.4;
   text-wrap: pretty;
 }
 
 .track__more {
   display: inline-flex;
-  gap: 8px;
-  padding: 6px 0;
+  gap: 10px;
+  padding: 4px 0;
+  border-bottom: 1px solid currentColor;
   color: var(--pc-text);
-  font-size: 0.9375rem;
+  font-size: 0.875rem;
   font-weight: 700;
   font-stretch: 110%;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
   text-decoration: none;
-  border-bottom: 1px solid currentColor;
+  text-transform: uppercase;
+  transition: color 0.25s;
 }
 
 .track__more:hover {
@@ -385,12 +364,11 @@
 .svc__playhead::before {
   content: '';
   position: absolute;
-  top: 26px;
+  top: 22px;
   bottom: 0;
-  left: -1px;
-  width: 2px;
+  left: 0;
+  width: 1px;
   background: var(--c-magenta);
-  box-shadow: 0 0 12px rgb(255 45 135 / 0.6);
 }
 
 .svc__playhead-tc {
@@ -398,24 +376,14 @@
   top: 0;
   left: 0;
   transform: translateX(-50%);
-  padding: 5px 7px;
-  border-radius: 4px;
+  padding: 4px 6px;
+  border-radius: 2px;
   background: var(--c-magenta);
   color: var(--c-ink);
   font: 700 10px/1 ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
   letter-spacing: 0.04em;
   font-variant-numeric: tabular-nums;
   white-space: nowrap;
-}
-
-.svc__playhead-tc::after {
-  content: '';
-  position: absolute;
-  left: 50%;
-  top: 100%;
-  margin-left: -5px;
-  border: 5px solid transparent;
-  border-top-color: var(--c-magenta);
 }
 
 .svc__cta {
@@ -430,21 +398,32 @@
   font-size: 0.85em;
 }
 
-/* ---------- mobile: stacked cards, vertical playhead ---------- */
+/* ---------- mobile: a typographic list on a hairline rail ---------- */
 @media (max-width: 899px) {
+  .svc__head {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+    margin-bottom: 48px;
+  }
+
+  .svc__title {
+    font-size: clamp(2.5rem, 12vw, 4.5rem);
+  }
+
   .svc__timeline {
-    padding-left: 26px;
+    padding-left: 22px;
+    border-bottom: 0;
   }
 
   /* the rail */
   .svc__timeline::before {
     content: '';
     position: absolute;
-    left: 6px;
+    left: 0;
     top: 0;
     bottom: 0;
-    width: 2px;
-    background: rgb(245 245 240 / 0.12);
+    width: 1px;
+    background: var(--hair);
   }
 
   .svc__ruler {
@@ -453,107 +432,120 @@
 
   .track {
     display: block;
-    margin-bottom: 12px;
-    padding: 0 18px;
-    border: 1px solid rgb(245 245 240 / 0.12);
-    border-radius: 16px;
-    background: rgb(245 245 240 / 0.025);
+    border-top: 1px solid var(--hair);
+  }
+
+  .track:first-child {
+    border-top: 1px solid var(--hair);
+  }
+
+  .track:last-child {
+    border-bottom: 1px solid var(--hair);
   }
 
   .track.is-open {
-    border-color: color-mix(in srgb, var(--pc) 50%, transparent);
-    background: color-mix(in srgb, var(--pc) 6%, var(--c-ink));
+    background: none;
   }
 
   .track__toggle {
-    min-height: 72px;
-    padding: 0;
+    grid-template-columns: 2rem minmax(0, 1fr) 14px;
+    min-height: 0;
+    padding: 22px 0 14px;
   }
 
+  .track__name {
+    font-size: clamp(1.25rem, 6vw, 1.75rem);
+    font-weight: 900;
+    line-height: 1;
+  }
+
+  /* the clip spans the row; its markers are spread evenly */
   .track__lane {
-    min-height: 34px;
-    margin-top: -6px;
+    min-height: 0;
+    height: 22px;
+    margin: 0 0 14px calc(2rem + 12px);
   }
 
-  .track__lane::before {
-    height: 24px;
-    margin-top: -12px;
-    left: calc(var(--a) * 100% - 16px);
-    width: calc((var(--b) - var(--a)) * 100% + 32px);
+  .track__clip {
+    left: 0;
+    width: 100%;
+    height: 3px;
+    margin-top: -1.5px;
   }
 
   .kf {
-    width: 12px;
-    height: 12px;
-    margin: -6px 0 0 -6px;
+    left: calc((var(--i) + 0.5) / var(--n) * 100%);
+  }
+
+  .kf.is-on {
+    height: 16px;
+    margin-top: -8px;
   }
 
   .track__inner {
-    grid-template-columns: 92px minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr) 84px;
     gap: 16px;
+    padding: 4px 0 26px calc(2rem + 12px);
   }
 
   .track__thumb {
-    width: 92px;
-    margin: 14px 0 20px;
+    order: 2;
+    width: 84px;
+    margin: 0;
   }
 
   .track__body {
-    padding: 14px 0 22px;
+    padding: 0;
   }
 
+  /* tags as one mono line: LOGO ANIMADO / IDENTIDAD ANIMADA / KIT DE MARCA */
   .track__tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
     height: auto;
     margin: 0 0 14px;
   }
 
   .track__tags li {
     position: static;
+    display: inline;
     max-width: none;
-    padding: 5px 9px;
-    border: 1px solid color-mix(in srgb, var(--pc) 45%, transparent);
-    border-radius: 999px;
     transform: none;
-    font-size: 10px;
+    text-align: left;
+  }
+
+  .track__tags li:not(:last-child)::after {
+    content: ' / ';
+    color: rgb(245 245 240 / 0.3);
   }
 
   .track__phrase {
-    font-size: 1rem;
+    margin-bottom: 16px;
+    font-size: 1.0625rem;
   }
 
-  /* the playhead runs down the rail */
+  /* the playhead runs down the rail: a magenta line that grows, with its readout */
   .svc__playhead {
     left: 0;
     top: 0;
     bottom: auto;
-    width: 14px;
+    width: 1px;
     height: 0;
+    background: var(--c-magenta);
   }
 
   .svc__playhead::before {
-    top: -1px;
-    bottom: auto;
-    left: 0;
-    width: 16px;
-    height: 2px;
-  }
-
-  .svc__playhead::after {
-    content: '';
-    position: absolute;
-    left: 2px;
-    top: -5px;
-    width: 10px;
-    height: 10px;
-    background: var(--c-magenta);
-    transform: rotate(45deg);
+    top: auto;
+    bottom: -1px;
+    left: -4px;
+    width: 9px;
+    height: 1px;
   }
 
   .svc__playhead-tc {
     display: none;
+  }
+
+  .svc__cta {
+    width: 100%;
   }
 }
 
@@ -566,6 +558,7 @@
   .track__panel,
   .track.is-open .track__panel,
   .kf,
+  .track__name,
   .track__icon::before,
   .track__icon::after {
     transition: none;

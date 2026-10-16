@@ -70,7 +70,7 @@ export function initServicesHome() {
       load(t);
     });
     kfs.forEach(k => k.el.classList.add('is-on'));
-    timeline.style.setProperty('--p', 1);
+    tracks.forEach(t => { t.style.setProperty('--fill', 1); t.classList.add('is-lit'); });
     tracks.forEach(t => t.querySelector('.track__toggle').addEventListener('click', () => {
       const on = !t.classList.contains('is-open');
       t.classList.toggle('is-open', on);
@@ -140,22 +140,34 @@ export function initServicesHome() {
       target = Math.min(1, Math.max(0, (vh * 0.88 - r.top) / (vh * 0.62)));
     }
   }
+  // Each track's clip fills where the playhead has passed; its markers light; the track is "lit" once reached.
+  const lanesOf = tracks.map(t => t.querySelector('.track__lane'));
   function render() {
     if (mobile.matches) {
-      const h = list.offsetHeight;
-      const y = p * h;
-      playhead.style.transform = `translate3d(0, ${y.toFixed(1)}px, 0)`;
-      // a keyframe lights when the playhead has passed its lane
-      // (lanes are positioned: their offsetTop is already relative to the timeline, like the playhead)
-      kfs.forEach(k => {
-        const lane = k.el.parentElement;
-        k.el.classList.toggle('is-on', lane.offsetTop + lane.offsetHeight / 2 <= y);
+      // vertical: the playhead is a magenta line growing down the rail
+      const y = p * list.offsetHeight;
+      playhead.style.transform = 'none';
+      playhead.style.height = `${y.toFixed(1)}px`;
+      tracks.forEach((t, i) => {
+        const lane = lanesOf[i]; // positioned: offsetTop is relative to the timeline, like the playhead
+        const fill = Math.min(1, Math.max(0, (y - t.offsetTop) / Math.max(1, lane.offsetTop + lane.offsetHeight - t.offsetTop)));
+        t.style.setProperty('--fill', fill.toFixed(3));
+        t.classList.toggle('is-lit', fill > 0);
+        const n = +lane.style.getPropertyValue('--n') || 1;
+        t.querySelectorAll('.kf').forEach(k => k.classList.toggle('is-on', fill >= (+k.dataset.i + 0.5) / n));
       });
-      tracks.forEach(t => t.style.setProperty('--p', y >= t.offsetTop + t.offsetHeight ? 1 : y > t.offsetTop ? 0.5 : 0));
     } else {
       const w = lanes().offsetWidth;
+      playhead.style.height = '';
       playhead.style.transform = `translate3d(${(p * w).toFixed(1)}px, 0, 0)`;
-      timeline.style.setProperty('--p', p.toFixed(4));
+      tracks.forEach((t, i) => {
+        const a = +lanesOf[i].style.getPropertyValue('--a'), b = +lanesOf[i].style.getPropertyValue('--b');
+        // the clip block runs from a−20px to b+20px: map the playhead into it
+        const pad = 20 / Math.max(1, w);
+        const fill = Math.min(1, Math.max(0, (p - (a - pad)) / (b - a + 2 * pad)));
+        t.style.setProperty('--fill', fill.toFixed(4));
+        t.classList.toggle('is-lit', fill > 0);
+      });
       kfs.forEach(k => k.el.classList.toggle('is-on', k.x <= p + 0.002));
       tcEl.textContent = tcOf(p);
     }
@@ -176,7 +188,7 @@ export function initServicesHome() {
   addEventListener('resize', onScroll);
   mobile.addEventListener('change', () => {
     playhead.style.transform = '';
-    tracks.forEach(t => t.style.removeProperty('--p'));
+    playhead.style.height = '';
     onScroll();
   });
 

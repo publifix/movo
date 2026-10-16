@@ -50,15 +50,15 @@ export function servicesMarkup({ t, lang, root, homeHref, servicesHref, data, re
                 <span class="track__icon" aria-hidden="true"></span>
               </button>
             </h3>
-            <div class="track__lane" aria-hidden="true" style="--a: ${xs[0]}; --b: ${xs.at(-1)}">
-              <span class="track__line"></span>
-              ${xs.map(x => `<span class="kf" style="--x: ${x}" data-kf="${x}"></span>`).join('')}
+            <div class="track__lane" aria-hidden="true" style="--a: ${xs[0]}; --b: ${xs.at(-1)}; --n: ${xs.length}">
+              <span class="track__clip"><span class="track__fill"></span></span>
+              ${xs.map((x, i) => `<span class="kf" style="--x: ${x}; --i: ${i}" data-kf="${x}" data-i="${i}"></span>`).join('')}
             </div>
             <div class="track__panel" id="${id}-panel" role="region" aria-labelledby="${id}">
               <div class="track__inner">
               <div class="track__thumb" aria-hidden="true"><video muted loop playsinline preload="none" disablepictureinpicture tabindex="-1"></video>${pillarReel(p)?.mock ? mock : ''}</div>
               <div class="track__body">
-                <ul class="track__tags">${tags.map((tag, i) => `<li style="--x: ${xs[i] ?? xs.at(-1)}">${esc(tag)}</li>`).join('')}</ul>
+                <ul class="track__tags">${tags.map((tag, i) => `<li style="--x: ${xs[i] ?? xs.at(-1)}; --i: ${i}">${esc(tag)}</li>`).join('')}</ul>
                 <p class="track__phrase">${rich(need(P.phrase, `pillars.${p.id}.phrase`))}</p>
                 <a class="track__more" href="${servicesHref}#${p.anchor[lang]}">${esc(need(S.home.more, 'home.more'))}<span class="sr-only">: ${esc(P.title)}</span> <span aria-hidden="true">→</span></a>
               </div>

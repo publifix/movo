@@ -191,10 +191,9 @@
   top: 0;
   bottom: 0;
   left: 0;
-  width: 2px;
-  margin-left: -1px;
+  width: 1px;
+  margin-left: -0.5px;
   background: var(--c-magenta);
-  box-shadow: 0 0 10px rgb(255 45 135 / 0.6);
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.3s;
@@ -360,12 +359,11 @@
 }
 
 .row__kf {
-  width: 12px;
-  height: 12px;
-  margin-left: 2px;
-  border: 2px solid var(--pc);
-  transform: rotate(45deg);
-  transition: background-color 0.25s, box-shadow 0.3s;
+  justify-self: center;
+  width: 2px;
+  height: 18px;
+  background: color-mix(in srgb, var(--pc) 40%, transparent);
+  transition: height 0.4s var(--ease-out), background-color 0.3s;
 }
 
 .row__n {
@@ -392,8 +390,8 @@
 
 .row__btn:hover .row__kf,
 .row.is-open .row__kf {
+  height: 34px;
   background: var(--pc);
-  box-shadow: 0 0 16px color-mix(in srgb, var(--pc) 60%, transparent);
 }
 
 .row__icon {
@@ -641,15 +639,13 @@ html:not(.js) .row__panel {
 
 .step__kf {
   position: absolute;
-  top: -9px;
+  top: -10px;
   left: 50%;
-  width: 16px;
-  height: 16px;
-  margin-left: -8px;
-  border: 2px solid var(--c-volt);
-  background: var(--c-ink);
-  transform: rotate(45deg) scale(0.85);
-  transition: background-color 0.3s, transform 0.4s var(--ease-out), box-shadow 0.4s;
+  width: 1px;
+  height: 20px;
+  margin-left: -0.5px;
+  background: rgb(245 245 240 / 0.45);
+  transition: background-color 0.3s, height 0.4s var(--ease-out), top 0.4s var(--ease-out), width 0.3s;
 }
 
 .step__n {
@@ -688,9 +684,11 @@ html:not(.js) .row__panel {
 }
 
 .step.is-on .step__kf {
+  top: -16px;
+  width: 2px;
+  height: 32px;
+  margin-left: -1px;
   background: var(--c-volt);
-  transform: rotate(45deg) scale(1.15);
-  box-shadow: 0 0 0 6px rgb(215 255 59 / 0.16), 0 0 26px rgb(215 255 59 / 0.5);
 }
 
 .process__playhead {
@@ -767,9 +765,18 @@ html:not(.js) .row__panel {
   }
 
   /* centered on the rail (gutter + 12px) */
-  .step__kf {
-    top: 2px;
-    left: -28px;
+  /* a short tick across the rail (gutter + 12px) */
+  .step__kf,
+  .step.is-on .step__kf {
+    top: 8px;
+    left: -34px;
+    width: 12px;
+    height: 1px;
+    margin-left: 0;
+  }
+
+  .step.is-on .step__kf {
+    height: 2px;
   }
 
   .process__playhead {
@@ -778,7 +785,6 @@ html:not(.js) .row__panel {
     bottom: auto;
     height: 0;
     background: var(--c-magenta);
-    box-shadow: 0 0 10px rgb(255 45 135 / 0.6);
   }
 
   .process__playhead::before,
@@ -823,7 +829,7 @@ html:not(.js) .row__panel {
   height: 498px;
   border: 2px solid var(--c-volt);
   border-radius: 14px;
-  background: radial-gradient(circle at 30% 20%, rgb(215 255 59 / 0.12), transparent 60%), rgb(245 245 240 / 0.02);
+  background: rgb(245 245 240 / 0.02);
   will-change: width, height;
 }
 
@@ -912,14 +918,18 @@ html.js .formats--live .fmt.is-on {
 @media (max-width: 899px) {
   .formats__pin {
     grid-template-columns: minmax(0, 1fr);
-    grid-template-rows: auto minmax(0, 1fr) auto auto;
-    gap: 16px;
-    padding-top: calc(var(--nav-h) + 16px);
+    grid-template-rows: auto auto auto auto;
+    align-content: center;
+    gap: 20px;
+    padding-top: calc(var(--nav-h) + 8px);
+    padding-bottom: 72px; /* clear of the timecode */
   }
 
+  /* fixed height: the frame is sized to the stage, never the other way round */
   .formats__stage {
     grid-column: 1;
     grid-row: 2;
+    height: clamp(180px, 36svh, 380px);
   }
 
   .formats__list {
@@ -936,10 +946,11 @@ html.js .formats--live .fmt.is-on {
 
   .formats__note {
     grid-row: 4;
+    font-size: 0.8125rem;
   }
 
   .formats__ratio {
-    font-size: clamp(2rem, 11vw, 3.5rem);
+    font-size: clamp(1.5rem, 8vw, 2.75rem);
   }
 }
 
