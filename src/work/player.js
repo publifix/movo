@@ -52,6 +52,9 @@ export function createPlayer({ ui, reduce, getCards }) {
     $('[data-cat]').textContent = card.dataset.categoryLabel;
     $('[data-count]').textContent = `${String(index + 1).padStart(2, '0')} ${L.of} ${String(list.length).padStart(2, '0')}`;
     video.poster = card.dataset.poster;
+    // the card's real proportion (set on its item when the video is not 9:16)
+    const ar = getComputedStyle(card.closest('.work__item') || card).getPropertyValue('--ar').trim();
+    el.style.setProperty('--player-ar', ar || '9 / 16');
     // only now does the full video download: 720p on phones/tablets, 1080p on desktop (Bunny MP4)
     video.src = (small.matches && card.dataset.fullMobile) || card.dataset.full;
     video.muted = false;

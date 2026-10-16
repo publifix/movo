@@ -81,15 +81,17 @@ jobs:
             node scripts/perf/work-check.mjs "${{ inputs.site }}" --device "$dev" || true
             echo "::endgroup::"
           done
+      # Bunny's allowed domain "localhost" matches http://localhost/ only (port 80): a referer with a port
+      # (vite's :5173 / :4173) gets 403. So the local build is served on port 80 here.
       - name: Real reels served from localhost (local build of this commit)
         env:
           CHROME_PATH: /usr/bin/google-chrome
         run: |
           npm run build
-          npx vite preview --port 4173 --strictPort > preview.log 2>&1 &
-          sleep 3
+          sudo "$(which node)" node_modules/vite/bin/vite.js preview --port 80 --strictPort --host localhost > preview.log 2>&1 &
+          sleep 4
           for dev in desktop pixel7; do
             echo "::group::localhost $dev"
-            node scripts/perf/work-check.mjs "http://localhost:4173/" --device "$dev" || true
+            node scripts/perf/work-check.mjs "http://localhost/" --device "$dev" || true
             echo "::endgroup::"
           done

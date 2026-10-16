@@ -391,18 +391,25 @@ html.player-open body {
   display: none;
 }
 
+/* The stage has a definite height (its grid track), so the video is sized to it and is always seen
+   whole: height of the stage, width from the video's proportion, never wider than the stage. */
 .player__stage {
-  display: grid;
-  place-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   min-height: 0;
+  min-width: 0;
+  overflow: hidden;
   padding: 72px var(--gutter) 8px;
 }
 
 .player__video {
-  max-width: 100%;
-  max-height: 100%;
-  aspect-ratio: 9 / 16;
+  display: block;
   height: 100%;
+  width: auto;
+  max-width: 100%;
+  aspect-ratio: var(--player-ar, 9 / 16);
+  object-fit: contain;
   border-radius: 14px;
   background: #000;
 }
@@ -486,6 +493,41 @@ html.player-open body {
 .player :focus-visible {
   outline: 2px solid var(--c-volt);
   outline-offset: 3px;
+}
+
+/* Desktop / landscape: the vertical video, whole, at the screen's height; the project beside it. */
+@media (min-width: 900px) and (orientation: landscape) {
+  .player {
+    grid-template-rows: minmax(0, 1fr);
+    grid-template-columns: minmax(0, auto) minmax(260px, 400px);
+    justify-content: center;
+    align-items: center;
+    column-gap: clamp(32px, 4vw, 72px);
+    padding: 40px clamp(72px, 7vw, 120px);
+  }
+
+  .player__stage {
+    height: 100%;
+    padding: 0;
+  }
+
+  .player__bar {
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 32px;
+    padding: 0;
+  }
+
+  .player__title {
+    font-size: clamp(1.75rem, 2.6vw, 2.75rem);
+    line-height: 1;
+  }
+
+  .player__info {
+    margin-top: 12px;
+    font-size: 1rem;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

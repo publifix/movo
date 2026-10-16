@@ -49,19 +49,19 @@ const cardState = i => page.evaluate(i => {
     card: `${Math.round(r.width)}x${Math.round(r.height)}`, playingNow: [...document.querySelectorAll('video')].filter(x => !x.paused).length };
 }, i);
 
-for (let i = 0; i < N; i++) {
-  if (R.mode === 'work-feed') {
-    await page.evaluate(i => { const t = document.querySelector('[data-work-track]'); t.scrollTo({ top: i * t.clientHeight }); }, i);
-  } else {
-    // strip: scroll until card i is the centered (active) one
-    await page.evaluate(i => {
+// bring card i to the screen: one reel per screen in the feed, centered (active) in the strip
+const show = i => (R.mode === 'work-feed'
+  ? page.evaluate(i => { const t = document.querySelector('[data-work-track]'); t.scrollTo({ top: i * t.clientHeight }); }, i)
+  : page.evaluate(i => {
       const items = [...document.querySelectorAll('.work__item')];
       const c = items.map(li => li.offsetLeft + li.offsetWidth / 2);
       const st = window.__movoStripStart ?? scrollY;
       window.__movoStripStart = st;
       scrollTo(0, st + (c[i] - c[0]));
-    }, i);
-  }
+    }, i));
+
+for (let i = 0; i < N; i++) {
+  await show(i);
   await page.waitForTimeout(3500);
   R.reels.push(await cardState(i));
 }
@@ -69,9 +69,9 @@ for (let i = 0; i < N; i++) {
 // 3) the player, for each real reel: full video from the CDN, unmuted, with sound
 const players = [];
 for (let i = 0; i < N; i++) {
-  if (R.mode === 'work-feed') await page.evaluate(i => { const t = document.querySelector('[data-work-track]'); t.scrollTo({ top: i * t.clientHeight }); }, i);
-  await page.waitForTimeout(800);
-  await page.locator('.reel').nth(i).click({ force: true });
+  await show(i);
+  await page.waitForTimeout(2000);
+  await page.locator('.reel').nth(i).click();
   await page.waitForTimeout(6000);
   players.push(await page.evaluate(() => {
     const v = document.querySelector('[data-player-video]');
