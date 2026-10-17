@@ -83,7 +83,8 @@ for (const lang of ['es', 'en']) {
   await h.waitForTimeout(3000);
   const beforeScroll = hreqs.filter(u => /assets\/(home|marquee|page)-/.test(u)).map(u => u.split('/').pop());
   const heroCta = await h.evaluate(() => document.querySelector('.hero a.btn')?.href);
-  await h.mouse.wheel(0, 300);
+  // first scroll intent (mobile WebKit has no mouse wheel: a real scroll there)
+  if (useWebkit) await h.evaluate(() => scrollBy(0, 300)); else await h.mouse.wheel(0, 300);
   await h.waitForTimeout(2500);
   await h.evaluate(() => document.querySelector('[data-studio-teaser]').scrollIntoView());
   await h.waitForTimeout(2500);
