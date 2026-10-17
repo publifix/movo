@@ -304,12 +304,13 @@
     },
     "label": "Estudio",
     "home": {
-      "cta": "Conoce el estudio"
+      "cta": "Conoce el estudio",
+      "heading": "Ideas en movimiento."
     },
     "hero": {
       "label": "MOVO / Estudio de motion design",
-      "line1": "Ideas en movimiento.",
-      "line2": "Historias que mueven.",
+      "line1": "Ideas en",
+      "line2": "movimiento.",
       "text": "Un estudio de motion design especializado en contar historias visuales con motion graphics, animación y diseño."
     },
     "clients": {

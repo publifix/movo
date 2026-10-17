@@ -33,7 +33,7 @@
 
 .st-hero__title {
   margin: 0;
-  font-size: clamp(2.25rem, 5.6vw, 10rem); /* page.js fits each line exactly (any language) */
+  font-size: clamp(2.5rem, 9.5vw, 14rem); /* page.js fits each line exactly (any language) */
   font-weight: 900;
   font-stretch: 125%;
   letter-spacing: -0.035em;

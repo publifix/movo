@@ -103,14 +103,25 @@ export function servicesMarkup({ t, lang, root, homeHref, servicesHref, data, re
         </nav>`;
 
   // ---------- page: the three pillars with their service rows ----------
-  const used = {};
+  // No reel repeats across the rows (the owner's rule): hand-picks first, then the first unused reel of
+  // the service's category, then any unused reel; only when every reel is taken can one repeat.
+  const taken = new Set(Object.values(picks));
+  const usedRows = new Set();
+  const rowReel = s => {
+    const picked = pick(picks[s.id]);
+    if (picked && !usedRows.has(picked.id)) return picked;
+    const free = r => !usedRows.has(r.id) && !taken.has(r.id);
+    return byCats([s.category]).find(free) || reels.find(free) || reels.find(r => !usedRows.has(r.id)) || byCats([s.category])[0] || null;
+  };
   const pillars = data.pillars.map(p => {
     const P = S.pillars[p.id];
     const rows = p.services.map((s, si) => {
       const T = need(P.services?.[s.id], `pillars.${p.id}.services.${s.id}`);
-      const pool = byCats([s.category]);
-      const picked = picks[s.id] && reels.find(x => x.id === picks[s.id]);
-      const r = picked || (pool.length ? pool[(used[s.category] = (used[s.category] ?? -1) + 1) % pool.length] : null);
+      const r = rowReel(s);
+      if (r) {
+        if (usedRows.has(r.id)) console.warn(`[services] preview ${r.id} repeats on "${s.id}" (not enough reels)`);
+        usedRows.add(r.id);
+      }
       const slug = s.slug[lang];
       return `<li class="row" id="${slug}"${media(r)}>
               <h3 class="row__h">

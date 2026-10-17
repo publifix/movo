@@ -86,7 +86,8 @@ Static site built with Vite, deployed to GitHub Pages: https://publifix.github.i
 - Pillar colors on ink: brand volt, content magenta, explain violet (`--pc`; violet text uses a lighter tint).
 - Previews come from `src/data/reels.json`: pillar = first reel of its Work categories, row = n-th reel of its
   category, unless `src/data/services-previews.json` hand-picks one (`pillars`: home teaser tracks — brand =
-  Blanco Nuclear, content = Tommy Hilfiger, explain = LABS; `services`: page rows, first row = pillar's reel).
+  Blanco Nuclear, content = Tommy Hilfiger, explain = LABS; `services`: page rows). NO reel repeats across
+  the Services page rows (owner's rule; services-markup.mjs enforces it while unused reels remain).
   The showreel (`showreel: true`) and pending reels are never previews. Real reels → previews update.
 - Home section: lazy chunk `src/services/home.{js,css}`, requested with Work on the first scroll intent. One track
   open at a time (hover desktop / tap mobile), magenta playhead lights keyframes, < 900px stacked cards.
@@ -107,8 +108,9 @@ Static site built with Vite, deployed to GitHub Pages: https://publifix.github.i
 - Marquee `src/studio/marquee.{js,css}`: list once in the HTML, cloned (aria-hidden) by JS; CSS transform
   loop shifted by exactly one list width (seamless); hover slows it (playbackRate); off screen pauses.
   No JS / reduced motion: static wrapped list.
-- Home teaser: heading "Ideas en movimiento." (`studio.hero.line1`, one line on purpose: the owner found the
-  two-line version repetitive) + `studio.hero.text`, one client band, link to the page.
+- "Ideas en movimiento. Historias que mueven." read repetitive to the owner: the page hero is now
+  "Ideas en / movimiento." (EN "Ideas / in motion.", intentional break, `studio.hero.line1/2`) and the
+  home teaser heading is "Ideas en movimiento." (`studio.home.heading`) + `studio.hero.text`, one client band, link to the page.
   `src/studio/home.{js,css}`: lazy chunk with Work/Services on the first scroll intent (also
   carries the footer styles for the home). Footer `src/partials/footer.html` + `src/styles/footer.css`
   (imported by each page's CSS) on every page: Publifix Network links (new tab, rel=noopener).

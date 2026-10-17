@@ -304,12 +304,13 @@
     },
     "label": "Studio",
     "home": {
-      "cta": "Meet the studio"
+      "cta": "Meet the studio",
+      "heading": "Ideas in motion."
     },
     "hero": {
       "label": "MOVO / Motion Design Studio",
-      "line1": "Ideas in motion.",
-      "line2": "Stories that move.",
+      "line1": "Ideas",
+      "line2": "in motion.",
       "text": "A Motion Design Studio specializing in visual storytelling through motion graphics, animation, and design."
     },
     "clients": {

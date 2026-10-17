@@ -1,5 +1,5 @@
 {
-  "_note": "Hand-picked preview reels. `pillars`: the home teaser tracks (Marca en movimiento / Contenido y campañas / Explicar y presentar). `services`: the Services page rows (the first row of each pillar uses the pillar's reel). Both override the automatic pick (first / n-th reel of the Work category). Reel ids from src/data/reels.json; remove a line to go back to automatic.",
+  "_note": "Hand-picked preview reels. `pillars`: the home teaser tracks (Marca en movimiento / Contenido y campañas / Explicar y presentar). `services`: the Services page rows — every row a DIFFERENT reel (the owner's rule; services-markup.mjs never repeats one while unused reels remain). Both override the automatic pick. Reel ids from src/data/reels.json.",
   "pillars": {
     "brand": "reel-07",
     "content": "reel-01",
@@ -7,14 +7,14 @@
   },
   "services": {
     "animated-logo": "reel-07",
-    "motion-identity": "reel-07",
-    "brand-kit": "reel-07",
-    "reels": "reel-01",
-    "ads": "reel-03",
+    "motion-identity": "reel-06",
+    "brand-kit": "reel-09",
+    "reels": "reel-04",
+    "ads": "reel-01",
     "campaigns": "reel-02",
-    "monthly-plan": "reel-04",
+    "monthly-plan": "reel-05",
     "explainers": "reel-10",
     "product": "reel-08",
-    "events": "reel-07"
+    "events": "reel-03"
   }
 }

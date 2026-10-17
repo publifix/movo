@@ -2,7 +2,7 @@
 // here it is cloned (aria-hidden) until the track covers the screen twice, and the CSS animation gets
 // one list width as its shift and a duration for a constant speed. Hovering slows the band down;
 // off screen it pauses. Reduced motion: nothing runs (the CSS shows a static, wrapped list).
-const SPEED = 70; // px per second
+const SPEED = 105; // px per second
 
 export function initMarquees(scope = document) {
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
