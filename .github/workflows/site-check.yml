@@ -1,0 +1,35 @@
+name: Check site pages
+
+# Manual. Real browsers against the live site (the sandbox where it is developed cannot reach github.io):
+# the Studio page and the home teaser, ES + EN, on 1440x900, 1920x1080 (Chrome), Pixel 7 (Chrome) and
+# iPhone 14 (WebKit). See scripts/perf/studio-check.mjs.
+on:
+  workflow_dispatch:
+    inputs:
+      site:
+        description: Site root URL
+        default: https://publifix.github.io/movo/
+
+permissions:
+  contents: read
+
+jobs:
+  studio:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright@1.64.1 install --with-deps webkit
+      - name: Studio page + home teaser
+        env:
+          CHROME_PATH: /usr/bin/google-chrome
+        run: |
+          for dev in desktop desktop1920 pixel7 iphone14; do
+            echo "::group::$dev"
+            node scripts/perf/studio-check.mjs "${{ inputs.site }}" --device "$dev" || true
+            echo "::endgroup::"
+          done

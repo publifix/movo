@@ -107,6 +107,9 @@ Static site built with Vite, deployed to GitHub Pages: https://publifix.github.i
 - Marquee `src/studio/marquee.{js,css}`: list once in the HTML, cloned (aria-hidden) by JS; CSS transform
   loop shifted by exactly one list width (seamless); hover slows it (playbackRate); off screen pauses.
   No JS / reduced motion: static wrapped list.
-- Home teaser `src/studio/home.{js,css}`: lazy chunk with Work/Services on the first scroll intent (also
+- Home teaser: heading "Ideas en movimiento." (`studio.hero.line1`, one line on purpose: the owner found the
+  two-line version repetitive) + `studio.hero.text`, one client band, link to the page.
+  `src/studio/home.{js,css}`: lazy chunk with Work/Services on the first scroll intent (also
   carries the footer styles for the home). Footer `src/partials/footer.html` + `src/styles/footer.css`
   (imported by each page's CSS) on every page: Publifix Network links (new tab, rel=noopener).
+- Production check: manual workflow `.github/workflows/site-check.yml` → `scripts/perf/studio-check.mjs`.
