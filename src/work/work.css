@@ -455,7 +455,7 @@ html.player-open body {
 .player__bar {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
-  grid-template-areas: 'count nav' 'title title' 'info info';
+  grid-template-areas: 'count nav' 'title title' 'info info' 'project project';
   align-items: center;
   gap: 0 16px;
 }
@@ -504,6 +504,22 @@ html.player-open body {
 }
 
 .player__cat {
+  color: var(--c-volt);
+}
+
+.player__project {
+  grid-area: project;
+  justify-self: start;
+  margin-top: 10px;
+  padding: 4px 0;
+  color: var(--c-white);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  text-decoration: none;
+  border-bottom: 1px solid var(--c-volt);
+}
+
+.player__project:hover {
   color: var(--c-volt);
 }
 
@@ -601,6 +617,11 @@ html.player-open body {
     display: block;
   }
 
+  .player__project {
+    display: inline-block;
+    margin-top: 24px;
+  }
+
   .player__desc {
     margin-top: 20px;
     font-size: 1.0625rem;
@@ -611,4 +632,16 @@ html.player-open body {
   .work-cursor {
     display: none;
   }
+}
+
+/* "See all work": bottom right of the pinned strip (fades in with the head); after the feed carousel */
+html.work-strip .work__all {
+  position: absolute;
+  right: var(--gutter);
+  bottom: clamp(16px, 3svh, 32px);
+  margin: 0;
+}
+
+html.work-feed .work__all {
+  margin-top: 22px;
 }

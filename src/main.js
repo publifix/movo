@@ -38,6 +38,7 @@ const loadWork = () => {
     import('./work/index.js').then(m => m.initWork({ root: ROOT, ui: UI, preferMp4 })),
     import('./services/home.js').then(m => m.initServicesHome()),
     import('./studio/home.js').then(m => m.initStudioHome()),
+    import('./contact/home.css'),
   ]).then(() => {
     // A #hash to a section below the pinned scene: its position is only final now.
     const target = location.hash.length > 1 && document.getElementById(decodeURIComponent(location.hash.slice(1)));

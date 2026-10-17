@@ -1,10 +1,11 @@
 // Bilingual static pages for Vite.
 //
-// Every page in site.config.mjs (home: src/page.html, services: src/services.html, studio:
-// src/studio.html) has one template. For every page × locale this plugin serves/builds a real HTML file
-// (es → /index.html, /servicios/, /estudio/; en → /en/, /en/services/, /en/studio/) with the strings of
-// src/i18n/<code>.json baked in, plus per-page SEO: canonical, hreflang alternates, Open Graph, Twitter card, JSON-LD and robots. Templates can include
-// shared pieces from src/partials/ with {{> name}}. At build time it also emits robots.txt,
+// Every page in site.config.mjs has one template. For every page × locale this plugin serves/builds a real
+// HTML file (es → /index.html, /servicios/, /estudio/, /trabajo/, /contacto/…; en → /en/, /en/services/…)
+// with the strings of src/i18n/<code>.json baked in, plus per-page SEO: canonical, hreflang alternates,
+// Open Graph, Twitter card, JSON-LD and robots. A page with `collection: 'reels'` is rendered once per
+// reel of src/data/reels.json (project pages: /trabajo/<slug>/, /en/work/<slug>/); their stub index.html
+// files are created at startup. Templates can include shared pieces from src/partials/ with {{> name}}. At build time it also emits robots.txt,
 // sitemap.xml and a bilingual 404.html. Content is in the HTML itself (not injected by JS).
 import fs from 'node:fs';
 import path from 'node:path';
@@ -12,6 +13,9 @@ import site from './site.config.mjs';
 import { servicesMarkup } from './services-markup.mjs';
 import { reelMedia } from './reel-media.mjs';
 import { studioMarkup, STUDIO_DATA } from './studio-markup.mjs';
+import { portfolioMarkup, projectMeta } from './portfolio-markup.mjs';
+import { siteMarkup, SITE_DATA } from './site-markup.mjs';
+import { privacyMarkup, PRIVACY_DATA } from './privacy-markup.mjs';
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../..');
 const PARTIALS = path.join(ROOT, 'src/partials');
@@ -24,7 +28,7 @@ const reelsData = () => JSON.parse(fs.readFileSync(REELS, 'utf8'));
 
 // Work cards, rendered into the HTML for every language (titles indexable). No media URL is in a src
 // attribute: posters and previews load from data-* only after the visitor scrolls (src/work/).
-function workMarkup(t, root) {
+function workMarkup(t, root, projectHref) {
   const { fullBaseUrl = '', reels } = reelsData();
   const cats = [...new Set(reels.map(r => r.category))];
   // Each category takes the color of its Services pillar (brand volt, content magenta, explain violet).
@@ -43,7 +47,7 @@ function workMarkup(t, root) {
     const ar = m.width * 16 === m.height * 9 ? '' : ` style="--ar: ${m.width} / ${m.height}"`;
     const tag = r.pending ? t.work.pendingTag : r.mock ? 'MOCK' : '';
     return `<li class="work__item" data-category="${r.category}"${ar}>
-          <a class="reel" href="${esc(m.full)}" data-reel="${r.id}" data-index="${i}"
+          <a class="reel" href="${esc(projectHref(r))}" data-reel="${r.id}" data-index="${i}"
              data-poster="${esc(m.poster)}" data-preview-webm="${esc(m.previewWebm)}" data-preview-mp4="${esc(m.previewMp4)}"
              data-full="${esc(m.full)}" data-full-mobile="${esc(m.fullMobile)}" data-title="${esc(title)}"${short ? ` data-title-short="${esc(short)}"` : ''} data-client="${esc(r.client)}" data-category-label="${esc(cat)}"${desc ? ` data-desc="${esc(desc)}"` : ''}
              aria-label="${esc(t.work.open)}: ${esc(title)} — ${esc(r.client)}">
@@ -66,35 +70,45 @@ const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(
 const get = (obj, key) => key.split('.').reduce((o, k) => (o == null ? o : o[k]), obj);
 const absolute = p => site.siteUrl + p;
 
-const urlPath = (page, locale) => locale.path + page.path[locale.code];
+// Collection pages (project pages) are one per reel with a slug; every other page has one item (null).
+const itemsOf = page => (page.collection === 'reels' ? reelsData().reels.filter(r => r.slug) : [null]);
+const urlPath = (page, locale, item = null) => locale.path + page.path[locale.code] + (item ? `${item.slug}/` : '');
+const entries = () =>
+  site.pages.flatMap(page => itemsOf(page).flatMap(item => site.locales.map(locale => ({ page, locale, item }))));
 
-// Which page and locale an HTML entry belongs to (<root>/en/services/index.html → services, en)
+// Which page, locale (and item) an HTML entry belongs to (<root>/en/services/index.html → services, en)
 function pageFor(filename) {
   const rel = path.relative(ROOT, filename).split(path.sep).join('/');
-  for (const page of site.pages)
-    for (const locale of site.locales) if (rel === `${urlPath(page, locale)}index.html`) return { page, locale };
-  return { page: site.pages[0], locale: site.locales[0] };
+  return entries().find(e => rel === `${urlPath(e.page, e.locale, e.item)}index.html`) || { page: site.pages[0], locale: site.locales[0], item: null };
 }
 
-const includePartials = html =>
-  html.replace(/\{\{>\s*([\w-]+)\s*\}\}/g, (m, name) => fs.readFileSync(path.join(PARTIALS, `${name}.html`), 'utf8').trim());
+// partials can include partials (page-head → head-links)
+const includePartials = (html, depth = 0) =>
+  html.replace(/\{\{>\s*([\w-]+)\s*\}\}/g, (m, name) => {
+    if (depth > 4) throw new Error(`[i18n] partials nested too deep at "${name}"`);
+    return includePartials(fs.readFileSync(path.join(PARTIALS, `${name}.html`), 'utf8').trim(), depth + 1);
+  });
 
-function render(page, locale) {
+function render(page, locale, item = null) {
   const t = { ...strings(locale.code), _lang: locale.code };
-  const here = urlPath(page, locale);
+  const here = urlPath(page, locale, item);
   const root = here ? '../'.repeat(here.split('/').filter(Boolean).length) : './';
   const url = absolute(here);
-  const meta = get(t, page.meta);
+  const meta = item ? projectMeta(t, item, locale.code) : get(t, page.meta);
   if (!meta?.title || !meta?.description) throw new Error(`[i18n] Missing "${page.meta}.title/description" in src/i18n/${locale.code}.json`);
-  const pageHref = (id, l = locale) => root + urlPath(site.pages.find(p => p.id === id), l);
+  const pageHref = (id, l = locale, it = null) => root + urlPath(site.pages.find(p => p.id === id), l, it);
   const homeHref = pageHref('home');
   const servicesHref = pageHref('services');
   const studioHref = pageHref('studio');
+  const workHref = pageHref('work');
+  const contactHref = pageHref('contact');
+  const privacyHref = pageHref('privacy');
+  const projectHref = r => pageHref('project', locale, r);
   const isHome = page.id === 'home';
 
   const alternates = site.locales
-    .map(l => `<link rel="alternate" hreflang="${l.code}" href="${absolute(urlPath(page, l))}" />`)
-    .concat(`<link rel="alternate" hreflang="x-default" href="${absolute(urlPath(page, site.locales[0]))}" />`);
+    .map(l => `<link rel="alternate" hreflang="${l.code}" href="${absolute(urlPath(page, l, item))}" />`)
+    .concat(`<link rel="alternate" hreflang="x-default" href="${absolute(urlPath(page, site.locales[0], item))}" />`);
   const ogAlternates = site.locales
     .filter(l => l !== locale)
     .map(l => `<meta property="og:locale:alternate" content="${strings(l.code).meta.ogLocale}" />`);
@@ -107,7 +121,13 @@ function render(page, locale) {
       { '@type': 'WebPage', '@id': `${url}#webpage`, url, name: meta.title, description: meta.description, inLanguage: locale.code, isPartOf: { '@id': `${site.siteUrl}#website` } },
     ],
   };
-  const svc = servicesMarkup({ t, lang: locale.code, root, homeHref, servicesHref, data: servicesData(), reelsData: reelsData() });
+  const svc = servicesMarkup({ t, lang: locale.code, root, homeHref, servicesHref, workHref, data: servicesData(), reelsData: reelsData() });
+  const pageUrl = (id, it = null) => absolute(urlPath(site.pages.find(p => p.id === id), locale, it));
+  const pf = portfolioMarkup({
+    t, lang: locale.code, root, item, url, orgId: `${site.siteUrl}#org`, homeUrl: pageUrl('home'), workUrl: pageUrl('work'),
+    projectHref, absoluteProject: r => pageUrl('project', r), servicesHref, reelsData: reelsData(), servicesData: servicesData(),
+  });
+  jsonld['@graph'].push(...pf.jsonld);
   if (page.id === 'services') {
     jsonld['@graph'].push({
       '@type': 'ItemList',
@@ -144,39 +164,45 @@ function render(page, locale) {
 
   const langSwitch = site.locales
     .map(l => {
-      const href = root + urlPath(page, l);
+      const href = root + urlPath(page, l, item);
       const current = l === locale ? ' aria-current="true"' : '';
       return `<a href="${href}" hreflang="${l.code}" lang="${l.code}"${current} title="${esc(l.name)}">${l.label}</a>`;
     })
     .join('<span aria-hidden="true">/</span>');
 
-  const ui = { intro: t.intro, a11y: { menu: t.a11y.menu, closeMenu: t.a11y.closeMenu }, player: t.player, work: { scrubHint: t.work.scrubHint } };
-  const work = workMarkup(t, root);
-  // Nav: section anchors on the home, links back to the home's sections elsewhere; Services → its page.
-  // Studio → its page too (the home keeps a teaser at #estudio / #studio).
-  const anchor = key => (isHome ? `#${t.nav[key].id}` : `${homeHref}#${t.nav[key].id}`);
+  const ui = { intro: t.intro, a11y: { menu: t.a11y.menu, closeMenu: t.a11y.closeMenu }, player: t.player, work: { scrubHint: t.work.scrubHint }, contact: t.contactUi };
+  const work = workMarkup(t, root, projectHref);
+  // Nav: every item is a page (Work, Services, Studio, Contact); the home keeps a teaser of each one.
+  const current = (...ids) => (ids.includes(page.id) ? ' aria-current="page"' : '');
   const vars = {
     lang: locale.code,
     root,
     homeHref,
     servicesHref,
     studioHref,
+    workHref,
+    contactHref,
+    privacyHref,
     seo,
     'page.title': esc(meta.title),
     'page.description': esc(meta.description),
-    'nav.work.href': anchor('work'),
+    'nav.work.href': workHref,
     'nav.services.href': servicesHref,
     'nav.studio.href': studioHref,
-    'nav.contact.href': anchor('contact'),
-    'navCurrent.work': '',
-    'navCurrent.services': page.id === 'services' ? ' aria-current="page"' : '',
-    'navCurrent.studio': page.id === 'studio' ? ' aria-current="page"' : '',
+    'nav.contact.href': contactHref,
+    'navCurrent.work': current('work', 'project'),
+    'navCurrent.services': current('services'),
+    'navCurrent.studio': current('studio'),
+    'navCurrent.contact': current('contact'),
     langSwitch: `<span class="sr-only">${esc(t.a11y.language)}:</span> ${langSwitch}`,
     uiJson: JSON.stringify(ui).replace(/</g, '\\u003c'),
     workFilters: work.filters,
     workReels: work.cards,
     ...svc,
     ...studioMarkup({ t, lang: locale.code }),
+    ...pf.vars,
+    ...(page.id === 'privacy' ? privacyMarkup({ lang: locale.code }) : {}),
+    ...siteMarkup({ t, lang: locale.code, root, homeHref, workHref, servicesHref, studioHref, contactHref, privacyHref, langSwitch }),
   };
 
   const template = includePartials(fs.readFileSync(path.join(ROOT, page.template), 'utf8'));
@@ -219,14 +245,23 @@ export default function movoI18n() {
   return {
     name: 'movo-i18n',
     config() {
+      // project pages: their stub index.html files are generated (git-ignored), one per reel × language
+      for (const { page, locale, item } of entries()) {
+        if (!item) continue;
+        const file = path.join(ROOT, urlPath(page, locale, item), 'index.html');
+        if (!fs.existsSync(file)) {
+          fs.mkdirSync(path.dirname(file), { recursive: true });
+          fs.writeFileSync(file, `<!-- Generated at dev/build time from ${page.template} (see scripts/i18n/vite-plugin-i18n.mjs). Do not edit. -->\n`);
+        }
+      }
       const input = Object.fromEntries(
-        site.pages.flatMap(p => site.locales.map(l => [`${p.id}-${l.code}`, path.join(ROOT, urlPath(p, l), 'index.html')])),
+        entries().map(({ page, locale, item }) => [[page.id, item?.slug, locale.code].filter(Boolean).join('-'), path.join(ROOT, urlPath(page, locale, item), 'index.html')]),
       );
       return { build: { rollupOptions: { input } } };
     },
     configureServer(server) {
       // Edits to the template or the strings reload every language page
-      const watched = [...site.pages.map(p => path.join(ROOT, p.template)), REELS, SERVICES, PREVIEWS, ...STUDIO_DATA, ...site.locales.map(l => path.join(ROOT, `src/i18n/${l.code}.json`))];
+      const watched = [...site.pages.map(p => path.join(ROOT, p.template)), REELS, SERVICES, PREVIEWS, ...STUDIO_DATA, ...SITE_DATA, ...PRIVACY_DATA, ...site.locales.map(l => path.join(ROOT, `src/i18n/${l.code}.json`))];
       server.watcher.add([...watched, PARTIALS]);
       server.watcher.on('change', file => {
         if (watched.includes(file) || file.startsWith(PARTIALS)) server.ws.send({ type: 'full-reload' });
@@ -235,20 +270,18 @@ export default function movoI18n() {
     transformIndexHtml: {
       order: 'pre',
       handler(_html, ctx) {
-        const { page, locale } = pageFor(ctx.filename);
-        return render(page, locale);
+        const { page, locale, item } = pageFor(ctx.filename);
+        return render(page, locale, item);
       },
     },
     generateBundle() {
-      const urls = site.pages.flatMap(page =>
-        site.locales.map(l => {
-          const links = site.locales
-            .map(a => `<xhtml:link rel="alternate" hreflang="${a.code}" href="${absolute(urlPath(page, a))}"/>`)
-            .concat(`<xhtml:link rel="alternate" hreflang="x-default" href="${absolute(urlPath(page, site.locales[0]))}"/>`)
-            .join('');
-          return `<url><loc>${absolute(urlPath(page, l))}</loc>${links}</url>`;
-        }),
-      );
+      const urls = entries().map(({ page, locale: l, item }) => {
+        const links = site.locales
+          .map(a => `<xhtml:link rel="alternate" hreflang="${a.code}" href="${absolute(urlPath(page, a, item))}"/>`)
+          .concat(`<xhtml:link rel="alternate" hreflang="x-default" href="${absolute(urlPath(page, site.locales[0], item))}"/>`)
+          .join('');
+        return `<url><loc>${absolute(urlPath(page, l, item))}</loc>${links}</url>`;
+      });
       this.emitFile({
         type: 'asset',
         fileName: 'sitemap.xml',

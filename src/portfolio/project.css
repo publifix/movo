@@ -1,0 +1,312 @@
+/* Project page (/trabajo/<slug>/): the whole vertical video at the screen's height with the project beside
+   it (desktop) or under it (phones); facts as a list; previous / next; more projects; closing. */
+@import './portfolio.css';
+
+.pj-crumbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding-top: calc(var(--nav-h) + 16px);
+  color: var(--c-text-muted);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.pj-crumbs a {
+  color: var(--c-white);
+  text-decoration: none;
+}
+
+.pj-crumbs a:hover {
+  color: var(--c-volt);
+}
+
+.pj-crumbs a:focus-visible {
+  outline: 2px solid var(--c-volt);
+  outline-offset: 3px;
+}
+
+.pj-main {
+  display: grid;
+  gap: clamp(28px, 5vw, 64px);
+  padding-top: 24px;
+  padding-bottom: clamp(80px, 12vh, 140px);
+}
+
+/* ---------- the video ---------- */
+.pj-stage {
+  display: flex;
+  justify-content: center;
+}
+
+.pj-video {
+  position: relative;
+  width: min(100%, calc((100svh - var(--nav-h) - 96px) * var(--ar, 9 / 16)));
+  aspect-ratio: var(--ar, 9 / 16);
+  overflow: hidden;
+  border-radius: 18px;
+  background: #000;
+  box-shadow: 0 30px 80px rgb(0 0 0 / 0.45);
+}
+
+.pj-video__el {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #000;
+}
+
+.pj-play {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 14px;
+  width: 100%;
+  border: 0;
+  background: linear-gradient(180deg, rgb(11 11 16 / 0) 40%, rgb(11 11 16 / 0.55));
+  color: var(--c-white);
+  font: inherit;
+  cursor: pointer;
+}
+
+.pj-play[hidden] {
+  display: none;
+}
+
+.pj-play__icon {
+  display: grid;
+  place-items: center;
+  width: clamp(72px, 7vw, 96px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--c-volt);
+  color: var(--c-ink);
+  transition: transform 0.35s var(--ease-out);
+}
+
+.pj-play__icon svg {
+  width: 38%;
+  margin-left: 6%;
+  fill: currentColor;
+}
+
+.pj-play__label {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.pj-play:hover .pj-play__icon {
+  transform: scale(1.08);
+}
+
+.pj-play:focus-visible {
+  outline: 2px solid var(--c-volt);
+  outline-offset: -6px;
+}
+
+/* ---------- the project ---------- */
+.pj-info {
+  display: grid;
+  align-content: start;
+  gap: 18px;
+  max-width: 46ch;
+}
+
+.pj-label__num {
+  margin-left: 6px;
+  color: var(--c-text-muted);
+  font-family: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  letter-spacing: 0.06em;
+}
+
+.pj-client {
+  margin: 8px 0 0;
+  color: var(--c-text-muted);
+  font-size: clamp(0.875rem, 1.1vw, 1rem);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.pj-title {
+  margin: 0;
+  font-size: clamp(2rem, 4.2vw, 4.25rem);
+  font-weight: 900;
+  font-stretch: 115%;
+  letter-spacing: -0.03em;
+  line-height: 0.98;
+  text-transform: uppercase;
+  overflow-wrap: break-word;
+}
+
+.pj-facts {
+  display: grid;
+  margin: 8px 0 0;
+  border-top: 1px solid rgb(245 245 240 / 0.12);
+}
+
+.pj-facts__row {
+  display: grid;
+  grid-template-columns: 9.5em minmax(0, 1fr);
+  gap: 16px;
+  padding: 12px 0;
+  border-bottom: 1px solid rgb(245 245 240 / 0.12);
+}
+
+.pj-facts dt {
+  color: var(--c-text-muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding-top: 2px;
+}
+
+.pj-facts dd {
+  margin: 0;
+  font-size: 0.9375rem;
+}
+
+.pj-cat {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pj-link {
+  color: var(--c-white);
+  text-underline-offset: 3px;
+  text-decoration-color: var(--c-volt);
+}
+
+.pj-link:hover {
+  color: var(--c-volt);
+}
+
+.pj-desc {
+  margin: 6px 0 0;
+  color: var(--c-text-muted);
+  font-size: clamp(1rem, 1.25vw, 1.125rem);
+  line-height: 1.6;
+}
+
+.pj-steps {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.pj-step {
+  display: grid;
+  align-content: start;
+  gap: 6px;
+  padding: 16px;
+  border: 1px solid rgb(245 245 240 / 0.16);
+  border-radius: 14px;
+  color: var(--c-white);
+  text-decoration: none;
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+.pj-step--next {
+  text-align: right;
+}
+
+.pj-step__label {
+  color: var(--c-text-muted);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.pj-step--prev .pj-step__label::before {
+  content: '← ';
+}
+
+.pj-step--next .pj-step__label::after {
+  content: ' →';
+}
+
+.pj-step__title {
+  font-size: 0.875rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.pj-step:hover {
+  border-color: var(--c-volt);
+}
+
+.pj-step:focus-visible,
+.pj-link:focus-visible,
+.pj-more__all:focus-visible {
+  outline: 2px solid var(--c-volt);
+  outline-offset: 3px;
+}
+
+/* desktop / landscape: video at the screen's height, the project beside it */
+@media (min-width: 900px) and (orientation: landscape) {
+  .pj-main {
+    grid-template-columns: auto minmax(300px, 46ch);
+    justify-content: center;
+    align-items: center;
+    column-gap: clamp(40px, 6vw, 112px);
+  }
+
+  .pj-video {
+    width: auto;
+    height: min(calc(100svh - var(--nav-h) - 96px), 1000px);
+  }
+}
+
+/* ---------- more projects ---------- */
+.pj-more {
+  padding-bottom: clamp(80px, 12vh, 140px);
+}
+
+.pj-more__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px 24px;
+  margin-bottom: clamp(24px, 4vh, 40px);
+  padding-top: clamp(40px, 7vh, 80px);
+  border-top: 1px solid rgb(245 245 240 / 0.1);
+}
+
+.pj-more__title {
+  margin: 0;
+  font-size: clamp(1.75rem, 3.6vw, 3.5rem);
+  font-weight: 900;
+  font-stretch: 115%;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+}
+
+.pj-more__all {
+  color: var(--c-white);
+  font-weight: 700;
+  text-decoration: none;
+  border-bottom: 1px solid var(--c-volt);
+  padding: 6px 0;
+}
+
+.pj-more__all:hover {
+  color: var(--c-volt);
+}
+
+@media (max-width: 899px) {
+  .pf__grid--more .pf__item:nth-child(3) {
+    display: none; /* two across on phones */
+  }
+}

@@ -701,40 +701,20 @@ html.js [data-hero-reveal] {
   letter-spacing: 0.12em;
 }
 
-.soon {
-  min-height: 70vh;
-  min-height: 70svh;
-  display: grid;
-  align-content: center;
-  gap: 12px;
-  padding: clamp(64px, 10vh, 120px) var(--gutter);
-  border-top: 1px solid var(--c-gray);
+/* "See all work" (end of the home's Work section; the Work page has every project) */
+.work__all {
+  display: inline-flex;
+  gap: 10px;
+  margin: 28px var(--gutter) 0;
+  padding: 8px 0;
+  color: var(--c-white);
+  font-weight: 700;
+  text-decoration: none;
+  border-bottom: 1px solid var(--c-volt);
 }
 
-.soon__eyebrow {
-  margin: 0;
+.work__all:hover {
   color: var(--c-volt);
-  font-size: 0.8125rem;
-  font-weight: 600;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-}
-
-.soon__title {
-  margin: 0;
-  font-size: clamp(2.5rem, 8vw, 7rem);
-  font-weight: 900;
-  font-stretch: 125%;
-  letter-spacing: -0.035em;
-  line-height: 0.92;
-  text-transform: uppercase;
-}
-
-.soon__text {
-  max-width: 40ch;
-  margin: 0;
-  color: var(--c-text-muted);
-  font-size: clamp(1rem, 1.3vw, 1.25rem);
 }
 
 /* ===== Scroll timeline: timecode (decorative, aria-hidden) ===== */

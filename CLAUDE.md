@@ -22,12 +22,17 @@ Static site built with Vite, deployed to GitHub Pages: https://publifix.github.i
   Switch: `INTRO_ON_TOUCH` in the inline `<head>` script of `src/page.html`.
 
 ## Bilingual (ES + EN) — every new section/page must ship in both languages
-- Pages are declared in `scripts/i18n/site.config.mjs` → `pages` (one template each: home `src/page.html`,
-  services `src/services.html`, studio `src/studio.html`; URL = locale path + page path: `/`, `/en/`,
-  `/servicios/`, `/en/services/`, `/estudio/`, `/en/studio/`).
+- Pages are declared in `scripts/i18n/site.config.mjs` → `pages` (one template each; URL = locale path + page
+  path): home `src/page.html` (`/`, `/en/`), services `src/services.html` (`/servicios/`, `/en/services/`),
+  studio `src/studio.html` (`/estudio/`, `/en/studio/`), work `src/work.html` (`/trabajo/`, `/en/work/`),
+  project `src/project.html` (`collection: 'reels'` → one page per reel slug: `/trabajo/<slug>/`,
+  `/en/work/<slug>/`; their stubs are generated + git-ignored), contact `src/contact.html` (`/contacto/`,
+  `/en/contact/`), privacy `src/privacy.html` (`/aviso-de-privacidad/`, `/en/privacy-notice/`).
+  The nav links to the pages (Work, Services, Studio, Contact); the home keeps a teaser of each.
   The `index.html` files at those paths are stubs: the plugin `scripts/i18n/vite-plugin-i18n.mjs` renders one
   static HTML page per page × language (content in the HTML, indexable). Shared pieces live in `src/partials/`
-  (`{{> header}}`, `{{> head-links}}`, `{{> timecode}}`, `{{> footer}}`). A new page = template + stub + entry in `pages`.
+  (`{{> header}}`, `{{> head-links}}`, `{{> page-head}}` (inner pages), `{{> timecode}}`, `{{> footer}}`;
+  partials may include partials). A new page = template + stub + entry in `pages`.
 - Strings live in `src/i18n/es.json` and `src/i18n/en.json` (same keys; a missing key fails the build).
   In the template use `{{key.path}}`; public files use `{{root}}` (e.g. `{{root}}favicon.ico`); scripts read the
   page root from `<html data-root>` and UI strings from `#movo-i18n`.
@@ -116,3 +121,32 @@ Static site built with Vite, deployed to GitHub Pages: https://publifix.github.i
   carries the footer styles for the home). Footer `src/partials/footer.html` + `src/styles/footer.css`
   (imported by each page's CSS) on every page: Publifix Network links (new tab, rel=noopener).
 - Production check: manual workflow `.github/workflows/site-check.yml` → `scripts/perf/studio-check.mjs`.
+
+## Work page + project pages (portfolio, SEO) — `scripts/i18n/portfolio-markup.mjs`
+- Everything comes from `src/data/reels.json`: a new reel (with a stable `slug`) = a new card on `/trabajo/`,
+  a new project page, a sitemap entry and JSON-LD (ItemList on Work; VideoObject + BreadcrumbList on the
+  project). Optional `date` (YYYY-MM-DD) on a reel adds `uploadDate`, which Google needs for video results.
+- Work page `src/portfolio/work.{js,css}`: kinetic title, filters with counts (`?cat=a,b`; Services links here),
+  4/3/2-column grid with offset columns, real poster <img> (lazy after the first row), hover preview (fine
+  pointers). Project page `src/portfolio/project.{js,css}`: whole vertical video (720p in the HTML, 1080p on
+  desktop on play, sound on), facts (client, category, service → Services anchor, duration, format),
+  description if any, prev/next (← → keys), 3 more projects, closing CTA. Home cards link to the project
+  page (no-JS) and open the player; the player has "Ver proyecto".
+
+## Contact — `src/contact.html`, `src/contact/page.{js,css}`, `src/data/contact.json`
+- Form → Web3Forms (no server, no DB; messages arrive at labs.publifix@gmail.com). `web3formsKey` in
+  `src/data/contact.json` (public by design); empty = the form says "coming soon" and points to WhatsApp.
+  Validation under each field, honeypot `botcheck`, consent checkbox → privacy notice, success panel.
+  WhatsApp (524421218565) is an option inside the form card — no floating button.
+- Home teaser `.ctt` (styles lazy: `src/contact/home.css`). Every "Empieza un proyecto" CTA → the page.
+- `social` (Instagram, TikTok) URLs in the same file: an icon shows in the footer only when its URL is set.
+
+## Privacy notice — `src/data/privacy.json` (ES/EN), `scripts/i18n/privacy-markup.mjs`, `src/privacy/`
+- Professional draft for Publifix Network S.A.P.I. de C.V. (LFPDPPP): must be reviewed by their lawyer.
+  Sticky index with the section being read; update `updated` when it changes.
+
+## Footer (every page) — `src/partials/footer.html`, `src/styles/footer.css`, `scripts/i18n/site-markup.mjs`
+- Wordmark (a `<use>` of the navbar's `#movo-wordmark` path: no second copy), line, site nav, social, Publifix
+  Network, © + "Servicio proporcionado por Publifix Network S.A.P.I. de C.V.", privacy link, ES/EN.
+- Production checks: `site-check.yml` runs `studio-check.mjs` and `pages-check.mjs` (Work, all project pages,
+  playback with sound, contact, privacy) in real Chrome/WebKit.

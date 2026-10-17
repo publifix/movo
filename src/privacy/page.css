@@ -1,0 +1,209 @@
+/* Privacy notice: a document for reading. Sticky index on the left (desktop), a measure of ~68
+   characters, generous line height, numbered sections, the active section lit in the index. */
+@import '../styles/footer.css';
+
+.lg {
+  overflow-x: clip;
+}
+
+.lg-wrap {
+  padding-inline: var(--gutter);
+}
+
+.lg-hero {
+  display: grid;
+  gap: 18px;
+  padding-top: calc(var(--nav-h) + clamp(40px, 8vh, 96px));
+  padding-bottom: clamp(40px, 7vh, 72px);
+  border-bottom: 1px solid rgb(245 245 240 / 0.1);
+}
+
+.lg-label {
+  margin: 0;
+  color: var(--c-volt);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.lg-title {
+  margin: 0;
+  font-size: clamp(2.5rem, 7vw, 7rem);
+  font-weight: 900;
+  font-stretch: 125%;
+  letter-spacing: -0.035em;
+  line-height: 0.92;
+  text-transform: uppercase;
+  overflow-wrap: break-word;
+}
+
+.lg-meta {
+  margin: 0;
+  color: var(--c-text-muted);
+  font-size: 0.9375rem;
+}
+
+.lg-layout {
+  display: grid;
+  gap: 40px;
+  padding-top: clamp(40px, 7vh, 72px);
+  padding-bottom: clamp(96px, 14vh, 160px);
+}
+
+@media (min-width: 1000px) {
+  .lg-layout {
+    grid-template-columns: minmax(240px, 300px) minmax(0, 68ch);
+    gap: clamp(48px, 7vw, 120px);
+  }
+
+  .lg-toc {
+    position: sticky;
+    top: calc(var(--nav-h) + 24px);
+    align-self: start;
+    max-height: calc(100svh - var(--nav-h) - 48px);
+    overflow-y: auto;
+  }
+}
+
+/* ---------- index ---------- */
+.lg-toc {
+  padding: 20px;
+  border: 1px solid rgb(245 245 240 / 0.12);
+  border-radius: 16px;
+}
+
+.lg-toc__title {
+  margin: 0 0 12px;
+  color: var(--c-text-muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.lg-toc__list {
+  display: grid;
+  gap: 2px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.lg-toc__list a {
+  position: relative;
+  display: block;
+  padding: 7px 0 7px 16px;
+  color: var(--c-text-muted);
+  font-size: 0.875rem;
+  line-height: 1.35;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+/* a playhead mark beside the section you are reading */
+.lg-toc__list a::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  border-radius: 2px;
+  background: rgb(245 245 240 / 0.14);
+  transition: background-color 0.2s;
+}
+
+.lg-toc__list a:hover {
+  color: var(--c-white);
+}
+
+.lg-toc__list a[aria-current='true'] {
+  color: var(--c-white);
+}
+
+.lg-toc__list a[aria-current='true']::before {
+  background: var(--c-magenta);
+}
+
+.lg-toc__list a:focus-visible {
+  outline: 2px solid var(--c-volt);
+  outline-offset: 2px;
+}
+
+/* ---------- document ---------- */
+.lg-doc {
+  max-width: 68ch;
+  font-size: clamp(1rem, 1.1vw, 1.0625rem);
+  line-height: 1.7;
+}
+
+.lg-note {
+  margin: 0 0 24px;
+  padding: 14px 18px;
+  border-left: 2px solid var(--c-volt);
+  background: rgb(245 245 240 / 0.04);
+  color: var(--c-text-muted);
+  font-size: 0.9375rem;
+}
+
+.lg-intro {
+  margin: 0 0 clamp(32px, 5vh, 48px);
+  font-size: clamp(1.125rem, 1.5vw, 1.375rem);
+  line-height: 1.55;
+}
+
+.lg-sec {
+  padding-top: clamp(28px, 4vh, 40px);
+  scroll-margin-top: calc(var(--nav-h) + 16px);
+  border-top: 1px solid rgb(245 245 240 / 0.1);
+}
+
+.lg-sec + .lg-sec {
+  margin-top: clamp(28px, 4vh, 40px);
+}
+
+.lg-sec__title {
+  margin: 0 0 14px;
+  font-size: clamp(1.25rem, 1.8vw, 1.625rem);
+  font-weight: 800;
+  font-stretch: 108%;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+.lg-sec p {
+  margin: 0 0 14px;
+  color: rgb(245 245 240 / 0.86);
+}
+
+.lg-sec ul {
+  display: grid;
+  gap: 10px;
+  margin: 0 0 16px;
+  padding: 0;
+  list-style: none;
+}
+
+.lg-sec li {
+  position: relative;
+  padding-left: 22px;
+  color: rgb(245 245 240 / 0.86);
+}
+
+.lg-sec li::before {
+  content: '';
+  position: absolute;
+  left: 2px;
+  top: 0.72em;
+  width: 8px;
+  height: 1px;
+  background: var(--c-volt);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lg-toc__list a,
+  .lg-toc__list a::before {
+    transition: none;
+  }
+}

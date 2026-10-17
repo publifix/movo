@@ -76,20 +76,16 @@
     },
     "open": "Ver reel",
     "scrubHint": "Mueve el cursor para recorrer el video",
-    "pendingTag": "PENDIENTE"
+    "pendingTag": "PENDIENTE",
+    "viewAll": "Ver todo el trabajo"
   },
   "player": {
     "label": "Reproductor de video",
     "close": "Cerrar",
     "prev": "Reel anterior",
     "next": "Siguiente reel",
-    "of": "de"
-  },
-  "sections": {
-    "_note": "PLACEHOLDER: secciones por construir.",
-    "soon": "Próximamente",
-    "servicesText": "Motion graphics, branding animado, explainers y contenido para redes.",
-    "contactText": "Cuéntanos qué quieres poner en movimiento."
+    "of": "de",
+    "project": "Ver proyecto"
   },
   "services": {
     "_note": "GENERATED from the Services document by scripts/services/import-doc.py. Do not edit by hand: edit the document and re-run the script.",
@@ -343,6 +339,113 @@
     "newTab": "(se abre en una pestaña nueva)"
   },
   "footer": {
-    "network": "Publifix Network"
+    "network": "Publifix Network",
+    "site": "Sitio",
+    "follow": "Síguenos",
+    "legal": "Aviso de privacidad",
+    "provided": "Servicio proporcionado por Publifix Network S.A.P.I. de C.V.",
+    "language": "Idioma",
+    "top": "Volver arriba"
+  },
+  "workPage": {
+    "_note": "Página /trabajo/ (portafolio). Copy de MOVO; el número de proyectos se calcula de src/data/reels.json.",
+    "meta": {
+      "title": "Trabajo · Portafolio de motion design · MOVO",
+      "description": "Proyectos de motion graphics, animación y diseño de MOVO para marcas de México y Estados Unidos: publicidad, contenido social, branding y explainers."
+    },
+    "label": "Portafolio",
+    "h1": "Trabajo",
+    "intro": "Una selección de proyectos de motion graphics, animación y diseño. Cada pieza cuenta una historia distinta.",
+    "count": "proyectos",
+    "countOne": "proyecto",
+    "closingTitle": "¿Tu marca es la siguiente?",
+    "closingText": "Cuéntanos qué quieres contar y lo convertimos en tu próximo proyecto."
+  },
+  "project": {
+    "_note": "Páginas de proyecto /trabajo/<slug>/ (una por reel).",
+    "label": "Proyecto",
+    "back": "Todo el trabajo",
+    "client": "Cliente",
+    "category": "Categoría",
+    "service": "Servicio",
+    "duration": "Duración",
+    "format": "Formato",
+    "vertical": "Vertical 9:16",
+    "play": "Reproducir video",
+    "prev": "Proyecto anterior",
+    "next": "Siguiente proyecto",
+    "more": "Más proyectos",
+    "viewService": "Ver el servicio",
+    "metaDescription": "{title} para {client}: un proyecto de {category} de MOVO, estudio de motion design.",
+    "metaTitle": "{title} · {client} · MOVO",
+    "crumbs": "Ruta de navegación"
+  },
+  "contact": {
+    "_note": "Teaser de contacto (home) y página /contacto/. Copy propuesto por el estudio de diseño; MOVO puede ajustarlo.",
+    "meta": {
+      "title": "Contacto · MOVO Motion Design Studio",
+      "description": "Cuéntanos tu proyecto de motion graphics, animación o diseño. Escríbenos desde el formulario o conversemos por WhatsApp."
+    },
+    "label": "Contacto",
+    "teaser": {
+      "heading": "Empecemos por una conversación.",
+      "text": "Escríbenos con lo que tengas: una marca por lanzar, una campaña en puerta o una idea que todavía no tiene forma. Te respondemos con los siguientes pasos."
+    },
+    "page": {
+      "h1": "Hablemos de tu proyecto.",
+      "intro": "Cuéntanos qué quieres contar y para cuándo lo necesitas. Con eso preparamos una propuesta a la medida de tu marca.",
+      "helpTitle": "Lo que nos ayuda saber",
+      "help1": "Qué quieres comunicar y a quién.",
+      "help2": "Dónde se va a ver: redes, web, pantallas o un evento.",
+      "help3": "Fechas clave o lanzamiento.",
+      "help4": "Referencias o piezas que te gusten."
+    },
+    "form": {
+      "title": "Escríbenos",
+      "name": "Nombre",
+      "email": "Correo",
+      "company": "Empresa o marca",
+      "optional": "(opcional)",
+      "needs": "¿Qué necesitas?",
+      "needsUnsure": "Aún no lo sé",
+      "message": "Cuéntanos tu proyecto",
+      "messageHint": "Objetivo, formato, fechas, referencias…",
+      "consentBefore": "Acepto el",
+      "consentLink": "aviso de privacidad",
+      "consentAfter": ".",
+      "submit": "Enviar mensaje",
+      "required": "Campos obligatorios"
+    },
+    "whatsapp": {
+      "title": "¿Prefieres conversar?",
+      "link": "Escríbenos por WhatsApp",
+      "message": "Hola, MOVO. Me gustaría platicar sobre un proyecto."
+    }
+  },
+  "contactUi": {
+    "_note": "Mensajes del formulario (los usa src/contact/page.js).",
+    "errName": "Escribe tu nombre.",
+    "errEmail": "Escribe un correo válido.",
+    "errMessage": "Cuéntanos un poco de tu proyecto.",
+    "errConsent": "Necesitamos que aceptes el aviso de privacidad.",
+    "sending": "Enviando…",
+    "successTitle": "¡Mensaje enviado!",
+    "successText": "Gracias. Te escribiremos pronto al correo que nos dejaste.",
+    "again": "Enviar otro mensaje",
+    "error": "No pudimos enviar tu mensaje. Inténtalo de nuevo o escríbenos por WhatsApp.",
+    "inactive": "El formulario estará disponible muy pronto. Mientras tanto, escríbenos por WhatsApp.",
+    "subject": "Nuevo mensaje desde el sitio de MOVO (contacto)",
+    "fromName": "Sitio MOVO"
+  },
+  "privacy": {
+    "meta": {
+      "title": "Aviso de privacidad · MOVO",
+      "description": "Aviso de privacidad integral de MOVO, servicio proporcionado por Publifix Network S.A.P.I. de C.V.: qué datos tratamos, para qué y cómo ejercer tus derechos ARCO."
+    },
+    "label": "Legal",
+    "h1": "Aviso de privacidad",
+    "updated": "Última actualización",
+    "toc": "En este documento",
+    "provided": "Servicio proporcionado por Publifix Network S.A.P.I. de C.V."
   }
 }

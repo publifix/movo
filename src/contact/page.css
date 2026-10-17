@@ -1,0 +1,425 @@
+/* Contact page (/contacto/, /en/contact/): big editorial intro + "what helps us" on the left, the form card
+   on the right (stacked on phones). Form: large touch targets, visible labels, errors under each field. */
+@import '../styles/footer.css';
+
+.ct {
+  overflow-x: clip;
+}
+
+.ct-wrap {
+  padding-inline: var(--gutter);
+}
+
+.ct-grid {
+  display: grid;
+  gap: clamp(40px, 6vw, 96px);
+  padding-top: calc(var(--nav-h) + clamp(32px, 7vh, 80px));
+  padding-bottom: clamp(88px, 14vh, 160px);
+}
+
+@media (min-width: 1000px) {
+  .ct-grid {
+    grid-template-columns: minmax(0, 1fr) minmax(420px, 560px);
+    align-items: start;
+  }
+
+  .ct-title {
+    font-size: clamp(3rem, 4.6vw, 6.5rem); /* beside the form: never under it */
+  }
+
+  .ct-intro {
+    position: sticky;
+    top: calc(var(--nav-h) + 24px);
+  }
+}
+
+.ct-intro {
+  display: grid;
+  gap: clamp(18px, 3vh, 28px);
+}
+
+.ct-label {
+  margin: 0;
+  color: var(--c-volt);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.ct-title {
+  max-width: 11ch;
+  margin: 0;
+  font-size: clamp(2.25rem, 9.4vw, 4.5rem); /* phones: the longest word ("PROYECTO.") fits 360px */
+  font-weight: 900;
+  font-stretch: 125%;
+  letter-spacing: -0.035em;
+  line-height: 0.92;
+  text-transform: uppercase;
+  overflow-wrap: break-word;
+}
+
+.ct-lead {
+  max-width: 38ch;
+  margin: 0;
+  color: var(--c-text-muted);
+  font-size: clamp(1.0625rem, 1.5vw, 1.375rem);
+  line-height: 1.45;
+}
+
+.ct-help {
+  margin-top: clamp(8px, 2vh, 24px);
+  padding-top: 20px;
+  border-top: 1px solid rgb(245 245 240 / 0.12);
+}
+
+.ct-help__title {
+  margin: 0 0 12px;
+  color: var(--c-text-muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.ct-help__list {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: help;
+}
+
+.ct-help__list li {
+  display: grid;
+  grid-template-columns: 2.4em 1fr;
+  font-size: 1rem;
+  line-height: 1.45;
+  counter-increment: help;
+}
+
+.ct-help__list li::before {
+  content: '0' counter(help);
+  color: var(--c-volt);
+  font: 500 0.8125rem/1.8 ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+}
+
+/* ---------- the form card ---------- */
+.ct-card {
+  padding: clamp(24px, 3.4vw, 44px);
+  border: 1px solid rgb(245 245 240 / 0.14);
+  border-radius: 22px;
+  background: rgb(245 245 240 / 0.03);
+}
+
+.ct-card__title {
+  margin: 0 0 6px;
+  font-size: clamp(1.5rem, 2.2vw, 2rem);
+  font-weight: 900;
+  font-stretch: 115%;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+
+.ct-form {
+  display: grid;
+  gap: 20px;
+}
+
+.ct-trap {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.ct-req,
+.ct-hint {
+  margin: 0;
+  color: var(--c-text-muted);
+  font-size: 0.8125rem;
+}
+
+.ct-field {
+  display: grid;
+  gap: 8px;
+}
+
+.ct-field label,
+.ct-needs legend {
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.ct-opt {
+  color: var(--c-text-muted);
+  font-weight: 400;
+}
+
+.ct-field input,
+.ct-field textarea {
+  width: 100%;
+  min-height: 52px;
+  padding: 14px 16px;
+  border: 1px solid rgb(245 245 240 / 0.24);
+  border-radius: 12px;
+  background: var(--c-ink);
+  color: var(--c-white);
+  font: inherit;
+  font-size: 1rem; /* 16px: no zoom on iOS */
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.ct-field textarea {
+  min-height: 150px;
+  resize: vertical;
+  line-height: 1.5;
+}
+
+.ct-field input:hover,
+.ct-field textarea:hover {
+  border-color: rgb(245 245 240 / 0.45);
+}
+
+.ct-field input:focus-visible,
+.ct-field textarea:focus-visible {
+  outline: none;
+  border-color: var(--c-volt);
+  box-shadow: 0 0 0 3px rgb(215 255 59 / 0.25);
+}
+
+.ct-field [aria-invalid='true'] {
+  border-color: var(--c-magenta);
+}
+
+.ct-err {
+  margin: 0;
+  color: #ff7ab3; /* magenta tint: AA on ink */
+  font-size: 0.8125rem;
+  font-weight: 600;
+}
+
+.ct-err[hidden] {
+  display: none;
+}
+
+.ct-needs {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.ct-needs legend {
+  margin-bottom: 10px;
+  padding: 0;
+}
+
+.ct-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ct-chip {
+  position: relative;
+  cursor: pointer;
+}
+
+.ct-chip input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+
+.ct-chip span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 16px;
+  border: 1px solid rgb(245 245 240 / 0.24);
+  border-radius: 999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.ct-chip[data-color] span::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--dot);
+}
+
+.ct-chip[data-color='volt'] { --dot: var(--c-volt); }
+.ct-chip[data-color='magenta'] { --dot: var(--c-magenta); }
+.ct-chip[data-color='violet'] { --dot: #9b7dff; }
+
+.ct-chip:hover span {
+  border-color: var(--c-white);
+}
+
+.ct-chip input:checked + span {
+  background: var(--c-white);
+  border-color: var(--c-white);
+  color: var(--c-ink);
+}
+
+.ct-chip input:focus-visible + span {
+  outline: 2px solid var(--c-volt);
+  outline-offset: 3px;
+}
+
+.ct-consent {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4px 12px;
+  align-items: start;
+  font-size: 0.9375rem;
+  line-height: 1.45;
+}
+
+.ct-consent input {
+  width: 22px;
+  height: 22px;
+  margin: 1px 0 0;
+  accent-color: var(--c-volt);
+}
+
+.ct-consent a {
+  color: var(--c-white);
+  text-underline-offset: 3px;
+  text-decoration-color: var(--c-volt);
+}
+
+.ct-consent .ct-err {
+  grid-column: 2;
+}
+
+.ct-submit {
+  justify-self: start;
+  min-width: 220px;
+}
+
+.ct-submit[disabled] {
+  opacity: 0.55;
+  cursor: progress;
+  transform: none;
+}
+
+.ct-status {
+  margin: 0;
+  min-height: 1.4em;
+  font-size: 0.9375rem;
+}
+
+.ct-status.is-error {
+  color: #ff7ab3;
+  font-weight: 600;
+}
+
+.ct-done {
+  display: grid;
+  gap: 10px;
+  padding: 28px 0 8px;
+}
+
+.ct-done[hidden] {
+  display: none;
+}
+
+.ct-done:focus {
+  outline: none;
+}
+
+.ct-done__title {
+  margin: 0;
+  color: var(--c-volt);
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  font-weight: 900;
+  font-stretch: 115%;
+  text-transform: uppercase;
+}
+
+.ct-done__text {
+  margin: 0;
+  color: var(--c-text-muted);
+  font-size: 1.0625rem;
+}
+
+.ct-again {
+  justify-self: start;
+  margin-top: 8px;
+  padding: 8px 0;
+  border: 0;
+  border-bottom: 1px solid var(--c-volt);
+  background: none;
+  color: var(--c-white);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* ---------- WhatsApp: one more option inside the form card (no floating button) ---------- */
+.ct-wa {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 20px;
+  margin-top: 28px;
+  padding-top: 22px;
+  border-top: 1px solid rgb(245 245 240 / 0.12);
+}
+
+.ct-wa__title {
+  margin: 0;
+  color: var(--c-text-muted);
+  font-size: 0.9375rem;
+}
+
+.ct-wa__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 0 20px;
+  border: 1px solid rgb(245 245 240 / 0.3);
+  border-radius: 999px;
+  color: var(--c-white);
+  font-size: 0.9375rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: border-color 0.2s, background-color 0.2s, color 0.2s;
+}
+
+.ct-wa__link svg {
+  width: 20px;
+  height: 20px;
+}
+
+.ct-wa__link:hover {
+  border-color: var(--c-white);
+  background: var(--c-white);
+  color: var(--c-ink);
+}
+
+.ct-wa__link:focus-visible,
+.ct-again:focus-visible,
+.ct-consent a:focus-visible {
+  outline: 2px solid var(--c-volt);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ct-field input,
+  .ct-field textarea,
+  .ct-chip span,
+  .ct-wa__link {
+    transition: none;
+  }
+}

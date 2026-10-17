@@ -76,20 +76,16 @@
     },
     "open": "Play reel",
     "scrubHint": "Move the cursor to scrub the video",
-    "pendingTag": "PENDING"
+    "pendingTag": "PENDING",
+    "viewAll": "See all work"
   },
   "player": {
     "label": "Video player",
     "close": "Close",
     "prev": "Previous reel",
     "next": "Next reel",
-    "of": "of"
-  },
-  "sections": {
-    "_note": "PLACEHOLDER: sections to be built.",
-    "soon": "Coming soon",
-    "servicesText": "Motion graphics, animated branding, explainers and social content.",
-    "contactText": "Tell us what you want to set in motion."
+    "of": "of",
+    "project": "View project"
   },
   "services": {
     "_note": "GENERATED from the Services document by scripts/services/import-doc.py. Do not edit by hand: edit the document and re-run the script.",
@@ -343,6 +339,113 @@
     "newTab": "(opens in a new tab)"
   },
   "footer": {
-    "network": "Publifix Network"
+    "network": "Publifix Network",
+    "site": "Site",
+    "follow": "Follow us",
+    "legal": "Privacy notice",
+    "provided": "A service provided by Publifix Network S.A.P.I. de C.V.",
+    "language": "Language",
+    "top": "Back to top"
+  },
+  "workPage": {
+    "_note": "/en/work/ page (portfolio). The number of projects comes from src/data/reels.json.",
+    "meta": {
+      "title": "Work · Motion Design Portfolio · MOVO",
+      "description": "Motion graphics, animation and design projects by MOVO for brands across Mexico and the United States: advertising, social content, branding and explainers."
+    },
+    "label": "Portfolio",
+    "h1": "Work",
+    "intro": "A selection of motion graphics, animation and design projects. Every piece tells a different story.",
+    "count": "projects",
+    "countOne": "project",
+    "closingTitle": "Is your brand next?",
+    "closingText": "Tell us what you want to say and we'll turn it into your next project."
+  },
+  "project": {
+    "_note": "Project pages /en/work/<slug>/ (one per reel).",
+    "label": "Project",
+    "back": "All work",
+    "client": "Client",
+    "category": "Category",
+    "service": "Service",
+    "duration": "Duration",
+    "format": "Format",
+    "vertical": "Vertical 9:16",
+    "play": "Play video",
+    "prev": "Previous project",
+    "next": "Next project",
+    "more": "More projects",
+    "viewService": "See the service",
+    "metaDescription": "{title} for {client}: a {category} project by MOVO, a Motion Design Studio.",
+    "metaTitle": "{title} · {client} · MOVO",
+    "crumbs": "Breadcrumb"
+  },
+  "contact": {
+    "_note": "Contact teaser (home) and /en/contact/ page. Copy proposed by the design studio; MOVO can adjust it.",
+    "meta": {
+      "title": "Contact · MOVO Motion Design Studio",
+      "description": "Tell us about your motion graphics, animation or design project. Write to us through the form or chat with us on WhatsApp."
+    },
+    "label": "Contact",
+    "teaser": {
+      "heading": "Let's start with a conversation.",
+      "text": "Write to us with whatever you have: a brand about to launch, a campaign on the way or an idea that hasn't found its shape yet. We'll get back to you with next steps."
+    },
+    "page": {
+      "h1": "Let's talk about your project.",
+      "intro": "Tell us what you want to say and when you need it. With that, we'll shape a proposal around your brand.",
+      "helpTitle": "What helps us",
+      "help1": "What you want to communicate, and to whom.",
+      "help2": "Where it will be seen: social, web, screens or an event.",
+      "help3": "Key dates or launch.",
+      "help4": "References or pieces you like."
+    },
+    "form": {
+      "title": "Write to us",
+      "name": "Name",
+      "email": "Email",
+      "company": "Company or brand",
+      "optional": "(optional)",
+      "needs": "What do you need?",
+      "needsUnsure": "Not sure yet",
+      "message": "Tell us about your project",
+      "messageHint": "Goal, format, dates, references…",
+      "consentBefore": "I accept the",
+      "consentLink": "privacy notice",
+      "consentAfter": ".",
+      "submit": "Send message",
+      "required": "Required fields"
+    },
+    "whatsapp": {
+      "title": "Rather talk?",
+      "link": "Message us on WhatsApp",
+      "message": "Hi MOVO, I'd like to talk about a project."
+    }
+  },
+  "contactUi": {
+    "_note": "Form messages (used by src/contact/page.js).",
+    "errName": "Please enter your name.",
+    "errEmail": "Please enter a valid email.",
+    "errMessage": "Tell us a little about your project.",
+    "errConsent": "Please accept the privacy notice.",
+    "sending": "Sending…",
+    "successTitle": "Message sent!",
+    "successText": "Thank you. We'll write back soon to the email you gave us.",
+    "again": "Send another message",
+    "error": "We couldn't send your message. Please try again or message us on WhatsApp.",
+    "inactive": "The form will be available very soon. In the meantime, message us on WhatsApp.",
+    "subject": "New message from the MOVO site (contact)",
+    "fromName": "MOVO website"
+  },
+  "privacy": {
+    "meta": {
+      "title": "Privacy Notice · MOVO",
+      "description": "MOVO's privacy notice, a service provided by Publifix Network S.A.P.I. de C.V.: which data we process, why, and how to exercise your ARCO rights."
+    },
+    "label": "Legal",
+    "h1": "Privacy notice",
+    "updated": "Last updated",
+    "toc": "In this document",
+    "provided": "A service provided by Publifix Network S.A.P.I. de C.V."
   }
 }

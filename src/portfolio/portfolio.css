@@ -1,0 +1,287 @@
+/* Portfolio pieces shared by the Work page and the project pages: wrap, labels, filters, card grid,
+   closing. Cards: 9:16 poster (real <img>, indexable), preview on hover (fine pointers), number, client,
+   title, category with its pillar color as a dot (text stays white/gray: AA on ink). */
+@import '../styles/footer.css';
+
+.pf,
+.pj {
+  overflow-x: clip;
+}
+
+.pf-wrap,
+.pj-wrap {
+  padding-inline: var(--gutter);
+}
+
+.pf-label,
+.pj-label {
+  margin: 0;
+  color: var(--c-volt);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+/* ---------- filters ---------- */
+.pf__filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: clamp(28px, 5vh, 48px);
+}
+
+.pf__filter {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 16px;
+  border: 1px solid rgb(245 245 240 / 0.24);
+  border-radius: 999px;
+  background: none;
+  color: var(--c-white);
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.pf__filter span {
+  color: var(--c-text-muted);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+}
+
+.pf__filter[data-color]::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--fc);
+}
+
+.pf__filter[data-color='volt'] { --fc: var(--c-volt); }
+.pf__filter[data-color='magenta'] { --fc: var(--c-magenta); }
+.pf__filter[data-color='violet'] { --fc: #9b7dff; }
+
+.pf__filter:hover {
+  border-color: var(--c-white);
+}
+
+.pf__filter[aria-pressed='true'] {
+  background: var(--c-white);
+  border-color: var(--c-white);
+  color: var(--c-ink);
+}
+
+.pf__filter[aria-pressed='true'] span {
+  color: rgb(11 11 16 / 0.6);
+}
+
+.pf__filter:focus-visible {
+  outline: 2px solid var(--c-volt);
+  outline-offset: 3px;
+}
+
+/* ---------- grid + cards ---------- */
+.pf__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(28px, 4vw, 56px) clamp(12px, 2vw, 32px);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 900px) {
+  .pf__grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1280px) {
+  .pf__grid:not(.pf__grid--more) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+/* desktop: the columns are offset like frames on a contact sheet */
+@media (min-width: 900px) {
+  .pf__grid:not(.pf__grid--more) .pf__item.is-offset {
+    transform: translateY(clamp(32px, 5vw, 88px));
+  }
+
+  .pf__grid:not(.pf__grid--more) {
+    padding-bottom: clamp(32px, 5vw, 88px);
+  }
+}
+
+.pf__item[hidden] {
+  display: none;
+}
+
+.pf-card {
+  display: block;
+  color: var(--c-white);
+  text-decoration: none;
+}
+
+.pf-card__media {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  aspect-ratio: var(--ar, 9 / 16);
+  border-radius: 14px;
+  background: var(--c-gray);
+}
+
+.pf-card__media::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px rgb(245 245 240 / 0.1);
+  pointer-events: none;
+}
+
+.pf-card__poster,
+.pf-card__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.7s var(--ease-out), opacity 0.4s;
+}
+
+.pf-card__video {
+  opacity: 0;
+}
+
+.pf-card.is-playing .pf-card__video {
+  opacity: 1;
+}
+
+.pf-card__num {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 1;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: rgb(11 11 16 / 0.72);
+  color: var(--c-white);
+  font: 500 11px/1 ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  letter-spacing: 0.06em;
+}
+
+.pf-card__info {
+  display: grid;
+  gap: 4px;
+  padding: 14px 2px 0;
+}
+
+.pf-card__client {
+  color: var(--c-text-muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.pf-card__title {
+  margin: 0;
+  font-size: clamp(1rem, 1.5vw, 1.375rem);
+  font-weight: 800;
+  font-stretch: 108%;
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+  transition: color 0.2s;
+}
+
+.pf-card__cat {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--c-text-muted);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.pf-card__cat::before,
+.pj-cat::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--dot);
+}
+
+[data-color='volt'] { --dot: var(--c-volt); }
+[data-color='magenta'] { --dot: var(--c-magenta); }
+[data-color='violet'] { --dot: #9b7dff; }
+
+@media (hover: hover) and (pointer: fine) {
+  .pf-card:hover .pf-card__poster,
+  .pf-card:hover .pf-card__video {
+    transform: scale(1.04);
+  }
+
+  .pf-card:hover .pf-card__title {
+    color: var(--c-volt);
+  }
+}
+
+.pf-card:focus-visible {
+  outline: none;
+}
+
+.pf-card:focus-visible .pf-card__media {
+  outline: 2px solid var(--c-volt);
+  outline-offset: 4px;
+}
+
+/* ---------- closing ---------- */
+.pf-close {
+  display: grid;
+  justify-items: start;
+  gap: clamp(18px, 3vh, 28px);
+  padding-block: clamp(112px, 18vh, 220px);
+  border-top: 1px solid rgb(245 245 240 / 0.1);
+}
+
+.pf-close__title {
+  max-width: 14ch;
+  margin: 0;
+  font-size: clamp(2.25rem, 7vw, 8.5rem);
+  font-weight: 900;
+  font-stretch: 125%;
+  letter-spacing: -0.035em;
+  line-height: 0.92;
+  text-transform: uppercase;
+}
+
+.pf-close__text {
+  max-width: 34ch;
+  margin: 0 0 10px;
+  color: var(--c-text-muted);
+  font-size: clamp(1.0625rem, 1.5vw, 1.375rem);
+  line-height: 1.45;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pf-card__poster,
+  .pf-card__video,
+  .pf__filter {
+    transition: none;
+  }
+
+  .pf__grid .pf__item.is-offset {
+    transform: none !important;
+  }
+}

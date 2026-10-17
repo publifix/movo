@@ -1,0 +1,16 @@
+    <!-- Head of the inner pages (no intro): each template adds its own page CSS after this. -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{{page.title}}</title>
+    <meta name="description" content="{{page.description}}" />
+    {{seo}}
+    <meta name="theme-color" content="#0B0B10" />
+    <!-- No intro on inner pages. -->
+    <script>
+      document.documentElement.classList.add('js');
+      document.documentElement.dataset.intro = 'none';
+    </script>
+
+    {{> head-links}}
+
+    <link rel="stylesheet" href="/src/styles/main.css" />

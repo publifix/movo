@@ -1,0 +1,107 @@
+<!doctype html>
+<!-- Contact page for every language: /contacto/, /en/contact/. The form posts to Web3Forms (no server, no
+     database: each message arrives by email); key + WhatsApp number in src/data/contact.json. -->
+<html lang="{{lang}}" data-root="{{root}}" data-page="contact">
+  <head>
+    {{> page-head}}
+    <link rel="stylesheet" href="/src/contact/page.css" />
+    <script type="application/json" id="movo-i18n">{{uiJson}}</script>
+  </head>
+  <body>
+    {{> header}}
+
+    <main id="main" class="ct">
+      <div class="ct-grid ct-wrap" data-clip="intro" data-clip-start="0" data-clip-label="{{contact.label}}">
+        <header class="ct-intro">
+          <p class="ct-label">{{contact.label}}</p>
+          <h1 class="ct-title">{{contact.page.h1}}</h1>
+          <p class="ct-lead">{{contact.page.intro}}</p>
+          <div class="ct-help">
+            <h2 class="ct-help__title">{{contact.page.helpTitle}}</h2>
+            <ol class="ct-help__list">
+              <li>{{contact.page.help1}}</li>
+              <li>{{contact.page.help2}}</li>
+              <li>{{contact.page.help3}}</li>
+              <li>{{contact.page.help4}}</li>
+            </ol>
+          </div>
+        </header>
+
+        <section class="ct-card" aria-labelledby="ct-form-title">
+          <h2 class="ct-card__title" id="ct-form-title">{{contact.form.title}}</h2>
+          <form class="ct-form" action="https://api.web3forms.com/submit" method="POST" data-ct-form data-key="{{web3formsKey}}">
+            <input type="hidden" name="access_key" value="{{web3formsKey}}" />
+            <input type="hidden" name="subject" value="{{contactUi.subject}}" />
+            <input type="hidden" name="from_name" value="{{contactUi.fromName}}" />
+            <input type="hidden" name="idioma" value="{{lang}}" />
+            <!-- spam trap: people never see or fill it -->
+            <input class="ct-trap" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true" />
+
+            <p class="ct-req"><span aria-hidden="true">*</span> {{contact.form.required}}</p>
+
+            <div class="ct-field">
+              <label for="ct-name">{{contact.form.name}} <span aria-hidden="true">*</span></label>
+              <input id="ct-name" name="name" type="text" autocomplete="name" required aria-describedby="ct-name-err" />
+              <p class="ct-err" id="ct-name-err" data-err="errName" hidden></p>
+            </div>
+            <div class="ct-field">
+              <label for="ct-email">{{contact.form.email}} <span aria-hidden="true">*</span></label>
+              <input id="ct-email" name="email" type="email" autocomplete="email" inputmode="email" required aria-describedby="ct-email-err" />
+              <p class="ct-err" id="ct-email-err" data-err="errEmail" hidden></p>
+            </div>
+            <div class="ct-field">
+              <label for="ct-company">{{contact.form.company}} <span class="ct-opt">{{contact.form.optional}}</span></label>
+              <input id="ct-company" name="company" type="text" autocomplete="organization" />
+            </div>
+
+            <fieldset class="ct-needs">
+              <legend>{{contact.form.needs}} <span class="ct-opt">{{contact.form.optional}}</span></legend>
+              <div class="ct-chips">
+                <label class="ct-chip" data-color="volt"><input type="checkbox" name="needs" value="{{services.pillars.brand.title}}" /><span>{{services.pillars.brand.title}}</span></label>
+                <label class="ct-chip" data-color="magenta"><input type="checkbox" name="needs" value="{{services.pillars.content.title}}" /><span>{{services.pillars.content.title}}</span></label>
+                <label class="ct-chip" data-color="violet"><input type="checkbox" name="needs" value="{{services.pillars.explain.title}}" /><span>{{services.pillars.explain.title}}</span></label>
+                <label class="ct-chip"><input type="checkbox" name="needs" value="{{contact.form.needsUnsure}}" /><span>{{contact.form.needsUnsure}}</span></label>
+              </div>
+            </fieldset>
+
+            <div class="ct-field">
+              <label for="ct-message">{{contact.form.message}} <span aria-hidden="true">*</span></label>
+              <textarea id="ct-message" name="message" rows="6" required aria-describedby="ct-message-hint ct-message-err"></textarea>
+              <p class="ct-hint" id="ct-message-hint">{{contact.form.messageHint}}</p>
+              <p class="ct-err" id="ct-message-err" data-err="errMessage" hidden></p>
+            </div>
+
+            <div class="ct-consent">
+              <input id="ct-consent" name="consent" type="checkbox" value="yes" required aria-describedby="ct-consent-err" />
+              <label for="ct-consent">{{contact.form.consentBefore}} <a href="{{privacyHref}}" target="_blank" rel="noopener">{{contact.form.consentLink}}<span class="sr-only"> {{studioUi.newTab}}</span></a>{{contact.form.consentAfter}} <span aria-hidden="true">*</span></label>
+              <p class="ct-err" id="ct-consent-err" data-err="errConsent" hidden></p>
+            </div>
+
+            <button class="btn btn--volt ct-submit" type="submit" data-ct-submit>{{contact.form.submit}}</button>
+            <p class="ct-status" role="status" aria-live="polite" data-ct-status></p>
+          </form>
+
+          <div class="ct-done" data-ct-done hidden tabindex="-1">
+            <p class="ct-done__title">{{contactUi.successTitle}}</p>
+            <p class="ct-done__text">{{contactUi.successText}}</p>
+            <button class="ct-again" type="button" data-ct-again>{{contactUi.again}}</button>
+          </div>
+
+          <div class="ct-wa">
+            <p class="ct-wa__title">{{contact.whatsapp.title}}</p>
+            <a class="ct-wa__link" href="{{whatsappHref}}" target="_blank" rel="noopener">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M12.04 2a9.9 9.9 0 0 0-8.5 14.98L2 22l5.16-1.5A9.9 9.9 0 1 0 12.04 2zm0 18.06a8.15 8.15 0 0 1-4.15-1.14l-.3-.18-3.06.89.9-2.98-.2-.31a8.15 8.15 0 1 1 6.81 3.72zm4.47-6.1c-.24-.12-1.45-.72-1.68-.8-.22-.08-.39-.12-.55.12-.16.25-.63.8-.78.97-.14.16-.29.18-.53.06a6.66 6.66 0 0 1-3.3-2.89c-.25-.43.25-.4.71-1.33.08-.16.04-.3-.02-.43-.06-.12-.55-1.33-.76-1.82-.2-.48-.4-.41-.55-.42h-.47a.9.9 0 0 0-.65.3 2.74 2.74 0 0 0-.86 2.04 4.76 4.76 0 0 0 1 2.53 10.9 10.9 0 0 0 4.18 3.7c1.56.67 2.17.73 2.95.62.48-.07 1.45-.6 1.66-1.17.2-.57.2-1.06.14-1.17-.06-.1-.22-.16-.46-.28z"/></svg>
+              <span>{{contact.whatsapp.link}}</span><span class="sr-only"> {{studioUi.newTab}}</span>
+            </a>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    {{> footer}}
+
+    {{> timecode}}
+
+    <script type="module" src="/src/contact/page.js"></script>
+  </body>
+</html>

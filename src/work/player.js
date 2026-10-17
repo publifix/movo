@@ -21,6 +21,7 @@ export function createPlayer({ ui, reduce, getCards }) {
         <h2 class="player__title" id="player-title" data-title></h2>
         <p class="player__info"><span data-client></span> · <span class="player__cat" data-cat></span></p>
         <p class="player__desc" data-desc hidden></p>
+        <a class="player__project" data-project href="#">${L.project || 'View project'} <span aria-hidden="true">→</span></a>
       </div>
       <div class="player__nav">
         <button type="button" class="player__btn" data-prev aria-label="${L.prev}">
@@ -54,6 +55,7 @@ export function createPlayer({ ui, reduce, getCards }) {
     const t = $('[data-title]');
     t.textContent = (!side.matches && card.dataset.titleShort) || card.dataset.title;
     $('[data-client]').textContent = card.dataset.client;
+    $('[data-project]').href = card.href; // the project page (indexable; the card's no-JS link)
     $('[data-cat]').textContent = card.dataset.categoryLabel;
     const desc = $('[data-desc]');
     desc.textContent = card.dataset.desc || '';

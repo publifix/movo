@@ -19,6 +19,11 @@ export default {
     { id: 'home', template: 'src/page.html', path: { es: '', en: '' }, meta: 'meta' },
     { id: 'services', template: 'src/services.html', path: { es: 'servicios/', en: 'services/' }, meta: 'services.meta' },
     { id: 'studio', template: 'src/studio.html', path: { es: 'estudio/', en: 'studio/' }, meta: 'studio.meta' },
+    { id: 'work', template: 'src/work.html', path: { es: 'trabajo/', en: 'work/' }, meta: 'workPage.meta' },
+    // one page per reel of src/data/reels.json (its `slug`): /trabajo/<slug>/, /en/work/<slug>/
+    { id: 'project', template: 'src/project.html', path: { es: 'trabajo/', en: 'work/' }, collection: 'reels' },
+    { id: 'contact', template: 'src/contact.html', path: { es: 'contacto/', en: 'contact/' }, meta: 'contact.meta' },
+    { id: 'privacy', template: 'src/privacy.html', path: { es: 'aviso-de-privacidad/', en: 'privacy-notice/' }, meta: 'privacy.meta' },
   ],
 
   org: {

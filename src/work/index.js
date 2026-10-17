@@ -180,7 +180,8 @@ export function initWork({ ui, preferMp4 }) {
   function buildStrip() {
     const media = hero.querySelector('.hero__media');
     const copy = hero.querySelector('.hero__content');
-    const head = work.querySelector('.work__head');
+    // the head and the "see all work" link arrive together with the strip
+    const head = work.querySelectorAll('.work__head, .work__all');
     const manifesto = makeManifesto();
     const card = makeSceneCard();
     cards.forEach(loadPoster.bind(null)); // posters only (~25 KB each); previews load when needed
@@ -381,7 +382,7 @@ export function initWork({ ui, preferMp4 }) {
     cleanup.push(() => track.removeEventListener('focusin', onFocus));
 
     cleanup.push(() => {
-      gsap.set([media, copy, head, track, ...items, ...cards], { clearProps: 'all' });
+      gsap.set([media, copy, ...head, track, ...items, ...cards], { clearProps: 'all' });
       items.forEach(li => { li.classList.remove('is-active'); li.style.removeProperty('--k'); });
       work.style.pointerEvents = '';
       heroVideo?.getAttribute('src') && heroVideo.paused && heroVideo.play().catch(() => {});

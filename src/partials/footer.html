@@ -1,7 +1,24 @@
-    <!-- Site footer (every page). Publifix Network links: src/data/network.json. -->
+    <!-- Site footer (every page): logo, site nav, social (src/data/contact.json), Publifix Network
+         (src/data/network.json), legal line and language. Styles: src/styles/footer.css. -->
     <footer class="site-footer">
-      <nav class="site-footer__net" aria-labelledby="footer-net-title">
-        <h2 class="site-footer__title" id="footer-net-title">{{footer.network}}</h2>
-        <ul class="site-footer__links" role="list">{{footerNetwork}}</ul>
-      </nav>
+      <div class="site-footer__top">
+        <div class="site-footer__brand">
+          <a class="site-footer__logo" href="{{homeHref}}" aria-label="{{a11y.home}}">{{footerLogo}}</a>
+          <p class="site-footer__tagline">{{studio.hero.text}}</p>
+        </div>
+        <nav class="site-footer__col" aria-labelledby="footer-site-title">
+          <h2 class="site-footer__title" id="footer-site-title">{{footer.site}}</h2>
+          <ul class="site-footer__links" role="list">{{footerSite}}</ul>
+        </nav>
+        {{footerSocial}}
+        <nav class="site-footer__col" aria-labelledby="footer-net-title">
+          <h2 class="site-footer__title" id="footer-net-title">{{footer.network}}</h2>
+          <ul class="site-footer__links" role="list">{{footerNetwork}}</ul>
+        </nav>
+      </div>
+      <div class="site-footer__bottom">
+        <p class="site-footer__legal">© {{footerYear}} MOVO Motion Design Studio · {{footer.provided}}</p>
+        <a class="site-footer__link" href="{{privacyHref}}">{{footer.legal}}</a>
+        <p class="site-footer__lang">{{langSwitch}}</p>
+      </div>
     </footer>

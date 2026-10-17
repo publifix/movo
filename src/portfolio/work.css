@@ -1,0 +1,47 @@
+/* Work page (/trabajo/, /en/work/): giant kinetic title, filters, the project grid, closing. */
+@import './portfolio.css';
+
+.pf-hero {
+  display: grid;
+  align-content: end;
+  gap: clamp(18px, 3vh, 32px);
+  min-height: 72vh;
+  min-height: 72svh;
+  padding-top: calc(var(--nav-h) + 6vh);
+  padding-bottom: clamp(40px, 8vh, 96px);
+}
+
+.pf-label__count {
+  color: var(--c-text-muted);
+}
+
+.pf-hero__title {
+  margin: 0 0 0 -0.04em;
+  font-size: clamp(4.5rem, 21vw, 22rem); /* page.js fits the word at its widest state */
+  font-weight: 900;
+  font-stretch: 125%;
+  letter-spacing: -0.045em;
+  line-height: 0.82;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+html.js .pf-hero__title:not(.is-ready) {
+  opacity: 0;
+}
+
+.k-letter {
+  display: inline-block;
+}
+
+.pf-hero__intro {
+  max-width: 40ch;
+  margin: 0;
+  color: var(--c-text-muted);
+  font-size: clamp(1.0625rem, 1.6vw, 1.5rem);
+  line-height: 1.45;
+}
+
+.pf-list {
+  padding-bottom: clamp(80px, 12vh, 140px);
+}

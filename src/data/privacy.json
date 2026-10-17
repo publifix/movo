@@ -1,0 +1,326 @@
+{
+  "_note": "Aviso de privacidad integral (LFPDPPP, México). Borrador profesional redactado para Publifix Network: debe revisarlo su asesor legal antes de considerarlo definitivo. Rendered by scripts/i18n/privacy-markup.mjs into /aviso-de-privacidad/ and /en/privacy-notice/.",
+  "updated": {
+    "es": "17 de octubre de 2026",
+    "en": "October 17, 2026"
+  },
+  "intro": {
+    "es": "En MOVO cuidamos tus datos personales. Este aviso explica qué datos tratamos, para qué los usamos, con quién los compartimos y cómo puedes ejercer tus derechos, conforme a la Ley Federal de Protección de Datos Personales en Posesión de los Particulares.",
+    "en": "At MOVO we take care of your personal data. This notice explains which data we process, what we use it for, who we share it with and how you can exercise your rights, under Mexico's Federal Law on the Protection of Personal Data Held by Private Parties."
+  },
+  "enNote": "This English version is provided for convenience. In case of discrepancy, the Spanish version prevails.",
+  "sections": [
+    {
+      "id": {
+        "es": "responsable",
+        "en": "controller"
+      },
+      "title": {
+        "es": "1. Identidad y domicilio del responsable",
+        "en": "1. Identity and address of the data controller"
+      },
+      "blocks": [
+        {
+          "p": {
+            "es": "Publifix Network, S.A.P.I. de C.V. (en adelante, «Publifix Network»), con RFC PNE191018IU3 y domicilio en Privada de los Industriales 110, Piso 4, Jurica, Querétaro, Qro., México, es responsable del tratamiento de los datos personales que se recaban a través de este sitio web de MOVO Motion Design Studio («MOVO»), servicio proporcionado por Publifix Network.",
+            "en": "Publifix Network, S.A.P.I. de C.V. (“Publifix Network”), tax ID (RFC) PNE191018IU3, with address at Privada de los Industriales 110, 4th floor, Jurica, Querétaro, Qro., Mexico, is the data controller of the personal data collected through this website of MOVO Motion Design Studio (“MOVO”), a service provided by Publifix Network."
+          }
+        },
+        {
+          "p": {
+            "es": "Teléfono de contacto: 442 121 8565.",
+            "en": "Contact phone: +52 442 121 8565."
+          }
+        }
+      ]
+    },
+    {
+      "id": {
+        "es": "datos",
+        "en": "data"
+      },
+      "title": {
+        "es": "2. Datos personales que tratamos",
+        "en": "2. Personal data we process"
+      },
+      "blocks": [
+        {
+          "p": {
+            "es": "Tratamos únicamente los datos que nos proporcionas directamente o que se generan al usar el sitio:",
+            "en": "We only process the data you give us directly or that is generated when you use the site:"
+          }
+        },
+        {
+          "ul": {
+            "es": [
+              "Formulario de contacto: nombre, correo electrónico, empresa o marca (opcional), servicios de interés y el contenido de tu mensaje.",
+              "WhatsApp: si decides escribirnos por ese medio, tu número telefónico, nombre de perfil y los mensajes que nos envíes. WhatsApp es un servicio de un tercero (Meta) sujeto a sus propios términos y aviso de privacidad.",
+              "Datos técnicos de navegación: dirección IP, tipo de navegador y dispositivo, páginas visitadas, fecha y hora, registrados por nuestros proveedores de alojamiento y de entrega de video para operar y proteger el servicio."
+            ],
+            "en": [
+              "Contact form: name, email address, company or brand (optional), services of interest and the content of your message.",
+              "WhatsApp: if you choose to write to us there, your phone number, profile name and the messages you send. WhatsApp is a third-party service (Meta) subject to its own terms and privacy notice.",
+              "Technical browsing data: IP address, browser and device type, pages visited, date and time, logged by our hosting and video delivery providers to operate and protect the service."
+            ]
+          }
+        },
+        {
+          "p": {
+            "es": "No solicitamos datos personales sensibles. Te pedimos no incluirlos en tus mensajes.",
+            "en": "We do not request sensitive personal data. Please do not include it in your messages."
+          }
+        }
+      ]
+    },
+    {
+      "id": {
+        "es": "finalidades",
+        "en": "purposes"
+      },
+      "title": {
+        "es": "3. Finalidades del tratamiento",
+        "en": "3. Purposes of processing"
+      },
+      "blocks": [
+        {
+          "p": {
+            "es": "Finalidades primarias, necesarias para atender tu solicitud y, en su caso, la relación comercial:",
+            "en": "Primary purposes, necessary to handle your request and, where applicable, our business relationship:"
+          }
+        },
+        {
+          "ul": {
+            "es": [
+              "Responder tus mensajes y solicitudes de información.",
+              "Preparar propuestas y cotizaciones de servicios.",
+              "Dar seguimiento y prestar los servicios que contrates.",
+              "Operar el sitio web, mantener su seguridad y prevenir usos indebidos."
+            ],
+            "en": [
+              "Replying to your messages and requests for information.",
+              "Preparing service proposals and quotes.",
+              "Following up on and delivering the services you hire.",
+              "Operating the website, keeping it secure and preventing misuse."
+            ]
+          }
+        },
+        {
+          "p": {
+            "es": "Finalidad secundaria, que no es necesaria para lo anterior:",
+            "en": "Secondary purpose, not necessary for the above:"
+          }
+        },
+        {
+          "ul": {
+            "es": [
+              "Enviarte información sobre servicios, proyectos y novedades de MOVO y de Publifix Network."
+            ],
+            "en": [
+              "Sending you information about services, projects and news from MOVO and Publifix Network."
+            ]
+          }
+        },
+        {
+          "p": {
+            "es": "Si no deseas que tus datos se traten para la finalidad secundaria, puedes indicarlo en cualquier momento por los medios de la sección 6. Tu negativa no afectará la atención de tu solicitud.",
+            "en": "If you do not want your data processed for the secondary purpose, you can tell us at any time through the means in section 6. Your refusal will not affect how we handle your request."
+          }
+        }
+      ]
+    },
+    {
+      "id": {
+        "es": "terceros",
+        "en": "third-parties"
+      },
+      "title": {
+        "es": "4. Encargados y transferencias",
+        "en": "4. Processors and transfers"
+      },
+      "blocks": [
+        {
+          "p": {
+            "es": "No vendemos ni rentamos tus datos personales. Para operar el sitio y atender tus mensajes nos apoyamos en proveedores que los tratan por cuenta nuestra y conforme a nuestras instrucciones (encargados):",
+            "en": "We do not sell or rent your personal data. To run the site and handle your messages we rely on providers that process it on our behalf and under our instructions (processors):"
+          }
+        },
+        {
+          "ul": {
+            "es": [
+              "Web3Forms: recepción del formulario y envío del mensaje a nuestro correo.",
+              "Google (Gmail): servicio de correo electrónico donde recibimos y respondemos los mensajes.",
+              "GitHub (GitHub Pages): alojamiento del sitio web.",
+              "Bunny.net: almacenamiento y entrega de los videos del portafolio."
+            ],
+            "en": [
+              "Web3Forms: receiving the form and forwarding the message to our inbox.",
+              "Google (Gmail): email service where we receive and answer messages.",
+              "GitHub (GitHub Pages): website hosting.",
+              "Bunny.net: storage and delivery of the portfolio videos."
+            ]
+          }
+        },
+        {
+          "p": {
+            "es": "Algunos de estos proveedores se ubican fuera de México. Solo compartiremos tus datos con autoridades competentes cuando una ley o una resolución lo exija.",
+            "en": "Some of these providers are located outside Mexico. We will only share your data with competent authorities when a law or a ruling requires it."
+          }
+        }
+      ]
+    },
+    {
+      "id": {
+        "es": "conservacion",
+        "en": "retention"
+      },
+      "title": {
+        "es": "5. Conservación y seguridad",
+        "en": "5. Retention and security"
+      },
+      "blocks": [
+        {
+          "p": {
+            "es": "Conservamos tus datos solo durante el tiempo necesario para cumplir las finalidades descritas y las obligaciones legales aplicables. Después los bloqueamos y suprimimos de forma segura. Aplicamos medidas de seguridad administrativas, técnicas y físicas para protegerlos contra daño, pérdida, alteración, destrucción o uso, acceso o tratamiento no autorizado.",
+            "en": "We keep your data only for as long as needed to fulfil the purposes described and applicable legal obligations; afterwards we block and securely delete it. We apply administrative, technical and physical security measures to protect it against damage, loss, alteration, destruction or unauthorized use, access or processing."
+          }
+        }
+      ]
+    },
+    {
+      "id": {
+        "es": "derechos-arco",
+        "en": "arco-rights"
+      },
+      "title": {
+        "es": "6. Derechos ARCO y revocación del consentimiento",
+        "en": "6. ARCO rights and withdrawal of consent"
+      },
+      "blocks": [
+        {
+          "p": {
+            "es": "Tienes derecho a acceder a tus datos personales, rectificarlos si son inexactos o incompletos, cancelarlos cuando consideres que no se requieren para alguna de las finalidades, y oponerte a su tratamiento para fines específicos (derechos ARCO). También puedes revocar el consentimiento que nos hayas otorgado.",
+            "en": "You have the right to access your personal data, rectify it if inaccurate or incomplete, cancel it when you consider it is not needed for any of the purposes, and object to its processing for specific purposes (ARCO rights). You may also withdraw the consent you have given us."
+          }
+        },
+        {
+          "p": {
+            "es": "Para ejercerlos, envía tu solicitud por escrito a nuestro domicilio (Privada de los Industriales 110, Piso 4, Jurica, Querétaro, Qro., México) o comunícate al 442 121 8565 para que te indiquemos el medio electrónico para presentarla. Tu solicitud debe incluir:",
+            "en": "To exercise them, send a written request to our address (Privada de los Industriales 110, 4th floor, Jurica, Querétaro, Qro., Mexico) or call +52 442 121 8565 and we will tell you the electronic means to submit it. Your request must include:"
+          }
+        },
+        {
+          "ul": {
+            "es": [
+              "Tu nombre y un medio para comunicarte la respuesta.",
+              "Los documentos que acrediten tu identidad o, en su caso, la de tu representante legal.",
+              "La descripción clara de los datos y del derecho que deseas ejercer.",
+              "Cualquier elemento que facilite la localización de tus datos."
+            ],
+            "en": [
+              "Your name and a way to send you our answer.",
+              "Documents proving your identity or, where applicable, that of your legal representative.",
+              "A clear description of the data and the right you wish to exercise.",
+              "Any information that helps us locate your data."
+            ]
+          }
+        },
+        {
+          "p": {
+            "es": "Te comunicaremos la determinación adoptada en un plazo máximo de 20 días hábiles a partir de la recepción de tu solicitud y, si resulta procedente, la haremos efectiva dentro de los 15 días hábiles siguientes.",
+            "en": "We will inform you of our decision within 20 business days of receiving your request and, if it is granted, we will carry it out within the following 15 business days."
+          }
+        }
+      ]
+    },
+    {
+      "id": {
+        "es": "limitar",
+        "en": "limit-use"
+      },
+      "title": {
+        "es": "7. Limitar el uso o la divulgación",
+        "en": "7. Limiting use or disclosure"
+      },
+      "blocks": [
+        {
+          "p": {
+            "es": "Puedes limitar el uso o la divulgación de tus datos por los mismos medios de la sección 6. Además, puedes inscribirte en el Registro Público para Evitar Publicidad (REPEP) de la Procuraduría Federal del Consumidor.",
+            "en": "You can limit the use or disclosure of your data through the same means as in section 6. You can also register with the Public Registry to Avoid Advertising (REPEP) of Mexico's Federal Consumer Protection Agency (PROFECO)."
+          }
+        }
+      ]
+    },
+    {
+      "id": {
+        "es": "cookies",
+        "en": "cookies"
+      },
+      "title": {
+        "es": "8. Cookies y tecnologías similares",
+        "en": "8. Cookies and similar technologies"
+      },
+      "blocks": [
+        {
+          "p": {
+            "es": "Este sitio no utiliza cookies de publicidad ni de analítica. Solo guarda en tu navegador (almacenamiento de sesión) un indicador técnico para no repetir la animación de entrada durante tu visita; se borra al cerrar la pestaña y no te identifica.",
+            "en": "This site does not use advertising or analytics cookies. It only stores in your browser (session storage) a technical flag so the intro animation is not repeated during your visit; it is deleted when you close the tab and does not identify you."
+          }
+        }
+      ]
+    },
+    {
+      "id": {
+        "es": "menores",
+        "en": "minors"
+      },
+      "title": {
+        "es": "9. Menores de edad",
+        "en": "9. Minors"
+      },
+      "blocks": [
+        {
+          "p": {
+            "es": "Este sitio está dirigido a empresas y personas mayores de edad. No recabamos de forma intencional datos personales de menores.",
+            "en": "This site is intended for businesses and adults. We do not knowingly collect personal data from minors."
+          }
+        }
+      ]
+    },
+    {
+      "id": {
+        "es": "cambios",
+        "en": "changes"
+      },
+      "title": {
+        "es": "10. Cambios a este aviso",
+        "en": "10. Changes to this notice"
+      },
+      "blocks": [
+        {
+          "p": {
+            "es": "Podemos actualizar este aviso de privacidad por cambios legales, en nuestros servicios o en nuestras prácticas. Publicaremos cualquier cambio en esta página, con su fecha de última actualización.",
+            "en": "We may update this privacy notice due to legal changes or changes in our services or practices. Any change will be published on this page with its last-updated date."
+          }
+        }
+      ]
+    },
+    {
+      "id": {
+        "es": "autoridad",
+        "en": "authority"
+      },
+      "title": {
+        "es": "11. Consentimiento y autoridad",
+        "en": "11. Consent and authority"
+      },
+      "blocks": [
+        {
+          "p": {
+            "es": "Al enviar el formulario de contacto y marcar la casilla de aceptación, consientes el tratamiento de tus datos conforme a este aviso. Si consideras que tu derecho a la protección de datos personales ha sido vulnerado, puedes acudir a la autoridad competente en la materia.",
+            "en": "By submitting the contact form and ticking the acceptance box, you consent to the processing of your data under this notice. If you believe your right to personal data protection has been violated, you may turn to the competent authority."
+          }
+        }
+      ]
+    }
+  ]
+}

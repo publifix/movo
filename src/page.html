@@ -91,6 +91,7 @@
         </div>
         <!-- Cards are generated from src/data/reels.json. No media loads until the visitor scrolls. -->
         <ul class="work__track" data-work-track>{{workReels}}</ul>
+        <a class="work__all" href="{{workHref}}">{{work.viewAll}} <span aria-hidden="true">→</span></a>
       </section>
       </div>
 
@@ -118,11 +119,13 @@
         <a class="stt__cta" href="{{studioHref}}">{{studio.home.cta}} <span aria-hidden="true">→</span></a>
       </section>
 
-      <!-- PLACEHOLDER section: to be designed and built. -->
-      <section class="soon" id="{{nav.contact.id}}" aria-labelledby="contact-title" data-clip="contact" data-clip-label="{{nav.contact.label}}">
-        <p class="soon__eyebrow">{{sections.soon}}</p>
-        <h2 class="soon__title" id="contact-title">{{nav.contact.label}}</h2>
-        <p class="soon__text">{{sections.contactText}}</p>
+      <!-- Contact (home teaser). Copy: src/i18n/*.json → contact; styles load lazily (src/contact/home.css).
+           The form lives on the Contact page. -->
+      <section class="ctt" id="{{nav.contact.id}}" aria-labelledby="contact-title" data-clip="contact" data-clip-label="{{nav.contact.label}}">
+        <p class="ctt__label">{{contact.label}}</p>
+        <h2 class="ctt__title" id="contact-title">{{contact.teaser.heading}}</h2>
+        <p class="ctt__text">{{contact.teaser.text}}</p>
+        <a class="btn btn--volt ctt__cta" href="{{contactHref}}">{{hero.cta}}</a>
       </section>
     </main>
 

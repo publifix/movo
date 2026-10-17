@@ -27,7 +27,7 @@ const keyframes = (pillarIndex, n) => {
   return Array.from({ length: n }, (_, i) => +(start + (n === 1 ? 0 : (span * i) / (n - 1))).toFixed(3));
 };
 
-export function servicesMarkup({ t, lang, root, homeHref, servicesHref, data, reelsData }) {
+export function servicesMarkup({ t, lang, root, homeHref, servicesHref, workHref: workPage, data, reelsData }) {
   const S = t.services;
   const need = (v, key) => {
     if (v == null || v === '') throw new Error(`[i18n] Missing string "services.${key}" in src/i18n/${lang}.json`);
@@ -44,7 +44,8 @@ export function servicesMarkup({ t, lang, root, homeHref, servicesHref, data, re
   const byCats = cats => reels.filter(r => cats.includes(r.category));
   const pick = id => id && reels.find(r => r.id === id);
   const pillarReel = p => pick(pillarPicks[p.id]) || pick(p.previewReel) || byCats(p.workFilter)[0];
-  const workHref = cats => `${homeHref}?cat=${cats.join(',')}#${t.nav.work.id}`;
+  // Work filtered by the pillar's categories: the Work page (several categories pressed at once)
+  const workHref = cats => `${workPage}?cat=${cats.join(',')}`;
   const mock = '<span class="svc-mock" aria-hidden="true">MOCK</span>';
 
   // ---------- home: three tracks on a timeline ----------

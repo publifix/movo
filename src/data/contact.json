@@ -1,0 +1,9 @@
+{
+  "_note": "Contact settings. web3formsKey: the Web3Forms ACCESS KEY (public by design: it only lets this site send messages to the inbox it was created for, labs.publifix@gmail.com). Empty = the form shows a 'coming soon' message and points to WhatsApp. social: profile URLs; an empty one is not shown.",
+  "web3formsKey": "",
+  "whatsapp": "524421218565",
+  "social": {
+    "instagram": "",
+    "tiktok": ""
+  }
+}

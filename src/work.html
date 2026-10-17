@@ -1,0 +1,42 @@
+<!doctype html>
+<!-- Work page (portfolio) for every language: /trabajo/, /en/work/. Cards are generated from
+     src/data/reels.json (scripts/i18n/portfolio-markup.mjs): a new reel there = a new card + project page. -->
+<html lang="{{lang}}" data-root="{{root}}" data-page="work">
+  <head>
+    {{> page-head}}
+    <link rel="stylesheet" href="/src/portfolio/work.css" />
+    <script type="application/json" id="movo-i18n">{{uiJson}}</script>
+  </head>
+  <body>
+    {{> header}}
+
+    <main id="main" class="pf">
+      <header class="pf-hero pf-wrap" data-clip="intro" data-clip-start="0" data-clip-label="{{nav.work.label}}">
+        <p class="pf-label">{{workPage.label}} <span class="pf-label__count">· {{pfCount}}</span></p>
+        <h1 class="pf-hero__title" data-pf-kinetic>{{workPage.h1}}</h1>
+        <p class="pf-hero__intro">{{workPage.intro}}</p>
+      </header>
+
+      <section class="pf-list pf-wrap" aria-labelledby="pf-list-title" data-clip="projects" data-clip-label="{{pfCount}}">
+        <h2 class="sr-only" id="pf-list-title">{{pfCount}}</h2>
+        <div class="pf__filters" role="group" aria-label="{{work.filtersLabel}}" data-pf-filters>{{pfFilters}}</div>
+        <ul class="pf__grid" role="list" data-pf-grid>
+        {{pfGrid}}
+        </ul>
+        <p class="sr-only" aria-live="polite" data-pf-status></p>
+      </section>
+
+      <section class="pf-close pf-wrap" aria-labelledby="pf-close-title" data-clip="closing" data-clip-label="{{contact.label}}">
+        <h2 class="pf-close__title" id="pf-close-title">{{workPage.closingTitle}}</h2>
+        <p class="pf-close__text">{{workPage.closingText}}</p>
+        <a class="btn btn--volt" href="{{contactHref}}">{{hero.cta}}</a>
+      </section>
+    </main>
+
+    {{> footer}}
+
+    {{> timecode}}
+
+    <script type="module" src="/src/portfolio/work.js"></script>
+  </body>
+</html>

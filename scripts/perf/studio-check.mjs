@@ -63,7 +63,7 @@ for (const lang of ['es', 'en']) {
   Object.assign(page, await p.evaluate(() => ({
     cta: document.querySelector('.st-close .btn')?.href,
     ctaText: document.querySelector('.st-close .btn')?.textContent.trim(),
-    footer: document.querySelectorAll('.site-footer__link').length,
+    footer: document.querySelectorAll('[aria-labelledby="footer-net-title"] a').length,
     scrollWidth: document.documentElement.scrollWidth,
     viewport: innerWidth,
     clip: document.querySelector('[data-timecode-clip]')?.textContent,
@@ -92,7 +92,7 @@ for (const lang of ['es', 'en']) {
     heading: document.querySelector('#studio-title').textContent.trim(),
     link: document.querySelector('.stt__cta').href,
     marquee: document.querySelector('[data-studio-teaser] .mq').classList.contains('is-running'),
-    footer: document.querySelectorAll('.site-footer__link').length,
+    footer: document.querySelectorAll('[aria-labelledby="footer-net-title"] a').length,
     scrollWidth: document.documentElement.scrollWidth,
   }));
   out.pages.push({ url: home, beforeScroll, heroCta, ...teaser, errors: herrors });

@@ -1,0 +1,39 @@
+<!doctype html>
+<!-- Privacy notice for every language: /aviso-de-privacidad/, /en/privacy-notice/.
+     Content: src/data/privacy.json (scripts/i18n/privacy-markup.mjs). Reading layout + sticky index. -->
+<html lang="{{lang}}" data-root="{{root}}" data-page="privacy">
+  <head>
+    {{> page-head}}
+    <link rel="stylesheet" href="/src/privacy/page.css" />
+    <script type="application/json" id="movo-i18n">{{uiJson}}</script>
+  </head>
+  <body>
+    {{> header}}
+
+    <main id="main" class="lg">
+      <header class="lg-hero lg-wrap" data-clip="intro" data-clip-start="0" data-clip-label="{{privacy.h1}}">
+        <p class="lg-label">{{privacy.label}}</p>
+        <h1 class="lg-title">{{privacy.h1}}</h1>
+        <p class="lg-meta">{{privacy.provided}} · {{privacy.updated}}: {{privacyUpdated}}</p>
+      </header>
+
+      <div class="lg-layout lg-wrap">
+        <nav class="lg-toc" aria-labelledby="lg-toc-title">
+          <h2 class="lg-toc__title" id="lg-toc-title">{{privacy.toc}}</h2>
+          <ol class="lg-toc__list" role="list">{{privacyToc}}</ol>
+        </nav>
+        <article class="lg-doc" aria-labelledby="lg-doc-intro">
+          {{privacyNote}}
+          <p class="lg-intro" id="lg-doc-intro">{{privacyIntro}}</p>
+          {{privacyBody}}
+        </article>
+      </div>
+    </main>
+
+    {{> footer}}
+
+    {{> timecode}}
+
+    <script type="module" src="/src/privacy/page.js"></script>
+  </body>
+</html>

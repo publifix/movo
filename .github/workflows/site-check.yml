@@ -1,8 +1,9 @@
 name: Check site pages
 
 # Manual. Real browsers against the live site (the sandbox where it is developed cannot reach github.io):
-# the Studio page and the home teaser, ES + EN, on 1440x900, 1920x1080 (Chrome), Pixel 7 (Chrome) and
-# iPhone 14 (WebKit). See scripts/perf/studio-check.mjs.
+# the Studio page and the home teaser (scripts/perf/studio-check.mjs), and the Work page, every project
+# page, Contact and the privacy notice (scripts/perf/pages-check.mjs), ES + EN, Chrome (desktop, Pixel 7)
+# and WebKit (iPhone 14).
 on:
   workflow_dispatch:
     inputs:
@@ -31,5 +32,14 @@ jobs:
           for dev in desktop desktop1920 pixel7 iphone14; do
             echo "::group::$dev"
             node scripts/perf/studio-check.mjs "${{ inputs.site }}" --device "$dev" || true
+            echo "::endgroup::"
+          done
+      - name: Work, projects, contact, privacy
+        env:
+          CHROME_PATH: /usr/bin/google-chrome
+        run: |
+          for dev in desktop pixel7 iphone14; do
+            echo "::group::pages $dev"
+            node scripts/perf/pages-check.mjs "${{ inputs.site }}" --device "$dev" || true
             echo "::endgroup::"
           done
