@@ -6,7 +6,17 @@ import fs from 'node:fs';
 
 const CLIENTS = new URL('../../src/data/clients.json', import.meta.url);
 const NETWORK = new URL('../../src/data/network.json', import.meta.url);
+const WORDMARK = new URL('../../public/logo/movo-wordmark.svg', import.meta.url);
 export const STUDIO_DATA = [CLIENTS, NETWORK].map(u => u.pathname);
+
+// The real MOVO wordmark (same file as the navbar's), inline so it takes currentColor (white) and costs
+// no request. Decorative here: the center of the diagram is aria-hidden.
+const wordmark = () =>
+  fs.readFileSync(WORDMARK, 'utf8')
+    .replace(/<title>[^<]*<\/title>/, '')
+    .replace(/\s(role|aria-label)="[^"]*"/g, '')
+    .replace('<svg ', '<svg class="net__logo" aria-hidden="true" focusable="false" ')
+    .trim();
 
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
@@ -71,7 +81,7 @@ export function studioMarkup({ t, lang }) {
     studioBandB: band(clients.slice(half), 1, 2),
     studioNetwork: `<div class="net__map" data-net style="--ar: ${VB.w} / ${VB.h}">
           ${svg}
-          <p class="net__center" style="${center}" aria-hidden="true"><span>MOVO</span></p>
+          <p class="net__center" style="${center}" aria-hidden="true">${wordmark()}</p>
           <ul class="net__list" role="list">
             ${nodes}
           </ul>

@@ -103,7 +103,8 @@ Static site built with Vite, deployed to GitHub Pages: https://publifix.github.i
   `src/data/network.json` (Publifix Network: name, description ES/EN, URL). Markup: `scripts/i18n/studio-markup.mjs`.
 - Page `src/studio/page.{js,css}`: kinetic two-line hero (letters change wdth/wght with the scroll) + page
   ruler; two client bands in opposite directions; manifesto revealed word by word + giant closing lines;
-  network diagram (SVG lines drawn by ScrollTrigger, CSS pulses) on >= 900px, connected list below;
+  network diagram (SVG lines drawn by ScrollTrigger, CSS pulses; the real white MOVO wordmark, inline from
+  public/logo/movo-wordmark.svg, in the center) on >= 900px, connected list below;
   closing CTA = the site CTA (`hero.cta` → `nav.contact.href`). Nav "Estudio" links to the page.
 - Marquee `src/studio/marquee.{js,css}`: list once in the HTML, cloned (aria-hidden) by JS; CSS transform
   loop shifted by exactly one list width (seamless); hover slows it (playbackRate); off screen pauses.
