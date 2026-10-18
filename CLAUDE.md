@@ -176,7 +176,8 @@ Static site built with Vite, deployed to GitHub Pages on the custom domain https
   HTTPS; GoDaddy DNS: CNAME `www` → `publifix.github.io`, A records `@` → 185.199.108.153 / .109.153 /
   .110.153 / .111.153; Bunny hotlink protection: add movomotiondesign.com and www.movomotiondesign.com; then
   `siteUrl` → 'https://www.movomotiondesign.com/' and `noindex: false` in site.config.mjs, `public/CNAME`,
-  build + push; Search Console (domain property, DNS TXT) + submit sitemap.xml; Google Business Profile.
+  build + push; Search Console + submit sitemap.xml. (Google Business Profile DISCARDED by the owner: Google asks
+  for a video verification of the address that MOVO cannot provide. Do not propose it again.)
 - LIVE since Oct 2026 on https://www.movomotiondesign.com/ (indexing on). Search Console: URL-prefix property,
   verified by `public/googledcccd2c664a9ab65.html` (keep it; `…ab651.html` is a copy); sitemap.xml submitted.
   "Request indexing" (URL Inspection, ~10/day) — Day 1 DONE (18 Oct 2026). PENDING:
@@ -184,7 +185,7 @@ Static site built with Vite, deployed to GitHub Pages on the custom domain https
   mae-dunne-mexican-soul-san-antonio, veluminen-15-esencias-morena-mia, blanco-nuclear-fiestas-fin-de-ano,
   viviendo-vino-botellas-750-ml, f57-lanzamiento-club-57, labs-caso-estudio-inmobiliaria.
   Day 3: the 10 /en/work/<slug>/ pages. Then (optional): /aviso-de-privacidad/ and /en/privacy-notice/.
-  Still to do by the owner: Instagram/TikTok URLs, Google Business Profile, "Enforce HTTPS" when the cert is ready.
+  "Enforce HTTPS" is ON (Oct 2026). Still to come from the owner: Instagram/TikTok URLs (→ contact.json `social`).
 - Thumbnails: Bunny answers 403 without the site's Referer (Googlebot, WhatsApp/LinkedIn previews), so
   `.github/workflows/thumbs.yml` (manual) copies each reel's thumbnail to `public/thumbs/` (<slug>-{360,720,1080}.webp
   posters, <slug>.jpg for VideoObject, <slug>-og.jpg 1200x630 for the project og:image) + `src/data/thumbs.json`,
