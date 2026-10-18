@@ -153,7 +153,7 @@
           "monthly-plan": {
             "name": "Monthly content plan",
             "description": "A fixed set of animated pieces every month, with a calendar, creative direction and a consistent look. Your brand always in motion, without quoting every video.",
-            "deliverables": "Monthly set of pieces per plan"
+            "deliverables": "8, 12 or more pieces a month, adapted to what your brand needs"
           }
         },
         "intro": "Social moves fast, and so should your content. We make animated pieces built for each platform that stop the scroll and land the message in the first seconds.",
@@ -250,11 +250,11 @@
       "items": [
         {
           "q": "How long does a project take?",
-          "a": "It depends on scope. An animated logo can take one to two weeks, an explainer three to five. You get a schedule with the proposal."
+          "a": "It depends on complexity. We can deliver finished productions in a couple of days; more complex projects take a couple of weeks. You get a schedule with the proposal."
         },
         {
           "q": "How many revisions are included?",
-          "a": "Two rounds at each key stage: script, styleframes and animation."
+          "a": "Two rounds of revisions at each key stage: script, styleframes and animation."
         },
         {
           "q": "What do you need from me?",
@@ -262,15 +262,15 @@
         },
         {
           "q": "How much does it cost?",
-          "a": "Every project is quoted by length, complexity and number of pieces. Tell us what you need and we'll send a proposal within 48 hours."
+          "a": "Every project is quoted by length, complexity and number of pieces, so we don't publish fixed prices. Tell us what you need and we'll send you a quote within 48 hours."
         },
         {
           "q": "Do you handle music and voiceover?",
-          "a": "Yes. We score with licensed libraries and arrange professional voiceover when the project calls for it."
+          "a": "Yes. We include licensed music and professional voiceover."
         },
         {
           "q": "Do you work with clients outside Mexico?",
-          "a": "Yes. We work remotely, in Spanish and English."
+          "a": "Yes. We work with clients in Mexico, the United States and anywhere in the world, remotely and in Spanish or English."
         }
       ]
     },

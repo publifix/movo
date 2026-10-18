@@ -85,8 +85,9 @@ Static site built with Vite, deployed to GitHub Pages: https://publifix.github.i
 - SOURCE OF TRUTH: `docs/MOVO-Servicios-textos-ES-EN-y-direccion-de-diseno.docx` (owner's document; `.md` copy next
   to it for reading). Texts are used verbatim. `python3 scripts/services/import-doc.py` regenerates
   `src/i18n/*.json → services` and `src/data/services.json` (pillars, slugs, anchors, colors, Work filters) from it.
-  Never edit those generated parts by hand. `[CONFIRMAR …]` markers stay in the text (styled `.confirm`) until
-  MOVO validates them. UI labels that are not copy live in `servicesUi`.
+  Never edit those generated parts by hand. Every `[CONFIRMAR …]` was validated by MOVO (Oct 2026) and the final
+  ES/EN texts are in the document; a new marker would be styled `.confirm` until validated. No prices on the
+  site (every project is quoted); the site-wide CTA stays "Empieza un proyecto". UI labels that are not copy live in `servicesUi`.
 - Markup: `scripts/i18n/services-markup.mjs` (home tracks, page index, pillars/rows, process, formats, FAQ, JSON-LD).
 - Pillar colors on ink: brand volt, content magenta, explain violet (`--pc`; violet text uses a lighter tint).
 - Previews come from `src/data/reels.json`: pillar = first reel of its Work categories, row = n-th reel of its

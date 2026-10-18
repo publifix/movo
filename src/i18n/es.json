@@ -153,7 +153,7 @@
           "monthly-plan": {
             "name": "Plan mensual de contenido",
             "description": "Un paquete fijo de piezas animadas cada mes, con calendario, dirección creativa y estilo consistente. Tu marca siempre en movimiento, sin cotizar cada video.",
-            "deliverables": "Paquete mensual de piezas según el plan [CONFIRMAR número de piezas]"
+            "deliverables": "8, 12 o más piezas al mes, adaptadas a lo que necesita tu marca"
           }
         },
         "intro": "Las redes se mueven rápido y tu contenido también. Producimos piezas animadas pensadas para cada plataforma, que detienen el scroll y dicen lo importante en los primeros segundos.",
@@ -250,11 +250,11 @@
       "items": [
         {
           "q": "¿Cuánto tarda un proyecto?",
-          "a": "Depende del alcance. Un logo animado puede estar en una a dos semanas y un explainer en tres a cinco. Te damos un calendario desde la propuesta. [CONFIRMAR]"
+          "a": "Depende de la complejidad. Podemos entregar producciones terminadas en un par de días; los proyectos más complejos toman un par de semanas. Te damos un calendario desde la propuesta."
         },
         {
           "q": "¿Cuántas revisiones incluye?",
-          "a": "Dos rondas en cada etapa clave: guion, styleframes y animación. [CONFIRMAR]"
+          "a": "Dos rondas de revisión en cada etapa clave: guion, styleframes y animación."
         },
         {
           "q": "¿Qué necesitan de mí?",
@@ -262,15 +262,15 @@
         },
         {
           "q": "¿Cuánto cuesta?",
-          "a": "Cada proyecto se cotiza según duración, complejidad y número de piezas. Cuéntanos qué necesitas y te enviamos una propuesta en 48 horas. [CONFIRMAR]"
+          "a": "Cada proyecto se cotiza según su duración, complejidad y número de piezas, por eso no publicamos precios fijos. Cuéntanos qué necesitas y te enviamos una cotización en no más de 48 horas."
         },
         {
           "q": "¿Incluyen música y voz?",
-          "a": "Sí. Musicalizamos con librerías con licencia y coordinamos locución profesional cuando el proyecto lo pide. [CONFIRMAR]"
+          "a": "Sí. Incluimos música con licencia y locución profesional."
         },
         {
           "q": "¿Trabajan con clientes fuera de México?",
-          "a": "Sí. Trabajamos a distancia, en español y en inglés. [CONFIRMAR]"
+          "a": "Sí. Trabajamos con clientes en México, Estados Unidos y cualquier parte del mundo, a distancia y en español o inglés."
         }
       ]
     },
