@@ -40,7 +40,9 @@ export async function initMovoIntro(opts = {}) {
   const navLogo = document.querySelector('[data-movo-nav-logo]');
   const mains = [...document.querySelectorAll(opts.mainSelector ?? 'main')];
   const done = () => window.dispatchEvent(new CustomEvent('movo:intro-done'));
-  const L = { enter: 'Enter', enterMuted: 'Enter without sound', enterAria: 'Entrar a MOVO con sonido', skip: 'Skip', skipAria: 'Saltar intro', ...opts.labels };
+  const L = { enter: 'Enter', enterMuted: 'Enter without sound', enterAria: 'Entrar a MOVO con sonido', skip: 'Skip', skipAria: 'Saltar intro',
+    orbit: 'Motion Design Studio', loading: 'Loading', ready: 'Intro · 13 s · Best with sound', langs: [], ...opts.labels };
+  const esc = v => String(v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
 
   // Visita repetida en la sesión o movimiento reducido: directo al sitio
   if (sessionStorage.getItem(SEEN_KEY) || reduce || opts.skip) {
@@ -66,13 +68,22 @@ export async function initMovoIntro(opts = {}) {
     </div>
     <div id="movo-gate">
       <div class="gate-core">
+        <!-- who we are, before the video says it: "MOVO · MOTION DESIGN STUDIO" turning around the ring -->
+        <svg class="gate-orbit" viewBox="0 0 400 400" aria-hidden="true">
+          <defs><path id="gate-orbit-path" d="M200,200 m-176,0 a176,176 0 1,1 352,0 a176,176 0 1,1 -352,0" /></defs>
+          <text><textPath href="#gate-orbit-path" textLength="1102" lengthAdjust="spacing">${[0, 1].map(() =>
+            `<tspan class="o-brand">MOVO</tspan><tspan class="o-sep"> — </tspan><tspan class="o-line">${esc(L.orbit.toUpperCase())}</tspan><tspan class="o-sep"> — </tspan>`).join('')}</textPath></text>
+          <g class="o-ticks">${Array.from({ length: 72 }, (_, i) => `<line x1="200" y1="${i % 6 ? 50 : 46}" x2="200" y2="54" transform="rotate(${i * 5} 200 200)" />`).join('')}</g>
+        </svg>
         <svg class="gate-ring" viewBox="0 0 168 168" aria-hidden="true"><circle class="track" cx="84" cy="84" r="82"/><circle class="bar" cx="84" cy="84" r="82"/></svg>
         <button class="gate-m" aria-label="${L.enterAria}" disabled>${svgM}</button>
       </div>
       <div class="gate-actions">
         <button class="gate-enter" disabled>${L.enter}</button>
         <button class="gate-mute" disabled>${L.enterMuted}</button>
+        <p class="gate-info" aria-live="polite"><span class="gate-info__rec" aria-hidden="true"></span><span class="gate-info__text">${esc(L.loading)}</span> <span class="gate-info__tc">00:00:00:00</span><span class="gate-info__wave" aria-hidden="true"><i></i><i></i><i></i><i></i></span></p>
       </div>
+      ${L.langs.map(l => `<a class="gate-lang" href="${esc(l.href)}" hreflang="${l.code}" lang="${l.code}">${esc(l.name)}</a>`).join('')}
       <div id="movo-dot"></div>
     </div>
     <button id="movo-skip" aria-label="${L.skipAria}">${L.skip}</button>`;
@@ -81,12 +92,29 @@ export async function initMovoIntro(opts = {}) {
 
   const video = root.querySelector('video');
   const gate = root.querySelector('#movo-gate');
+  requestAnimationFrame(() => requestAnimationFrame(() => gate.classList.add('is-on'))); // the orbit arrives
   const logo = root.querySelector('#movo-intro-logo');
   const word = logo.querySelector('.word');
   const sub = logo.querySelector('.sub');
   const dot = root.querySelector('#movo-dot');
   const skipBtn = root.querySelector('#movo-skip');
   const bar = root.querySelector('.gate-ring .bar');
+  const info = root.querySelector('.gate-info');
+  const infoTc = info.querySelector('.gate-info__tc');
+  // the download fills the 13.4 s of the intro: a timecode (24 fps) that runs with the progress
+  const INTRO_S = 13.4;
+  const tc = p => {
+    const f = Math.round(p * INTRO_S * 24);
+    return `00:00:${String(Math.floor(f / 24)).padStart(2, '0')}:${String(f % 24).padStart(2, '0')}`;
+  };
+  // the browser speaks the other language: offer it more clearly (never redirect: search engines)
+  const nav = (navigator.languages || [navigator.language || '']).map(x => x.slice(0, 2).toLowerCase());
+  root.querySelectorAll('.gate-lang').forEach(a => {
+    if (nav[0] === a.getAttribute('hreflang')) {
+      a.classList.add('is-suggested');
+      a.textContent = L.langs.find(l => l.code === a.getAttribute('hreflang'))?.offer || a.textContent;
+    }
+  });
   const C = 2 * Math.PI * 82;
   bar.style.strokeDasharray = C;
   bar.style.strokeDashoffset = C;
@@ -128,7 +156,7 @@ export async function initMovoIntro(opts = {}) {
       if (end) break;
       chunks.push(value);
       got += value.length;
-      if (total) bar.style.strokeDashoffset = C * (1 - got / total);
+      if (total) { bar.style.strokeDashoffset = C * (1 - got / total); infoTc.textContent = tc(got / total); }
     }
     video.src = URL.createObjectURL(new Blob(chunks, { type: useWebm ? 'video/webm' : 'video/mp4' }));
     inMemory = true;
@@ -154,6 +182,8 @@ export async function initMovoIntro(opts = {}) {
   // Pase lo que pase, la pantalla de entrada se habilita: si luego no arranca, el watchdog hace el relevo.
   gate.classList.add('ready');
   root.querySelectorAll('#movo-gate button').forEach(b => { b.disabled = false; });
+  infoTc.textContent = '';
+  info.querySelector('.gate-info__text').textContent = L.ready;
 
   // ---------- entrar: la M se contrae en el punto del frame 0 ----------
   let started = false, handed = false;
@@ -181,7 +211,7 @@ export async function initMovoIntro(opts = {}) {
     const m = gate.querySelector('.gate-m');
     m.style.animation = 'none';
     gsap.timeline()
-      .to(gate.querySelectorAll('.gate-actions, .gate-ring'), { opacity: 0, duration: 0.2 }, 0)
+      .to(gate.querySelectorAll('.gate-actions, .gate-ring, .gate-orbit, .gate-lang'), { opacity: 0, duration: 0.2 }, 0)
       .to(m, { scale: 0.08, opacity: 0, duration: 0.3, ease: 'expo.in' }, 0)
       .to(dot, { scale: 1, duration: 0.12, ease: 'power2.out' }, 0.2)
       .set(video, { opacity: 1 }, 0.32)

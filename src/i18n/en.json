@@ -47,7 +47,12 @@
     "enterMuted": "Enter without sound",
     "enterAria": "Enter MOVO with sound",
     "skip": "Skip",
-    "skipAria": "Skip intro"
+    "skipAria": "Skip intro",
+    "orbit": "Motion Design Studio",
+    "loading": "Loading",
+    "ready": "Intro · 13 s · Best with sound",
+    "langName": "English",
+    "langOffer": "View in English"
   },
   "notFound": {
     "title": "Page not found",

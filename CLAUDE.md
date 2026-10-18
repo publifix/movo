@@ -18,6 +18,11 @@ Static site built with Vite, deployed to GitHub Pages: https://publifix.github.i
 - Hero video: chosen by ORIENTATION (not width) and browser in `src/hero.js` (MP4 on iOS/Safari, else WebM);
   a single `src` is assigned only on `movo:intro-done`. Portrait layout CSS uses `(orientation: portrait)` only.
   Vertical cut is 720x1280 (~1 MB). Hero copy auto-fits (CSS `scale`) to the area the animation leaves free.
+- Intro gate (desktop, before the video): the M in the ring stays (on Enter it contracts into the video's
+  frame-0 dot); around it "MOVO — MOTION DESIGN STUDIO —" turns on an SVG textPath with timecode ticks
+  (the wordmark is NOT shown: it is the payoff of the video); a loading timecode (the download fills the
+  13.4 s) becomes "Intro · 13 s · Mejor con sonido" + audio wave; a link to the other language (a volt pill
+  "View in English" when the browser speaks it; never an automatic redirect, for SEO). Strings: `intro.*`.
 - The intro plays on DESKTOP ONLY: touch devices (phones and tablets, any orientation) skip it.
   Switch: `INTRO_ON_TOUCH` in the inline `<head>` script of `src/page.html`.
 

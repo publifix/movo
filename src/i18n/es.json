@@ -47,7 +47,12 @@
     "enterMuted": "Entrar sin sonido",
     "enterAria": "Entrar a MOVO con sonido",
     "skip": "Saltar",
-    "skipAria": "Saltar intro"
+    "skipAria": "Saltar intro",
+    "orbit": "Motion Design Studio",
+    "loading": "Cargando",
+    "ready": "Intro · 13 s · Mejor con sonido",
+    "langName": "Español",
+    "langOffer": "Ver en español"
   },
   "notFound": {
     "title": "Página no encontrada",

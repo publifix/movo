@@ -170,7 +170,11 @@ function render(page, locale, item = null) {
     })
     .join('<span aria-hidden="true">/</span>');
 
-  const ui = { intro: t.intro, a11y: { menu: t.a11y.menu, closeMenu: t.a11y.closeMenu }, player: t.player, work: { scrubHint: t.work.scrubHint }, contact: t.contactUi };
+  // the other languages of this same page (the intro gate offers them: no automatic redirect, for SEO)
+  const otherLangs = site.locales
+    .filter(l => l !== locale)
+    .map(l => ({ code: l.code, name: strings(l.code).intro.langName, offer: strings(l.code).intro.langOffer, href: root + urlPath(page, l, item) }));
+  const ui = { intro: { ...t.intro, langs: otherLangs }, a11y: { menu: t.a11y.menu, closeMenu: t.a11y.closeMenu }, player: t.player, work: { scrubHint: t.work.scrubHint }, contact: t.contactUi };
   const work = workMarkup(t, root, projectHref);
   // Nav: every item is a page (Work, Services, Studio, Contact); the home keeps a teaser of each one.
   const current = (...ids) => (ids.includes(page.id) ? ' aria-current="page"' : '');
