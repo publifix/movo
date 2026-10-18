@@ -363,12 +363,13 @@ html.intro-pending body::after {
   container-type: inline-size;
 }
 
-/* the location in the eyebrow: full on wide screens, short on phones (one line) */
+/* the location in the eyebrow: full where the copy column is wide, short where it is narrow (one line) */
 .hero__eb-short {
   display: none;
 }
 
-@media (max-width: 699px) {
+/* by the width of the hero copy column itself (it is a container), not the screen's */
+@container (max-width: 379px) {
   .hero__eb-long {
     display: none;
   }
@@ -386,6 +387,13 @@ html.intro-pending body::after {
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--c-volt);
+}
+
+/* the eyebrow stays on one line: tighter tracking on narrower desktops and the narrowest phones */
+@media (max-width: 359px) {
+  .hero__eyebrow {
+    letter-spacing: 0.1em;
+  }
 }
 
 .hero__title {

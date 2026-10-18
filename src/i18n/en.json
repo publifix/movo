@@ -37,7 +37,7 @@
     }
   },
   "hero": {
-    "eyebrow": "Motion Design Studio · Querétaro, Mexico",
+    "eyebrow": "Motion Design Studio · Querétaro",
     "title": "We make brands move.",
     "lede": "Motion graphics, animation and video for brands that refuse to sit still. From first frame to final cut.",
     "cta": "Start a project",
@@ -354,7 +354,7 @@
     "top": "Back to top",
     "soon": "Coming soon",
     "track": "Track",
-    "based": "Motion design and animation studio in Querétaro, Mexico · Working with brands worldwide."
+    "based": "We are based in Querétaro, Mexico · Working with brands worldwide."
   },
   "workPage": {
     "_note": "/en/work/ page (portfolio). The number of projects comes from src/data/reels.json.",

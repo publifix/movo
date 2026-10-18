@@ -37,7 +37,7 @@
     }
   },
   "hero": {
-    "eyebrow": "Estudio de motion design · Querétaro, México",
+    "eyebrow": "Motion Design Studio · Querétaro",
     "title": "Ponemos marcas en movimiento.",
     "lede": "Motion graphics, animación y video para marcas que se niegan a quedarse quietas. Del primer cuadro al corte final.",
     "cta": "Empieza un proyecto",
@@ -354,7 +354,7 @@
     "top": "Volver arriba",
     "soon": "Próximamente",
     "track": "Pista",
-    "based": "Estudio de motion design y animación en Querétaro, México · Trabajamos con marcas de todo el mundo."
+    "based": "Estamos en Querétaro, México · Trabajamos con marcas de todo el mundo."
   },
   "workPage": {
     "_note": "Página /trabajo/ (portafolio). Copy de MOVO; el número de proyectos se calcula de src/data/reels.json.",

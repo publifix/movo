@@ -166,8 +166,8 @@ Static site built with Vite, deployed to GitHub Pages: https://publifix.github.i
 ## SEO (technical + local: "estudio de animación / motion design en Querétaro")
 - Titles ≤ ~62 chars and descriptions ≤ ~158 with the local terms (home, Work, Contact, Services via the .docx);
   project pages: "{title} · {client} · Proyecto MOVO" / "… · MOVO Project" (titleShort when long; long
-  descriptions cut at a word). Hero eyebrow: "Estudio de motion design · Querétaro, México" (short on phones).
-  Footer line `footer.based` on every page. City only (no street) by the owner's choice.
+  descriptions cut at a word). Hero eyebrow: "Motion Design Studio · Querétaro" (one line; "Motion design · Querétaro" when the copy column is < 380px: container query).
+  Footer line `footer.based` ("Estamos en Querétaro, México · Trabajamos con marcas de todo el mundo.") on every page. City only (no street) by the owner's choice.
 - JSON-LD: Organization + ProfessionalService (city address, phone, areaServed MX/US/worldwide, knowsAbout,
   parentOrganization Publifix Network, `sameAs` = social URLs from contact.json), WebSite, WebPage, ItemList
   (Work, Services), VideoObject + BreadcrumbList (projects). Sitemap with `lastmod` (build date) + hreflang.
