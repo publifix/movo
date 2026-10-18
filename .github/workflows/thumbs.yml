@@ -48,7 +48,7 @@ jobs:
             raw="$RUNNER_TEMP/raw/$slug.jpg"
             code=$(curl -s -o "$raw" -w '%{http_code}' -H "Referer: $REFERER" "${base}${id}/thumbnail.jpg")
             if [ "$code" != 200 ]; then echo "::warning::$slug thumbnail -> $code (skipped)"; continue; fi
-            read -r w h < <(ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of csv=p=0:s=' ' "$raw")
+            read -r w h < <(ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of csv=p=0 "$raw" | tr ',' ' ')
             for tw in 360 720 1080; do
               cwebp -quiet -mt -m 6 -q 78 -metadata none -resize "$tw" 0 "$raw" -o "public/thumbs/$slug-$tw.webp"
             done
