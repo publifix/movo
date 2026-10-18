@@ -162,3 +162,17 @@ Static site built with Vite, deployed to GitHub Pages: https://publifix.github.i
   © + "Servicio proporcionado por Publifix Network S.A.P.I. de C.V.", privacy link, ES/EN.
 - Production checks: `site-check.yml` runs `studio-check.mjs` and `pages-check.mjs` (Work, all project pages,
   playback with sound, contact, privacy) in real Chrome/WebKit.
+
+## SEO (technical + local: "estudio de animación / motion design en Querétaro")
+- Titles ≤ ~62 chars and descriptions ≤ ~158 with the local terms (home, Work, Contact, Services via the .docx);
+  project pages: "{title} · {client} · Proyecto MOVO" / "… · MOVO Project" (titleShort when long; long
+  descriptions cut at a word). Hero eyebrow: "Estudio de motion design · Querétaro, México" (short on phones).
+  Footer line `footer.based` on every page. City only (no street) by the owner's choice.
+- JSON-LD: Organization + ProfessionalService (city address, phone, areaServed MX/US/worldwide, knowsAbout,
+  parentOrganization Publifix Network, `sameAs` = social URLs from contact.json), WebSite, WebPage, ItemList
+  (Work, Services), VideoObject + BreadcrumbList (projects). Sitemap with `lastmod` (build date) + hreflang.
+- Launch on the custom domain (www.movomotiondesign.com): GitHub repo Settings → Pages → Custom domain + Enforce
+  HTTPS; GoDaddy DNS: CNAME `www` → `publifix.github.io`, A records `@` → 185.199.108.153 / .109.153 /
+  .110.153 / .111.153; Bunny hotlink protection: add movomotiondesign.com and www.movomotiondesign.com; then
+  `siteUrl` → 'https://www.movomotiondesign.com/' and `noindex: false` in site.config.mjs, `public/CNAME`,
+  build + push; Search Console (domain property, DNS TXT) + submit sitemap.xml; Google Business Profile.

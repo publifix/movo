@@ -14,7 +14,7 @@ import { servicesMarkup } from './services-markup.mjs';
 import { reelMedia } from './reel-media.mjs';
 import { studioMarkup, STUDIO_DATA } from './studio-markup.mjs';
 import { portfolioMarkup, projectMeta } from './portfolio-markup.mjs';
-import { siteMarkup, SITE_DATA } from './site-markup.mjs';
+import { siteMarkup, SITE_DATA, contactData } from './site-markup.mjs';
 import { privacyMarkup, PRIVACY_DATA } from './privacy-markup.mjs';
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../..');
@@ -24,6 +24,7 @@ const PREVIEWS = path.join(ROOT, 'src/data/services-previews.json');
 const servicesData = () => JSON.parse(fs.readFileSync(SERVICES, 'utf8'));
 const strings = code => JSON.parse(fs.readFileSync(path.join(ROOT, `src/i18n/${code}.json`), 'utf8'));
 const REELS = path.join(ROOT, 'src/data/reels.json');
+const socialUrls = () => Object.values(contactData().social || {}).filter(Boolean);
 const reelsData = () => JSON.parse(fs.readFileSync(REELS, 'utf8'));
 
 // Work cards, rendered into the HTML for every language (titles indexable). No media URL is in a src
@@ -116,7 +117,23 @@ function render(page, locale, item = null) {
   const jsonld = {
     '@context': 'https://schema.org',
     '@graph': [
-      { '@type': 'Organization', '@id': `${site.siteUrl}#org`, name: site.org.name, url: site.siteUrl, logo: absolute(site.org.logo) },
+      {
+        // a motion design studio in Querétaro (ProfessionalService = a local business) that works worldwide
+        '@type': ['Organization', 'ProfessionalService'],
+        '@id': `${site.siteUrl}#org`,
+        name: site.org.name,
+        alternateName: site.org.alternateName,
+        url: site.siteUrl,
+        logo: absolute(site.org.logo),
+        image: absolute(site.org.ogImage),
+        description: strings(locale.code).meta.description,
+        telephone: site.org.telephone,
+        address: { '@type': 'PostalAddress', ...site.org.address },
+        areaServed: site.org.areaServed.map(a => (a === 'Worldwide' ? { '@type': 'Place', name: a } : { '@type': 'Country', name: a })),
+        knowsAbout: site.org.knowsAbout,
+        parentOrganization: { '@type': 'Organization', name: site.org.parent },
+        ...(socialUrls().length ? { sameAs: socialUrls() } : {}),
+      },
       { '@type': 'WebSite', '@id': `${site.siteUrl}#website`, url: site.siteUrl, name: site.org.name, publisher: { '@id': `${site.siteUrl}#org` }, inLanguage: site.locales.map(l => l.code) },
       { '@type': 'WebPage', '@id': `${url}#webpage`, url, name: meta.title, description: meta.description, inLanguage: locale.code, isPartOf: { '@id': `${site.siteUrl}#website` } },
     ],
@@ -279,12 +296,13 @@ export default function movoI18n() {
       },
     },
     generateBundle() {
+      const today = new Date().toISOString().slice(0, 10);
       const urls = entries().map(({ page, locale: l, item }) => {
         const links = site.locales
           .map(a => `<xhtml:link rel="alternate" hreflang="${a.code}" href="${absolute(urlPath(page, a, item))}"/>`)
           .concat(`<xhtml:link rel="alternate" hreflang="x-default" href="${absolute(urlPath(page, site.locales[0], item))}"/>`)
           .join('');
-        return `<url><loc>${absolute(urlPath(page, l, item))}</loc>${links}</url>`;
+        return `<url><loc>${absolute(urlPath(page, l, item))}</loc><lastmod>${today}</lastmod>${links}</url>`;
       });
       this.emitFile({
         type: 'asset',

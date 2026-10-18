@@ -1,8 +1,8 @@
 {
   "_note": "Provisional hero copy: replace with final copy. Keep the same keys as es.json.",
   "meta": {
-    "title": "MOVO — Motion Design Studio",
-    "description": "MOVO is a motion design studio. Animation, motion graphics and video for brands that don’t sit still.",
+    "title": "MOVO · Motion Design & Animation Studio in Querétaro, Mexico",
+    "description": "Motion design and animation studio in Querétaro, Mexico: motion graphics, explainers, animated logos and social video for brands worldwide.",
     "ogDescription": "Great ideas don’t sit still.",
     "ogLocale": "en_US"
   },
@@ -37,10 +37,11 @@
     }
   },
   "hero": {
-    "eyebrow": "Motion Design Studio",
+    "eyebrow": "Motion Design Studio · Querétaro, Mexico",
     "title": "We make brands move.",
     "lede": "Motion graphics, animation and video for brands that refuse to sit still. From first frame to final cut.",
-    "cta": "Start a project"
+    "cta": "Start a project",
+    "eyebrowShort": "Motion design · Querétaro"
   },
   "intro": {
     "enter": "Enter",
@@ -284,8 +285,8 @@
       "cta": "Start a project"
     },
     "meta": {
-      "title": "Motion graphics & animation services · MOVO",
-      "description": "Animated logos, reels, ads, explainers and event visuals. MOVO is a studio built around motion graphics for brands."
+      "title": "Motion Graphics & Animation Services · Querétaro · MOVO",
+      "description": "Animated logos, reels, ads, explainers and event visuals. MOVO is a motion graphics studio in Querétaro, Mexico, built for brands."
     }
   },
   "servicesUi": {
@@ -352,13 +353,14 @@
     "language": "Language",
     "top": "Back to top",
     "soon": "Coming soon",
-    "track": "Track"
+    "track": "Track",
+    "based": "Motion design and animation studio in Querétaro, Mexico · Working with brands worldwide."
   },
   "workPage": {
     "_note": "/en/work/ page (portfolio). The number of projects comes from src/data/reels.json.",
     "meta": {
-      "title": "Work · Motion Design Portfolio · MOVO",
-      "description": "Motion graphics, animation and design projects by MOVO for brands across Mexico and the United States: advertising, social content, branding and explainers."
+      "title": "Motion Design & Animation Portfolio · MOVO",
+      "description": "Motion graphics and animation projects by MOVO, a studio in Querétaro, Mexico, for brands in Mexico and the US: ads, social, branding and explainers."
     },
     "label": "Portfolio",
     "h1": "Work",
@@ -384,14 +386,14 @@
     "more": "More projects",
     "viewService": "See the service",
     "metaDescription": "{title} for {client}: a {category} project by MOVO, a Motion Design Studio.",
-    "metaTitle": "{title} · {client} · MOVO",
+    "metaTitle": "{title} · {client} · MOVO Project",
     "crumbs": "Breadcrumb"
   },
   "contact": {
     "_note": "Contact teaser (home) and /en/contact/ page. Copy proposed by the design studio; MOVO can adjust it.",
     "meta": {
-      "title": "Contact · MOVO Motion Design Studio",
-      "description": "Tell us about your motion graphics, animation or design project. Write to us through the form or chat with us on WhatsApp."
+      "title": "Contact · Animation Studio in Querétaro, Mexico · MOVO",
+      "description": "Get a quote for your motion graphics, animation or video project with MOVO, a motion design studio in Querétaro, Mexico. Write to us or chat on WhatsApp."
     },
     "label": "Contact",
     "teaser": {

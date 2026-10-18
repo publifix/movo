@@ -1,8 +1,8 @@
 {
   "_note": "Copy provisional del hero: reemplazar por el definitivo. Mantener las mismas claves en en.json.",
   "meta": {
-    "title": "MOVO — Estudio de Motion Design",
-    "description": "MOVO es un estudio de motion design. Animación, motion graphics y video para marcas que no se quedan quietas.",
+    "title": "MOVO · Estudio de motion design y animación en Querétaro",
+    "description": "Estudio de motion design y animación en Querétaro, México: motion graphics, explainers, logos animados y video para redes, para marcas de todo el mundo.",
     "ogDescription": "Las grandes ideas no se quedan quietas.",
     "ogLocale": "es_MX"
   },
@@ -37,10 +37,11 @@
     }
   },
   "hero": {
-    "eyebrow": "Estudio de motion design",
+    "eyebrow": "Estudio de motion design · Querétaro, México",
     "title": "Ponemos marcas en movimiento.",
     "lede": "Motion graphics, animación y video para marcas que se niegan a quedarse quietas. Del primer cuadro al corte final.",
-    "cta": "Empieza un proyecto"
+    "cta": "Empieza un proyecto",
+    "eyebrowShort": "Motion design · Querétaro"
   },
   "intro": {
     "enter": "Entrar",
@@ -284,8 +285,8 @@
       "cta": "Empieza un proyecto"
     },
     "meta": {
-      "title": "Servicios de motion graphics y animación · MOVO",
-      "description": "Logos animados, reels, anuncios, explainers y visuales para eventos. MOVO es un estudio especializado en motion graphics para marcas."
+      "title": "Servicios de motion graphics y animación en Querétaro · MOVO",
+      "description": "Logos animados, reels, anuncios, explainers y visuales para eventos. MOVO es un estudio de motion graphics en Querétaro, México, para marcas."
     }
   },
   "servicesUi": {
@@ -352,13 +353,14 @@
     "language": "Idioma",
     "top": "Volver arriba",
     "soon": "Próximamente",
-    "track": "Pista"
+    "track": "Pista",
+    "based": "Estudio de motion design y animación en Querétaro, México · Trabajamos con marcas de todo el mundo."
   },
   "workPage": {
     "_note": "Página /trabajo/ (portafolio). Copy de MOVO; el número de proyectos se calcula de src/data/reels.json.",
     "meta": {
-      "title": "Trabajo · Portafolio de motion design · MOVO",
-      "description": "Proyectos de motion graphics, animación y diseño de MOVO para marcas de México y Estados Unidos: publicidad, contenido social, branding y explainers."
+      "title": "Portafolio de motion design y animación · MOVO Querétaro",
+      "description": "Proyectos de motion graphics y animación de MOVO, estudio en Querétaro, para marcas de México y EE. UU.: publicidad, redes sociales, branding y explainers."
     },
     "label": "Portafolio",
     "h1": "Trabajo",
@@ -384,14 +386,14 @@
     "more": "Más proyectos",
     "viewService": "Ver el servicio",
     "metaDescription": "{title} para {client}: un proyecto de {category} de MOVO, estudio de motion design.",
-    "metaTitle": "{title} · {client} · MOVO",
+    "metaTitle": "{title} · {client} · Proyecto MOVO",
     "crumbs": "Ruta de navegación"
   },
   "contact": {
     "_note": "Teaser de contacto (home) y página /contacto/. Copy propuesto por el estudio de diseño; MOVO puede ajustarlo.",
     "meta": {
-      "title": "Contacto · MOVO Motion Design Studio",
-      "description": "Cuéntanos tu proyecto de motion graphics, animación o diseño. Escríbenos desde el formulario o conversemos por WhatsApp."
+      "title": "Contacto · Estudio de animación en Querétaro · MOVO",
+      "description": "Cotiza tu proyecto de motion graphics, animación o video con MOVO, estudio de motion design en Querétaro, México. Escríbenos o conversemos por WhatsApp."
     },
     "label": "Contacto",
     "teaser": {

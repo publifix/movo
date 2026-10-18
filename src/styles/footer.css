@@ -52,6 +52,14 @@
   line-height: 1.5;
 }
 
+.site-footer__based {
+  margin: 0;
+  color: var(--c-white);
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1.5;
+}
+
 .site-footer__title {
   margin: 0 0 14px;
   color: var(--c-text-muted);

@@ -363,6 +363,21 @@ html.intro-pending body::after {
   container-type: inline-size;
 }
 
+/* the location in the eyebrow: full on wide screens, short on phones (one line) */
+.hero__eb-short {
+  display: none;
+}
+
+@media (max-width: 699px) {
+  .hero__eb-long {
+    display: none;
+  }
+
+  .hero__eb-short {
+    display: inline;
+  }
+}
+
 .hero__eyebrow {
   margin: 0 0 clamp(16px, 2vw, 28px);
   font-size: 0.8125rem;

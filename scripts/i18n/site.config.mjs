@@ -26,8 +26,16 @@ export default {
     { id: 'privacy', template: 'src/privacy.html', path: { es: 'aviso-de-privacidad/', en: 'privacy-notice/' }, meta: 'privacy.meta' },
   ],
 
+  // Organization / local business data for JSON-LD (keep it identical to the Google Business Profile).
+  // Address: city only, by the owner's choice (no street).
   org: {
     name: 'MOVO Motion Design Studio',
+    alternateName: 'MOVO',
+    parent: 'Publifix Network S.A.P.I. de C.V.',
+    telephone: '+52 442 121 8565',
+    address: { addressLocality: 'Querétaro', addressRegion: 'Qro.', addressCountry: 'MX' },
+    areaServed: ['MX', 'US', 'Worldwide'],
+    knowsAbout: ['Motion design', 'Motion graphics', 'Animation', 'Explainer videos', 'Animated logos', 'Social media video', 'Branding'],
     logo: 'brand/movo-completo-volt-original.png',
     ogImage: 'og/movo-og-1200x630.jpg',
   },

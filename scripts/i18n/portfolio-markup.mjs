@@ -12,11 +12,17 @@ const isoDuration = s => `PT${Math.floor(s / 60) ? `${Math.floor(s / 60)}M` : ''
 
 const listed = reelsData => reelsData.reels.filter(r => r.slug && !r.pending);
 
+// A search result shows ~60 characters of title and ~155 of description: long project titles use their
+// short version (titleShort), long descriptions are cut at a word.
+const cut = (text, max) => (text.length <= max ? text : `${text.slice(0, max - 1).replace(/[\s,;:.]+\S*$/, '')}…`);
+
 export function projectMeta(t, r, lang) {
   const v = { title: loc(r.title, lang), client: r.client, category: t.work.categories[r.category] };
+  let title = fill(t.project.metaTitle, v);
+  if (title.length > 62 && r.titleShort) title = fill(t.project.metaTitle, { ...v, title: loc(r.titleShort, lang) });
   return {
-    title: fill(t.project.metaTitle, v),
-    description: loc(r.description, lang) || fill(t.project.metaDescription, { ...v, category: v.category.toLowerCase() }),
+    title,
+    description: cut(loc(r.description, lang) || fill(t.project.metaDescription, { ...v, category: v.category.toLowerCase() }), 158),
   };
 }
 
