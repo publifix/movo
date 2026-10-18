@@ -350,7 +350,9 @@
     "legal": "Privacy notice",
     "provided": "A service provided by Publifix Network S.A.P.I. de C.V.",
     "language": "Language",
-    "top": "Back to top"
+    "top": "Back to top",
+    "soon": "Coming soon",
+    "track": "Track"
   },
   "workPage": {
     "_note": "/en/work/ page (portfolio). The number of projects comes from src/data/reels.json.",

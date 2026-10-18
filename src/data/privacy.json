@@ -1,8 +1,8 @@
 {
-  "_note": "Aviso de privacidad integral (LFPDPPP, México). Borrador profesional redactado para Publifix Network: debe revisarlo su asesor legal antes de considerarlo definitivo. Rendered by scripts/i18n/privacy-markup.mjs into /aviso-de-privacidad/ and /en/privacy-notice/.",
+  "_note": "Aviso de privacidad integral (LFPDPPP, México). Redactado para Publifix Network con sus respuestas (oct 2026): los datos no se comparten con empresas hermanas, no hay finalidad promocional, solicitudes ARCO a labs.publifix@gmail.com o al domicilio. Conviene que lo revise su asesor legal. Rendered by scripts/i18n/privacy-markup.mjs.",
   "updated": {
-    "es": "17 de octubre de 2026",
-    "en": "October 17, 2026"
+    "es": "18 de octubre de 2026",
+    "en": "October 18, 2026"
   },
   "intro": {
     "es": "En MOVO cuidamos tus datos personales. Este aviso explica qué datos tratamos, para qué los usamos, con quién los compartimos y cómo puedes ejercer tus derechos, conforme a la Ley Federal de Protección de Datos Personales en Posesión de los Particulares.",
@@ -28,8 +28,8 @@
         },
         {
           "p": {
-            "es": "Teléfono de contacto: 442 121 8565.",
-            "en": "Contact phone: +52 442 121 8565."
+            "es": "Teléfono: 442 121 8565 · Correo para asuntos de privacidad: labs.publifix@gmail.com.",
+            "en": "Phone: +52 442 121 8565 · Email for privacy matters: labs.publifix@gmail.com."
           }
         }
       ]
@@ -84,8 +84,8 @@
       "blocks": [
         {
           "p": {
-            "es": "Finalidades primarias, necesarias para atender tu solicitud y, en su caso, la relación comercial:",
-            "en": "Primary purposes, necessary to handle your request and, where applicable, our business relationship:"
+            "es": "Usamos tus datos personales únicamente para las siguientes finalidades, necesarias para atender tu solicitud y, en su caso, la relación comercial:",
+            "en": "We use your personal data only for the following purposes, which are necessary to handle your request and, where applicable, our business relationship:"
           }
         },
         {
@@ -106,24 +106,8 @@
         },
         {
           "p": {
-            "es": "Finalidad secundaria, que no es necesaria para lo anterior:",
-            "en": "Secondary purpose, not necessary for the above:"
-          }
-        },
-        {
-          "ul": {
-            "es": [
-              "Enviarte información sobre servicios, proyectos y novedades de MOVO y de Publifix Network."
-            ],
-            "en": [
-              "Sending you information about services, projects and news from MOVO and Publifix Network."
-            ]
-          }
-        },
-        {
-          "p": {
-            "es": "Si no deseas que tus datos se traten para la finalidad secundaria, puedes indicarlo en cualquier momento por los medios de la sección 6. Tu negativa no afectará la atención de tu solicitud.",
-            "en": "If you do not want your data processed for the secondary purpose, you can tell us at any time through the means in section 6. Your refusal will not affect how we handle your request."
+            "es": "No utilizamos tus datos para enviarte publicidad o promociones, ni para ninguna finalidad distinta de las anteriores.",
+            "en": "We do not use your data to send you advertising or promotions, or for any purpose other than those above."
           }
         }
       ]
@@ -140,8 +124,8 @@
       "blocks": [
         {
           "p": {
-            "es": "No vendemos ni rentamos tus datos personales. Para operar el sitio y atender tus mensajes nos apoyamos en proveedores que los tratan por cuenta nuestra y conforme a nuestras instrucciones (encargados):",
-            "en": "We do not sell or rent your personal data. To run the site and handle your messages we rely on providers that process it on our behalf and under our instructions (processors):"
+            "es": "No vendemos, rentamos ni compartimos tus datos personales con otras empresas, incluidas las demás empresas de Publifix Network. Para operar el sitio y atender tus mensajes nos apoyamos únicamente en proveedores que los tratan por cuenta nuestra y conforme a nuestras instrucciones (encargados):",
+            "en": "We do not sell, rent or share your personal data with other companies, including the other companies of Publifix Network. To run the site and handle your messages we only rely on providers that process it on our behalf and under our instructions (processors):"
           }
         },
         {
@@ -204,8 +188,8 @@
         },
         {
           "p": {
-            "es": "Para ejercerlos, envía tu solicitud por escrito a nuestro domicilio (Privada de los Industriales 110, Piso 4, Jurica, Querétaro, Qro., México) o comunícate al 442 121 8565 para que te indiquemos el medio electrónico para presentarla. Tu solicitud debe incluir:",
-            "en": "To exercise them, send a written request to our address (Privada de los Industriales 110, 4th floor, Jurica, Querétaro, Qro., Mexico) or call +52 442 121 8565 and we will tell you the electronic means to submit it. Your request must include:"
+            "es": "Para ejercerlos, envía tu solicitud a labs.publifix@gmail.com o por escrito a nuestro domicilio (Privada de los Industriales 110, Piso 4, Jurica, Querétaro, Qro., México). Si tienes dudas sobre el procedimiento, comunícate al 442 121 8565. Tu solicitud debe incluir:",
+            "en": "To exercise them, send your request to labs.publifix@gmail.com or in writing to our address (Privada de los Industriales 110, 4th floor, Jurica, Querétaro, Qro., Mexico). If you have questions about the procedure, call +52 442 121 8565. Your request must include:"
           }
         },
         {
@@ -244,8 +228,8 @@
       "blocks": [
         {
           "p": {
-            "es": "Puedes limitar el uso o la divulgación de tus datos por los mismos medios de la sección 6. Además, puedes inscribirte en el Registro Público para Evitar Publicidad (REPEP) de la Procuraduría Federal del Consumidor.",
-            "en": "You can limit the use or disclosure of your data through the same means as in section 6. You can also register with the Public Registry to Avoid Advertising (REPEP) of Mexico's Federal Consumer Protection Agency (PROFECO)."
+            "es": "Puedes limitar el uso o la divulgación de tus datos por los mismos medios de la sección 6.",
+            "en": "You can limit the use or disclosure of your data through the same means as in section 6."
           }
         }
       ]

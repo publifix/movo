@@ -131,7 +131,8 @@ Static site built with Vite, deployed to GitHub Pages: https://publifix.github.i
 ## Work page + project pages (portfolio, SEO) — `scripts/i18n/portfolio-markup.mjs`
 - Everything comes from `src/data/reels.json`: a new reel (with a stable `slug`) = a new card on `/trabajo/`,
   a new project page, a sitemap entry and JSON-LD (ItemList on Work; VideoObject + BreadcrumbList on the
-  project). Optional `date` (YYYY-MM-DD) on a reel adds `uploadDate`, which Google needs for video results.
+  project). `date` (YYYY-MM-DD, the day the video was published on the site) → `uploadDate`, which Google needs
+  for video results: set it on every new reel.
 - Work page `src/portfolio/work.{js,css}`: kinetic title, filters with counts (`?cat=a,b`; Services links here),
   4/3/2-column grid with offset columns, real poster <img> (lazy after the first row), hover preview (fine
   pointers). Project page `src/portfolio/project.{js,css}`: whole vertical video (720p in the HTML, 1080p on
@@ -148,11 +149,16 @@ Static site built with Vite, deployed to GitHub Pages: https://publifix.github.i
 - `social` (Instagram, TikTok) URLs in the same file: an icon shows in the footer only when its URL is set.
 
 ## Privacy notice — `src/data/privacy.json` (ES/EN), `scripts/i18n/privacy-markup.mjs`, `src/privacy/`
-- Professional draft for Publifix Network S.A.P.I. de C.V. (LFPDPPP): must be reviewed by their lawyer.
+- Written for Publifix Network S.A.P.I. de C.V. (LFPDPPP) with their answers (Oct 2026): data is NOT shared with
+  sister companies, NO promotional purpose, ARCO requests to labs.publifix@gmail.com or the address. Worth a
+  review by their lawyer.
   Sticky index with the section being read; update `updated` when it changes.
 
 ## Footer (every page) — `src/partials/footer.html`, `src/styles/footer.css`, `scripts/i18n/site-markup.mjs`
-- Wordmark (a `<use>` of the navbar's `#movo-wordmark` path: no second copy), line, site nav, social, Publifix
-  Network, © + "Servicio proporcionado por Publifix Network S.A.P.I. de C.V.", privacy link, ES/EN.
+- Social first: Instagram / TikTok as editor tracks (V1, V2): giant thin name; on hover a playhead wipes the
+  lane with volt / magenta and the name opens to 900 / 125%. No URL in `src/data/contact.json → social` yet:
+  the lane is not a link and shows REC + "Próximamente" with a slow scanning playhead. Then wordmark (a `<use>`
+  of the navbar's `#movo-wordmark` path: no second copy), line, site nav, Publifix Network,
+  © + "Servicio proporcionado por Publifix Network S.A.P.I. de C.V.", privacy link, ES/EN.
 - Production checks: `site-check.yml` runs `studio-check.mjs` and `pages-check.mjs` (Work, all project pages,
   playback with sound, contact, privacy) in real Chrome/WebKit.

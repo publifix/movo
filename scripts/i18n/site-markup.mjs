@@ -20,7 +20,6 @@ const NAMES = { instagram: 'Instagram', tiktok: 'TikTok' };
 export function siteMarkup({ t, lang, workHref, servicesHref, studioHref, contactHref }) {
   const c = contactData();
   const newTab = `<span class="sr-only"> ${esc(t.studioUi.newTab)}</span>`;
-  const social = Object.entries(c.social || {}).filter(([, url]) => url);
   const wa = `https://wa.me/${c.whatsapp}?text=${encodeURIComponent(t.contact.whatsapp.message)}`;
   return {
     // the navbar's wordmark path, reused (every page has it in the header): no second copy in the HTML
@@ -32,15 +31,24 @@ export function siteMarkup({ t, lang, workHref, servicesHref, studioHref, contac
       [studioHref, t.nav.studio.label],
       [contactHref, t.nav.contact.label],
     ].map(([href, label]) => `<li><a class="site-footer__link" href="${href}">${esc(label)}</a></li>`).join(''),
-    // Instagram / TikTok: an icon appears as soon as its profile URL is in src/data/contact.json
-    footerSocial: social.length
-      ? `<nav class="site-footer__col" aria-labelledby="footer-social-title">
-          <h2 class="site-footer__title" id="footer-social-title">${esc(t.footer.follow)}</h2>
-          <ul class="site-footer__social" role="list">${social
-            .map(([k, url]) => `<li><a class="site-footer__icon" href="${esc(url)}" target="_blank" rel="noopener" aria-label="${NAMES[k] || k}">${ICONS[k] || ''}${newTab}</a></li>`)
-            .join('')}</ul>
-        </nav>`
-      : '',
+    // Instagram / TikTok as the tracks of a video editor (V1, V2): giant name, a playhead wipes the lane on
+    // hover. No URL yet in src/data/contact.json → the lane says "coming soon" (not a link).
+    footerSocial: `<section class="sf-social" aria-labelledby="sf-social-title">
+        <h2 class="site-footer__title" id="sf-social-title">${esc(t.footer.follow)}</h2>
+        <ul class="sf-social__lanes" role="list">${['instagram', 'tiktok']
+          .map((k, i) => {
+            const url = c.social?.[k];
+            const inner = `<span class="sf-ch__track" aria-hidden="true">V${i + 1}</span>
+            <span class="sf-ch__icon" aria-hidden="true">${ICONS[k]}</span>
+            <span class="sf-ch__name">${NAMES[k]}</span>
+            <span class="sf-ch__meta">${url ? '<span class="sf-ch__arrow" aria-hidden="true">↗</span>' : `<span class="sf-ch__rec" aria-hidden="true"></span>${esc(t.footer.soon)}`}</span>
+            <span class="sf-ch__head" aria-hidden="true"></span>`;
+            return `<li>${url
+              ? `<a class="sf-ch" data-ch="${k}" href="${esc(url)}" target="_blank" rel="noopener">${inner}${newTab}</a>`
+              : `<div class="sf-ch is-soon" data-ch="${k}">${inner}</div>`}</li>`;
+          })
+          .join('')}</ul>
+      </section>`,
     whatsappHref: esc(wa),
     web3formsKey: esc(c.web3formsKey || ''),
     lang,

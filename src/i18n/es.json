@@ -350,7 +350,9 @@
     "legal": "Aviso de privacidad",
     "provided": "Servicio proporcionado por Publifix Network S.A.P.I. de C.V.",
     "language": "Idioma",
-    "top": "Volver arriba"
+    "top": "Volver arriba",
+    "soon": "Próximamente",
+    "track": "Pista"
   },
   "workPage": {
     "_note": "Página /trabajo/ (portafolio). Copy de MOVO; el número de proyectos se calcula de src/data/reels.json.",

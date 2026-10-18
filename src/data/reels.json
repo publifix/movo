@@ -1,11 +1,12 @@
 {
-  "_note": "Reels of the Work section, in display order (strip, feed and player). All are real: `bunny` (Bunny Stream: URLs are derived from fullBaseUrl + videoId, see scripts/i18n/reel-media.mjs), optional `description` (ES/EN, player on desktop only) and `titleShort` (phones). `slug` = the project page URL (/trabajo/<slug>/, /en/work/<slug>/): keep it stable once published (links and search results point to it).",
+  "_note": "Reels of the Work section, in display order (strip, feed and player). All are real: `bunny` (Bunny Stream: URLs are derived from fullBaseUrl + videoId, see scripts/i18n/reel-media.mjs), optional `description` (ES/EN, player on desktop only) and `titleShort` (phones). `slug` = the project page URL (/trabajo/<slug>/, /en/work/<slug>/): keep it stable once published (links and search results point to it). `date` (YYYY-MM-DD) = the day the video was published on the site (the project page's VideoObject uploadDate, which Google needs for video results): set it when you add a reel.",
   "fullBaseUrl": "https://vz-70c93c78-ad5.b-cdn.net/",
   "_fullBaseUrlNote": "Single switch: the Bunny Stream library's CDN hostname (library 781096), with a trailing slash. Hotlink protection allows publifix.github.io and localhost only. No API key is ever stored here.",
   "reels": [
     {
       "id": "reel-01",
       "slug": "tommy-hilfiger-austin-cadillac-f1",
+      "date": "2026-10-16",
       "title": {
         "es": "Concepto: colección Austin × Cadillac F1 Team",
         "en": "Concept: Austin × Cadillac F1 Team collection"
@@ -35,6 +36,7 @@
     {
       "id": "reel-02",
       "slug": "sephora-mystery-gift",
+      "date": "2026-10-16",
       "title": {
         "es": "Campaña Mystery Gift",
         "en": "Mystery Gift campaign"
@@ -60,6 +62,7 @@
     {
       "id": "reel-03",
       "slug": "tim-hortons-candiles",
+      "date": "2026-10-16",
       "title": {
         "es": "Nueva apertura: Candiles",
         "en": "Grand opening: Candiles"
@@ -85,6 +88,7 @@
     {
       "id": "reel-04",
       "slug": "sip-and-fly-coffee-at-gate-speed",
+      "date": "2026-10-16",
       "title": {
         "es": "Coffee at Gate Speed",
         "en": "Coffee at Gate Speed"
@@ -110,6 +114,7 @@
     {
       "id": "reel-05",
       "slug": "mae-dunne-mexican-soul-san-antonio",
+      "date": "2026-10-16",
       "title": {
         "es": "Mexican Soul in San Antonio",
         "en": "Mexican Soul in San Antonio"
@@ -135,6 +140,7 @@
     {
       "id": "reel-06",
       "slug": "veluminen-15-esencias-morena-mia",
+      "date": "2026-10-16",
       "title": {
         "es": "15 Esencias x Morena Mía",
         "en": "15 Essences x Morena Mía"
@@ -164,6 +170,7 @@
     {
       "id": "reel-07",
       "slug": "blanco-nuclear-fiestas-fin-de-ano",
+      "date": "2026-10-16",
       "title": {
         "es": "Fiestas de Fin de Año",
         "en": "Year-End Celebrations"
@@ -193,6 +200,7 @@
     {
       "id": "reel-08",
       "slug": "viviendo-vino-botellas-750-ml",
+      "date": "2026-10-16",
       "title": {
         "es": "¿Por qué casi todas las botellas de vino son de 750 ml?",
         "en": "Why are almost all wine bottles 750 ml?"
@@ -226,6 +234,7 @@
     {
       "id": "reel-09",
       "slug": "f57-lanzamiento-club-57",
+      "date": "2026-10-16",
       "title": {
         "es": "Lanzamiento Club 57",
         "en": "Club 57 Launch"
@@ -255,6 +264,7 @@
     {
       "id": "reel-10",
       "slug": "labs-caso-estudio-inmobiliaria",
+      "date": "2026-10-16",
       "title": {
         "es": "Caso Estudio Inmobiliaria",
         "en": "Real Estate Case Study"

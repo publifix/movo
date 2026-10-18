@@ -1,6 +1,7 @@
     <!-- Site footer (every page): logo, site nav, social (src/data/contact.json), Publifix Network
          (src/data/network.json), legal line and language. Styles: src/styles/footer.css. -->
     <footer class="site-footer">
+      {{footerSocial}}
       <div class="site-footer__top">
         <div class="site-footer__brand">
           <a class="site-footer__logo" href="{{homeHref}}" aria-label="{{a11y.home}}">{{footerLogo}}</a>
@@ -10,7 +11,6 @@
           <h2 class="site-footer__title" id="footer-site-title">{{footer.site}}</h2>
           <ul class="site-footer__links" role="list">{{footerSite}}</ul>
         </nav>
-        {{footerSocial}}
         <nav class="site-footer__col" aria-labelledby="footer-net-title">
           <h2 class="site-footer__title" id="footer-net-title">{{footer.network}}</h2>
           <ul class="site-footer__links" role="list">{{footerNetwork}}</ul>

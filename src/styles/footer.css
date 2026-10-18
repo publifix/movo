@@ -18,7 +18,7 @@
 
 @media (min-width: 1100px) {
   .site-footer__top {
-    grid-template-columns: minmax(0, 1.6fr) repeat(3, minmax(0, 1fr));
+    grid-template-columns: minmax(0, 1.6fr) repeat(2, minmax(0, 1fr));
   }
 }
 
@@ -167,5 +167,231 @@
 @media (max-width: 699px) {
   .site-footer__lang {
     margin-left: 0;
+  }
+}
+
+/* ---------- social: Instagram / TikTok as the tracks of a video editor ----------
+   Lane = a full-width track (V1, V2). At rest the name is thin and condensed; on hover / focus a playhead
+   wipes the lane left → right, filling it with the network's color (volt / magenta, text in ink), and the
+   name opens up to black / wide (the variable font). No profile yet: a REC dot, "coming soon" and a slow
+   playhead looping across the lane ("in production"). */
+.sf-social {
+  margin-bottom: clamp(48px, 9vh, 96px);
+}
+
+.sf-social__lanes {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid rgb(245 245 240 / 0.14);
+}
+
+.sf-ch {
+  --lane: var(--c-volt);
+  position: relative;
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: clamp(12px, 2vw, 28px);
+  min-height: clamp(84px, 13vw, 176px);
+  padding: 0 clamp(4px, 1vw, 16px);
+  overflow: hidden;
+  border-bottom: 1px solid rgb(245 245 240 / 0.14);
+  color: var(--c-white);
+  text-decoration: none;
+  isolation: isolate;
+}
+
+.sf-ch[data-ch='tiktok'] {
+  --lane: var(--c-magenta);
+}
+
+/* the fill that follows the playhead */
+.sf-ch::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--lane);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.75s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.sf-ch__head {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 2px;
+  background: var(--c-magenta);
+  box-shadow: 0 0 12px rgb(255 45 135 / 0.8);
+  opacity: 0;
+  transition: left 0.75s cubic-bezier(0.65, 0, 0.35, 1), opacity 0.2s;
+}
+
+.sf-ch[data-ch='tiktok'] .sf-ch__head {
+  background: var(--c-white);
+  box-shadow: 0 0 12px rgb(245 245 240 / 0.8);
+}
+
+.sf-ch__track {
+  color: var(--c-text-muted);
+  font: 500 12px/1 ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  letter-spacing: 0.1em;
+  transition: color 0.3s;
+}
+
+.sf-ch__icon svg {
+  display: block;
+  width: clamp(28px, 3.2vw, 48px);
+  height: auto;
+}
+
+.sf-ch__name {
+  min-width: 0;
+  /* sized so the widest state (wdth 125 / wght 900, on hover) still fits beside the arrow */
+  font-size: clamp(2.5rem, 8.4vw, 9.5rem);
+  font-weight: 200;
+  font-stretch: 62%;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  transition: font-stretch 0.75s cubic-bezier(0.65, 0, 0.35, 1), font-weight 0.75s cubic-bezier(0.65, 0, 0.35, 1), color 0.3s;
+}
+
+.sf-ch__meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--c-text-muted);
+  font: 500 12px/1 ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.sf-ch__arrow {
+  font: 400 clamp(2rem, 5vw, 5rem)/1 var(--font-sans);
+  color: var(--c-white);
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s;
+}
+
+/* live profile: the playhead wipes in */
+a.sf-ch:hover::before,
+a.sf-ch:focus-visible::before {
+  transform: scaleX(1);
+}
+
+a.sf-ch:hover .sf-ch__head,
+a.sf-ch:focus-visible .sf-ch__head {
+  left: calc(100% - 2px);
+  opacity: 1;
+}
+
+@media (hover: hover) {
+  a.sf-ch:hover .sf-ch__name {
+    font-weight: 900;
+    font-stretch: 125%;
+  }
+}
+
+a.sf-ch:focus-visible .sf-ch__name {
+  font-weight: 900;
+  font-stretch: 125%;
+}
+
+a.sf-ch:hover,
+a.sf-ch:focus-visible,
+a.sf-ch:hover .sf-ch__name,
+a.sf-ch:focus-visible .sf-ch__name,
+a.sf-ch:hover .sf-ch__track,
+a.sf-ch:focus-visible .sf-ch__track,
+a.sf-ch:hover .sf-ch__arrow,
+a.sf-ch:focus-visible .sf-ch__arrow {
+  color: var(--c-ink);
+}
+
+a.sf-ch:hover .sf-ch__arrow,
+a.sf-ch:focus-visible .sf-ch__arrow {
+  transform: translate(6px, -6px);
+}
+
+a.sf-ch:focus-visible {
+  outline: 2px solid var(--c-volt);
+  outline-offset: -2px;
+}
+
+/* no profile yet: "in production" */
+.sf-ch.is-soon .sf-ch__name {
+  color: rgb(245 245 240 / 0.86);
+}
+
+.sf-ch.is-soon .sf-ch__head {
+  opacity: 0.85;
+  animation: sf-scan 7s linear infinite;
+}
+
+.sf-ch.is-soon[data-ch='tiktok'] .sf-ch__head {
+  animation-delay: -3.5s;
+}
+
+.sf-ch__rec {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--c-magenta);
+  animation: sf-rec 1.2s steps(2, jump-none) infinite;
+}
+
+.sf-ch.is-soon:hover .sf-ch__name {
+  font-weight: 500;
+  font-stretch: 90%;
+}
+
+@keyframes sf-scan {
+  from { left: 0; }
+  to { left: calc(100% - 2px); }
+}
+
+@keyframes sf-rec {
+  50% { opacity: 0.2; }
+}
+
+@media (max-width: 699px) {
+  .sf-ch {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+  }
+
+  .sf-ch__track {
+    display: none;
+  }
+
+  .sf-ch__name {
+    font-size: clamp(2rem, 11vw, 3.5rem);
+  }
+
+  .sf-ch__meta {
+    font-size: 10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sf-ch::before,
+  .sf-ch__head,
+  .sf-ch__name,
+  .sf-ch__arrow {
+    transition: none;
+  }
+
+  .sf-ch.is-soon .sf-ch__head,
+  .sf-ch__rec {
+    animation: none;
+  }
+
+  .sf-ch.is-soon .sf-ch__head {
+    opacity: 0;
   }
 }
