@@ -1,0 +1,79 @@
+name: Self-host reel thumbnails
+
+# Manual. Bunny's hotlink protection answers 403 to requests without the site's Referer, so Googlebot and
+# social crawlers (WhatsApp, LinkedIn, X…) cannot fetch the CDN thumbnails. This copies each reel's
+# thumbnail (src/data/reels.json) to the site itself, optimized:
+#   public/thumbs/<slug>-{360,720,1080}.webp  posters (cards, player, project page; srcset)
+#   public/thumbs/<slug>.jpg                  1080 px JPEG: VideoObject thumbnailUrl (Google)
+#   public/thumbs/<slug>-og.jpg               1200x630: og:image / twitter:image of the project page
+#   src/data/thumbs.json                      manifest (videoId per slug: a changed video falls back to Bunny)
+# Then it commits them to the branch it runs on and starts a deploy. The videos stay on Bunny (protected).
+# Only the public CDN URL with the site's Referer is used: no Bunny API key is needed or stored.
+# Run it after adding a reel (or replacing its video) in reels.json.
+on:
+  workflow_dispatch:
+    inputs:
+      referer:
+        description: Referer allowed by Bunny's hotlink protection
+        default: https://www.movomotiondesign.com/
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: thumbs
+  cancel-in-progress: false
+
+jobs:
+  thumbs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install ffmpeg + cwebp
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg webp >/dev/null
+      - name: Download and optimize
+        env:
+          REFERER: ${{ inputs.referer }}
+        run: |
+          set -euo pipefail
+          mkdir -p public/thumbs "$RUNNER_TEMP/raw"
+          node -e '
+            const d = require("./src/data/reels.json");
+            for (const r of d.reels) if (r.slug && r.bunny) console.log(r.slug, r.bunny.videoId, d.fullBaseUrl);
+          ' > "$RUNNER_TEMP/list.txt"
+          echo '{' > "$RUNNER_TEMP/manifest.json"
+          first=1
+          while read -r slug id base; do
+            raw="$RUNNER_TEMP/raw/$slug.jpg"
+            code=$(curl -s -o "$raw" -w '%{http_code}' -H "Referer: $REFERER" "${base}${id}/thumbnail.jpg")
+            if [ "$code" != 200 ]; then echo "::warning::$slug thumbnail -> $code (skipped)"; continue; fi
+            read -r w h < <(ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of csv=p=0:s=' ' "$raw")
+            for tw in 360 720 1080; do
+              cwebp -quiet -mt -m 6 -q 78 -metadata none -resize "$tw" 0 "$raw" -o "public/thumbs/$slug-$tw.webp"
+            done
+            ffmpeg -v error -y -i "$raw" -vf "scale=1080:-2:flags=lanczos" -q:v 3 "public/thumbs/$slug.jpg"
+            # 1200x630 for link previews: the vertical frame centered over a dark, blurred fill of itself
+            ffmpeg -v error -y -i "$raw" -filter_complex \
+              "[0]scale=1200:630:force_original_aspect_ratio=increase,crop=1200:630,boxblur=40:3,eq=brightness=-0.32:saturation=0.8[bg];[0]scale=-2:630:flags=lanczos[fg];[bg][fg]overlay=(W-w)/2:0" \
+              -q:v 3 "public/thumbs/$slug-og.jpg"
+            [ $first = 1 ] || echo ',' >> "$RUNNER_TEMP/manifest.json"; first=0
+            printf '  "%s": { "videoId": "%s", "width": %s, "height": %s }' "$slug" "$id" "$w" "$h" >> "$RUNNER_TEMP/manifest.json"
+            echo "$slug ${w}x${h}: $(du -b public/thumbs/$slug-* public/thumbs/$slug.jpg | awk '{printf "%s=%dKB ", $2, $1/1024}')"
+          done < "$RUNNER_TEMP/list.txt"
+          printf '\n}\n' >> "$RUNNER_TEMP/manifest.json"
+          node -e 'JSON.parse(require("fs").readFileSync(process.argv[1], "utf8"))' "$RUNNER_TEMP/manifest.json"
+          cp "$RUNNER_TEMP/manifest.json" src/data/thumbs.json
+          cat src/data/thumbs.json
+      - name: Commit and deploy
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git add public/thumbs src/data/thumbs.json
+          if git diff --cached --quiet; then echo "No changes"; exit 0; fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Self-hosted reel thumbnails (from Bunny, optimized)"
+          git push origin "HEAD:${GITHUB_REF_NAME}"
+          # a push made with the workflow token does not start other workflows: start the deploy explicitly
+          gh workflow run deploy.yml --ref "${GITHUB_REF_NAME}"
