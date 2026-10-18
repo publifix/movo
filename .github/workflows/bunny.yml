@@ -17,7 +17,7 @@ on:
         default: 624d5677-01dc-44d4-a11c-68ee3c267de4 0dc61580-bf8a-4ff3-ba4d-fa0f94d485f8 50d010af-c26f-4890-9616-89734f093e19 fd1390d5-432f-4a5f-abfa-2696030b2e09 ea0ce3dc-7027-4a1e-9dac-81d40fdb9e85 d2ef3e51-4bf7-4eed-9367-7f0983195e95 a3cf2409-8f62-412a-88d6-12e4203bec89 ea0ba0c8-34d8-42f8-a7b3-19a5d582587e c2812585-5fc2-4f2f-9c0a-71570370c938 96539d8d-f777-4f70-a0c5-a5d3d9f6ecea
       site:
         description: Site URL for the browser check (empty = skip)
-        default: https://publifix.github.io/movo/
+        default: https://www.movomotiondesign.com/
 
 permissions:
   contents: read
@@ -31,10 +31,10 @@ jobs:
       - name: Probe every video
         run: |
           H="${{ inputs.host }}"
-          OK='https://publifix.github.io/'
+          OK='https://www.movomotiondesign.com/'
           for id in ${{ inputs.ids }}; do
             echo "::group::$id"
-            for ref in "$OK" "https://publifix.github.io/movo/" "http://localhost/" "http://localhost:4173/" "http://localhost:5173/" "http://127.0.0.1:4173/" "https://example.com/" ""; do
+            for ref in "$OK" "https://movomotiondesign.com/" "https://publifix.github.io/movo/" "http://localhost/" "http://localhost:4173/" "http://localhost:5173/" "http://127.0.0.1:4173/" "https://example.com/" ""; do
               hdr=(); [ -n "$ref" ] && hdr=(-H "Referer: $ref")
               code=$(curl -s -o /dev/null -w '%{http_code}' -r 0-0 "${hdr[@]}" "https://$H/$id/thumbnail.jpg")
               echo "REFERER ${ref:-<none>} thumbnail -> $code"
@@ -72,7 +72,7 @@ jobs:
       - name: Titles and frames
         run: |
           H="${{ inputs.host }}"
-          OK='https://publifix.github.io/'
+          OK='https://www.movomotiondesign.com/'
           for id in ${{ inputs.ids }}; do
             title=$(curl -s -H "Referer: $OK" "https://iframe.mediadelivery.net/embed/781096/$id" | grep -oE '<title>[^<]*' | head -1 | sed 's/<title>//')
             echo "TITLE $id $title"

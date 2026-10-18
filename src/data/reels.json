@@ -1,7 +1,7 @@
 {
   "_note": "Reels of the Work section, in display order (strip, feed and player). All are real: `bunny` (Bunny Stream: URLs are derived from fullBaseUrl + videoId, see scripts/i18n/reel-media.mjs), optional `description` (ES/EN, player on desktop only) and `titleShort` (phones). `slug` = the project page URL (/trabajo/<slug>/, /en/work/<slug>/): keep it stable once published (links and search results point to it). `date` (YYYY-MM-DD) = the day the video was published on the site (the project page's VideoObject uploadDate, which Google needs for video results): set it when you add a reel.",
   "fullBaseUrl": "https://vz-70c93c78-ad5.b-cdn.net/",
-  "_fullBaseUrlNote": "Single switch: the Bunny Stream library's CDN hostname (library 781096), with a trailing slash. Hotlink protection allows publifix.github.io and localhost only. No API key is ever stored here.",
+  "_fullBaseUrlNote": "Single switch: the Bunny Stream library's CDN hostname (library 781096), with a trailing slash. Hotlink protection allows movomotiondesign.com, www.movomotiondesign.com, publifix.github.io and localhost only. No API key is ever stored here.",
   "reels": [
     {
       "id": "reel-01",

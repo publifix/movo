@@ -1,6 +1,7 @@
 # MOVO — Motion Design Studio website
 
-Static site built with Vite, deployed to GitHub Pages: https://publifix.github.io/movo/
+Static site built with Vite, deployed to GitHub Pages on the custom domain https://www.movomotiondesign.com/
+(live and indexable since Oct 2026; publifix.github.io/movo and the bare domain redirect to it).
 
 ## Stack
 - Vite (vanilla JS/CSS) + GSAP 3. `npm run dev` / `npm run build` (output in `dist/`).
@@ -44,7 +45,7 @@ Static site built with Vite, deployed to GitHub Pages: https://publifix.github.i
 - Languages, URLs, indexing: `scripts/i18n/site.config.mjs` (`siteUrl`, `noindex`, `locales`). Spanish is the
   default (x-default) at `/`, English at `/en/`. Canonical, hreflang, Open Graph, Twitter, JSON-LD, robots.txt,
   sitemap.xml and a bilingual 404.html are generated from that config.
-- Launch checklist: set `siteUrl` to the real domain, set `noindex: false`, replace provisional copy in both JSONs.
+- Launched: `siteUrl` = https://www.movomotiondesign.com/, `noindex: false`, `public/CNAME`.
 - Measuring: `node scripts/perf/measure.mjs <url> --device pixel7|iphone14|desktop [--landscape] [--enter]`;
   production is measured by the manual workflow `.github/workflows/measure.yml` (the sandbox cannot reach github.io).
 - Hosting (GitHub Pages) serves everything with `cache-control: max-age=600`; headers cannot be configured there.

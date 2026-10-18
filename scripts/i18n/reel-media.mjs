@@ -5,7 +5,7 @@
 //   full     {base}{videoId}/play_{res}p.mp4   (desktop and mobile resolutions; MP4 fallback)
 //   poster   {base}{videoId}/thumbnail.jpg
 //   preview  {base}{videoId}/preview_hq.mp4    (Bunny's animated preview, used as the card loop)
-// The CDN has hotlink protection (allowed referrers: publifix.github.io, localhost), so these URLs only
+// The CDN has hotlink protection (allowed referrers: www.movomotiondesign.com, movomotiondesign.com, publifix.github.io, localhost), so these URLs only
 // load from the site; no API key is involved. MOCK reels are files of this repo (paths from the root).
 export function reelMedia(r, { root, fullBaseUrl = '' }) {
   if (r.bunny) {

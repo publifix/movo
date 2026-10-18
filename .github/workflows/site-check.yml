@@ -9,7 +9,7 @@ on:
     inputs:
       site:
         description: Site root URL
-        default: https://publifix.github.io/movo/
+        default: https://www.movomotiondesign.com/
 
 permissions:
   contents: read

@@ -7,7 +7,7 @@ on:
     inputs:
       url:
         description: Site URL
-        default: https://publifix.github.io/movo/
+        default: https://www.movomotiondesign.com/
       label:
         description: Label for this run (before / after)
         default: run

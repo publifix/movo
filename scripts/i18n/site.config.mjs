@@ -1,10 +1,10 @@
 // Single source of truth for the site's languages, pages, URLs and indexing.
 export default {
   // Change when the final domain exists (with trailing slash). Canonical, hreflang, OG, sitemap use it.
-  siteUrl: 'https://publifix.github.io/movo/',
+  siteUrl: 'https://www.movomotiondesign.com/',
 
   // PREVIEW: keep search engines out while the copy is provisional. Set to false at launch.
-  noindex: true,
+  noindex: false,
 
   // First locale is the default (x-default) and lives at the root.
   locales: [
