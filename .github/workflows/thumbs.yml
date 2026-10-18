@@ -37,7 +37,7 @@ jobs:
           REFERER: ${{ inputs.referer }}
         run: |
           set -euo pipefail
-          mkdir -p public/thumbs "$RUNNER_TEMP/raw"
+          rm -rf public/thumbs && mkdir -p public/thumbs "$RUNNER_TEMP/raw"  # rebuilt from scratch: no stale files
           node -e '
             const d = require("./src/data/reels.json");
             for (const r of d.reels) if (r.slug && r.bunny) console.log(r.slug, r.bunny.videoId, d.fullBaseUrl);
@@ -46,17 +46,18 @@ jobs:
           first=1
           while read -r slug id base; do
             raw="$RUNNER_TEMP/raw/$slug.jpg"
-            code=$(curl -s -o "$raw" -w '%{http_code}' -H "Referer: $REFERER" "${base}${id}/thumbnail.jpg")
+            code=$(curl -s -o "$raw" -w '%{http_code}' -H "Referer: $REFERER" "${base}${id}/thumbnail.jpg" </dev/null)
             if [ "$code" != 200 ]; then echo "::warning::$slug thumbnail -> $code (skipped)"; continue; fi
-            read -r w h < <(ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of csv=p=0 "$raw" | tr ',' ' ')
+            read -r w h < <(ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of csv=p=0 "$raw" </dev/null | tr ',' ' ')
             for tw in 360 720 1080; do
-              cwebp -quiet -mt -m 6 -q 78 -metadata none -resize "$tw" 0 "$raw" -o "public/thumbs/$slug-$tw.webp"
+              cwebp -quiet -mt -m 6 -q 78 -metadata none -resize "$tw" 0 "$raw" -o "public/thumbs/$slug-$tw.webp" </dev/null
             done
-            ffmpeg -v error -y -i "$raw" -vf "scale=1080:-2:flags=lanczos" -q:v 3 "public/thumbs/$slug.jpg"
-            # 1200x630 for link previews: the vertical frame centered over a dark, blurred fill of itself
-            ffmpeg -v error -y -i "$raw" -filter_complex \
-              "[0]scale=1200:630:force_original_aspect_ratio=increase,crop=1200:630,boxblur=40:3,eq=brightness=-0.32:saturation=0.8[bg];[0]scale=-2:630:flags=lanczos[fg];[bg][fg]overlay=(W-w)/2:0" \
-              -q:v 3 "public/thumbs/$slug-og.jpg"
+            # (-nostdin / </dev/null: the tools must not eat the list this loop reads)
+            ffmpeg -nostdin -v error -y -i "$raw" -vf "scale=1080:-2:flags=lanczos" -q:v 3 "public/thumbs/$slug.jpg"
+            # 1200x630 for link previews: the frame on the left, the white MOVO logo on the right, on ink
+            ffmpeg -nostdin -v error -y -i "$raw" -i public/brand/movo-completo-blanco-original.png -filter_complex \
+              "color=c=0x0B0B10:s=1200x630[bg];[0]scale=-2:546:flags=lanczos[fg];[1]scale=560:-1:flags=lanczos[lg];[bg][fg]overlay=x=150:y=42[a];[a][lg]overlay=x=530:y=(H-h)/2" \
+              -frames:v 1 -q:v 3 "public/thumbs/$slug-og.jpg"
             [ $first = 1 ] || echo ',' >> "$RUNNER_TEMP/manifest.json"; first=0
             printf '  "%s": { "videoId": "%s", "width": %s, "height": %s }' "$slug" "$id" "$w" "$h" >> "$RUNNER_TEMP/manifest.json"
             echo "$slug ${w}x${h}: $(du -b public/thumbs/$slug-* public/thumbs/$slug.jpg | awk '{printf "%s=%dKB ", $2, $1/1024}')"
