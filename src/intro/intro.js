@@ -71,7 +71,7 @@ export async function initMovoIntro(opts = {}) {
         <!-- who we are, before the video says it: "MOVO · MOTION DESIGN STUDIO" turning around the ring -->
         <svg class="gate-orbit" viewBox="0 0 400 400" aria-hidden="true">
           <defs><path id="gate-orbit-path" d="M200,200 m-176,0 a176,176 0 1,1 352,0 a176,176 0 1,1 -352,0" /></defs>
-          <text><textPath href="#gate-orbit-path" textLength="1102" lengthAdjust="spacing">${[0, 1].map(() =>
+          <text><textPath href="#gate-orbit-path">${[0, 1].map(() =>
             `<tspan class="o-brand">MOVO</tspan><tspan class="o-sep"> — </tspan><tspan class="o-line">${esc(L.orbit.toUpperCase())}</tspan><tspan class="o-sep"> — </tspan>`).join('')}</textPath></text>
           <g class="o-ticks">${Array.from({ length: 72 }, (_, i) => `<line x1="200" y1="${i % 6 ? 50 : 46}" x2="200" y2="54" transform="rotate(${i * 5} 200 200)" />`).join('')}</g>
         </svg>
@@ -92,6 +92,22 @@ export async function initMovoIntro(opts = {}) {
 
   const video = root.querySelector('video');
   const gate = root.querySelector('#movo-gate');
+  // The orbit text must close the circle exactly in every browser (textLength on a textPath is not applied the
+  // same everywhere): measure it with the real font and spread the difference over the letter spacing.
+  const fitOrbit = () => {
+    const text = root.querySelector('.gate-orbit text');
+    const path = root.querySelector('#gate-orbit-path');
+    if (!text || !path) return;
+    text.style.letterSpacing = '';
+    const circ = path.getTotalLength();
+    const len = text.getComputedTextLength();
+    const chars = text.textContent.length;
+    if (!len || !chars) return;
+    const base = parseFloat(getComputedStyle(text).letterSpacing) || 0;
+    text.style.letterSpacing = `${base + (circ - len) / chars}px`;
+  };
+  fitOrbit();
+  (document.fonts?.ready || Promise.resolve()).then(fitOrbit);
   requestAnimationFrame(() => requestAnimationFrame(() => gate.classList.add('is-on'))); // the orbit arrives
   const logo = root.querySelector('#movo-intro-logo');
   const word = logo.querySelector('.word');
