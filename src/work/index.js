@@ -30,7 +30,7 @@ export function initWork({ ui, preferMp4 }) {
   initMedia({ preferMp4 });
   // Real reels stream from the CDN (Bunny): open the connection now that Work is on its way
   // (only after the first scroll: nothing of this happens on the first load).
-  const cdn = [...document.querySelectorAll('.reel[data-poster^="http"]')].map(c => new URL(c.dataset.poster).origin)[0];
+  const cdn = [...document.querySelectorAll('.reel[data-preview-mp4^="http"]')].map(c => new URL(c.dataset.previewMp4).origin)[0];
   if (cdn && !document.querySelector(`link[rel="preconnect"][href="${cdn}"]`)) {
     const l = document.createElement('link');
     l.rel = 'preconnect';

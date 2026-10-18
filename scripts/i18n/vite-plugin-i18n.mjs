@@ -11,7 +11,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import site from './site.config.mjs';
 import { servicesMarkup } from './services-markup.mjs';
-import { reelMedia } from './reel-media.mjs';
+import { reelMedia, THUMBS_DATA } from './reel-media.mjs';
 import { studioMarkup, STUDIO_DATA } from './studio-markup.mjs';
 import { portfolioMarkup, projectMeta } from './portfolio-markup.mjs';
 import { siteMarkup, SITE_DATA, contactData } from './site-markup.mjs';
@@ -158,6 +158,8 @@ function render(page, locale, item = null) {
     });
   }
 
+  // a project page shares its own frame (self-hosted, see reel-media.mjs); every other page the studio image
+  const ogImage = pf.ogImage || { url: absolute(site.org.ogImage), alt: site.org.name };
   const seo = [
     site.noindex ? '<meta name="robots" content="noindex, nofollow" />' : '<meta name="robots" content="index, follow, max-image-preview:large" />',
     `<link rel="canonical" href="${url}" />`,
@@ -167,15 +169,17 @@ function render(page, locale, item = null) {
     `<meta property="og:url" content="${url}" />`,
     `<meta property="og:title" content="${esc(meta.title)}" />`,
     `<meta property="og:description" content="${esc(meta.ogDescription || meta.description)}" />`,
-    `<meta property="og:image" content="${absolute(site.org.ogImage)}" />`,
+    `<meta property="og:image" content="${ogImage.url}" />`,
     '<meta property="og:image:width" content="1200" />',
     '<meta property="og:image:height" content="630" />',
+    `<meta property="og:image:alt" content="${esc(ogImage.alt)}" />`,
     `<meta property="og:locale" content="${t.meta.ogLocale}" />`,
     ...ogAlternates,
     '<meta name="twitter:card" content="summary_large_image" />',
     `<meta name="twitter:title" content="${esc(meta.title)}" />`,
     `<meta name="twitter:description" content="${esc(meta.ogDescription || meta.description)}" />`,
-    `<meta name="twitter:image" content="${absolute(site.org.ogImage)}" />`,
+    `<meta name="twitter:image" content="${ogImage.url}" />`,
+    `<meta name="twitter:image:alt" content="${esc(ogImage.alt)}" />`,
     `<script type="application/ld+json">${JSON.stringify(jsonld)}</script>`,
   ].join('\n    ');
 
@@ -282,7 +286,7 @@ export default function movoI18n() {
     },
     configureServer(server) {
       // Edits to the template or the strings reload every language page
-      const watched = [...site.pages.map(p => path.join(ROOT, p.template)), REELS, SERVICES, PREVIEWS, ...STUDIO_DATA, ...SITE_DATA, ...PRIVACY_DATA, ...site.locales.map(l => path.join(ROOT, `src/i18n/${l.code}.json`))];
+      const watched = [...site.pages.map(p => path.join(ROOT, p.template)), REELS, THUMBS_DATA, SERVICES, PREVIEWS, ...STUDIO_DATA, ...SITE_DATA, ...PRIVACY_DATA, ...site.locales.map(l => path.join(ROOT, `src/i18n/${l.code}.json`))];
       server.watcher.add([...watched, PARTIALS]);
       server.watcher.on('change', file => {
         if (watched.includes(file) || file.startsWith(PARTIALS)) server.ws.send({ type: 'full-reload' });

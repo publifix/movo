@@ -33,7 +33,8 @@ export function portfolioMarkup({ t, lang, root, item, url, orgId, homeUrl, work
   const catLabel = c => t.work.categories[c];
   const total = reels.length;
 
-  // a portfolio card (Work page grid, "more projects")
+  // a portfolio card (Work page grid, "more projects"): 2 / 3 / 4 columns (src/portfolio/portfolio.css)
+  const sizes = '(min-width: 1280px) 25vw, (min-width: 900px) 33vw, 50vw';
   const card = (r, { heading = 'h2', lazy = true } = {}) => {
     const m = media(r);
     const i = reels.indexOf(r);
@@ -42,7 +43,7 @@ export function portfolioMarkup({ t, lang, root, item, url, orgId, homeUrl, work
     return `<li class="pf__item" data-category="${r.category}">
           <a class="pf-card" href="${esc(projectHref(r))}" data-preview="${esc(m.previewMp4)}">
             <span class="pf-card__media"${ar}>
-              <img class="pf-card__poster" src="${esc(m.poster)}" alt="" width="${m.width}" height="${m.height}"${lazy ? ' loading="lazy"' : ''} decoding="async" />
+              <img class="pf-card__poster" src="${esc(m.poster)}"${m.posterSrcset ? ` srcset="${esc(m.posterSrcset)}" sizes="${sizes}"` : ''} alt="" width="${m.width}" height="${m.height}"${lazy ? ' loading="lazy"' : ''} decoding="async" />
               <video class="pf-card__video" muted loop playsinline preload="none" disablepictureinpicture tabindex="-1" aria-hidden="true"></video>
               <span class="pf-card__num" aria-hidden="true">${pad(i + 1)}</span>
             </span>
@@ -104,7 +105,8 @@ export function portfolioMarkup({ t, lang, root, item, url, orgId, homeUrl, work
     projTitle: esc(loc(r.title, lang)),
     projClient: esc(r.client),
     projNum: `${pad(i + 1)} / ${pad(total)}`,
-    projPoster: esc(m.poster),
+    // the poster is the page's largest image (a <video> poster has no srcset): 1080 px, requested early
+    projPoster: esc(m.posterSrcset ? m.poster.replace(/-720\.webp$/, '-1080.webp') : m.poster),
     projFull: esc(m.full),
     projFullMobile: esc(m.fullMobile),
     projW: String(m.width),
@@ -122,7 +124,7 @@ export function portfolioMarkup({ t, lang, root, item, url, orgId, homeUrl, work
     '@id': `${url}#video`,
     name: `${loc(r.title, lang)} — ${r.client}`,
     description: meta.description,
-    thumbnailUrl: [m.poster],
+    thumbnailUrl: [new URL(m.thumbnail, url).href],
     contentUrl: m.full,
     inLanguage: lang,
     publisher: { '@id': orgId },
@@ -138,5 +140,7 @@ export function portfolioMarkup({ t, lang, root, item, url, orgId, homeUrl, work
       { '@type': 'ListItem', position: 3, name: `${loc(r.title, lang)} — ${r.client}`, item: url },
     ],
   });
-  return { vars, jsonld };
+  // link previews (WhatsApp, LinkedIn, X…) show this project's frame, self-hosted (crawlers get 403 from Bunny)
+  const ogImage = m.ogImage ? { url: new URL(m.ogImage, url).href, width: 1200, height: 630, alt: `${loc(r.title, lang)} — ${r.client}` } : null;
+  return { vars, jsonld, ogImage };
 }
