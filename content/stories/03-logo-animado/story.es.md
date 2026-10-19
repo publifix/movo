@@ -24,6 +24,14 @@ un feed donde cada segundo compite por atención, un logo que no hace nada es un
 Animar un logo no es ponerle efectos. Es responder una pregunta que la mayoría de las marcas nunca se hace:
 **¿cómo se mueve tu marca?**
 
+### Dónde trabaja un logo animado
+
+- **Al abrir y cerrar tus videos y reels**, para que cada pieza termine con tu firma.
+- **En presentaciones y conferencias**, en la portada y en las transiciones entre secciones.
+- **En tu sitio web o tu app**, como pantalla de carga o detalle de la página de inicio.
+- **En eventos y pantallas LED**, donde un logo estático se pierde en un escenario que se mueve.
+- **En webinars, transmisiones en vivo y videollamadas**, como entrada y cierre.
+
 ## Un logo también es un comportamiento
 
 ::scene s03-cover
@@ -80,6 +88,20 @@ publicaciones en redes. Para que funcione en todos lados, se entrega en:
 
 Y en los formatos que cada uso necesita: MP4 optimizado para redes, archivos de alta calidad para pantallas y
 Lottie, un formato ligero para que tu logo animado viva dentro de tu sitio web o tu app sin pesar como un video.
+
+### ¿Cuánto tarda?
+
+Un logo animado es de las piezas más ágiles de producir. Dependiendo de la complejidad de tu logo y de la
+personalidad que busques, podemos entregarlo terminado en un par de días. Antes de animar te mostramos la
+propuesta de movimiento para que la apruebes, y en la animación incluimos dos rondas de revisión, igual que
+en cualquier proyecto.
+
+### ¿Hay que rediseñar el logo para animarlo?
+
+No necesariamente. Tu logo se anima a partir de su diseño actual: sus formas, sus letras y sus colores son la
+materia prima. A veces, al animarlo, aparecen detalles que conviene ajustar para que se vean bien en movimiento
+o en tamaños pequeños, como un trazo muy delgado o un elemento que se pierde en un teléfono. Si es así, te lo
+proponemos antes de animar, y tu logo sigue siendo el mismo.
 
 ## Del logo animado a una marca que se mueve igual en todos lados
 

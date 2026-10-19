@@ -46,6 +46,21 @@ Con la idea clara, 60 segundos alcanzan de sobra. Un buen explainer suele repart
 La regla que aplicamos en cada escena es la misma que en el video completo: una escena, una idea. Si una
 escena necesita explicar dos cosas, son dos escenas. Así el ritmo se sostiene solo y nadie se pierde.
 
+### ¿60 o 120 segundos?
+
+Nuestros videos explicativos duran de 60 a 120 segundos, y la duración se decide por el uso, no por la
+cantidad de cosas que tu producto hace:
+
+- **Alrededor de 60 segundos** para tu sitio web, una campaña o el primer contacto con un cliente: alguien
+  que todavía no te conoce y te regala un minuto.
+- **Hasta 120 segundos** para onboarding, capacitación o una presentación de ventas: alguien que ya decidió
+  escucharte y necesita entender cómo se usa.
+- **Una versión corta para redes**, que incluimos con el video final: el gancho y la idea principal en pocos
+  segundos, para que el explainer también trabaje en Instagram, TikTok o LinkedIn.
+
+Si tu producto tiene varias funciones importantes, en lugar de un video de cuatro minutos conviene una serie
+de videos cortos, uno por función. Cada uno se entiende solo y juntos cuentan todo.
+
 ## Cómo se construye un video explicativo
 
 Un explainer no se anima de golpe. Se construye por capas, y cada capa se aprueba antes de pasar a la
