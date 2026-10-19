@@ -7,7 +7,7 @@
 // the scripts rewind them to frame 0 and the page plays or scrubs the timeline.
 import fs from 'node:fs';
 import path from 'node:path';
-import { sceneMarkup, quoterMarkup, resultMarkup, ctaMarkup } from './story-scenes.mjs';
+import { sceneMarkup, quoterMarkup, resultMarkup, ctaMarkup, logoMarkup } from './story-scenes.mjs';
 import { storyBody, storyFile } from './story-body.mjs';
 
 const STORIES = new URL('../../src/data/stories.json', import.meta.url);
@@ -25,7 +25,7 @@ export const slugOf = (item, lang) => (typeof item.slug === 'string' ? item.slug
 export const gated = (html, published) => (published ? html : `<template data-preview>${html}</template>`);
 
 export function storyMeta(t, s, lang) {
-  return { title: `${loc(s.title, lang)} · MOVO Stories`, description: loc(s.description, lang) };
+  return { title: loc(s.metaTitle, lang) || `${loc(s.title, lang)} · MOVO Stories`, description: loc(s.description, lang) };
 }
 
 const scene = (id, t, lang) => sceneMarkup(id, t, lang);
@@ -106,7 +106,8 @@ export function storiesMarkup({ t, lang, root, siteUrl, page, item, url, orgId, 
       name === 'scene' ? `<figure class="sp-scene">${scene(arg, t, lang).replace('data-duration=', 'data-scrub data-duration=')}</figure>`
       : name === 'quoter' ? quoterMarkup(t, lang)
       : name === 'result' ? resultMarkup(t, lang, contactHref)
-      : name === 'cta' ? ctaMarkup(t, contactHref)
+      : name === 'cta' ? ctaMarkup(t, contactHref, s, lang)
+      : name === 'logo' ? logoMarkup(t)
       : '';
     Object.assign(vars, {
       storyNum: esc(n(s)),

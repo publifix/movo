@@ -439,7 +439,58 @@
       "none": "Ninguno"
     },
     "contactIntro": "Vengo de la story «¿Cuánto cuesta un video en motion graphics?». Esto es lo que tengo en mente:",
-    "contactLevel": "Nivel estimado"
+    "contactLevel": "Nivel estimado",
+    "s02": {
+      "still": "Ilustración: una pantalla de video gris saturada de bloques de texto, íconos, flechas y tablas que se enciman. El timecode no avanza.",
+      "cover": "Ilustración: los bloques caen y queda una sola idea, que se estira en una línea de tiempo de 60 segundos dividida en gancho, problema, solución y cierre.",
+      "layers": "Ilustración: la misma escena en cuatro capas que se separan: guion, storyboard, styleframe y animación.",
+      "result": "Ilustración: un video limpio con una sola idea, su línea de 60 segundos completa y un check de «entendido».",
+      "product": "TU PRODUCTO",
+      "idea": "Una idea",
+      "segments": [
+        "Gancho",
+        "Problema",
+        "Solución",
+        "Cierre"
+      ],
+      "layers_": [
+        "Guion",
+        "Storyboard",
+        "Styleframe",
+        "Animación"
+      ],
+      "ok": "Entendido"
+    },
+    "s03": {
+      "still": "Ilustración: un logo gris y quieto al centro mientras detrás pasa, cada vez más rápido, un feed de publicaciones.",
+      "cover": "Ilustración: las letras del logo se dibujan, entran una a una y toman color sobre una línea de tiempo de edición con keyframes.",
+      "result": "Ilustración: el logo en tres formatos, vertical, cuadrado y horizontal, sobre fondo transparente.",
+      "brand": "TU MARCA",
+      "chips": [
+        "Versión principal",
+        "Versión corta",
+        "Fondo transparente"
+      ],
+      "logo": {
+        "title": "Prueba tu logo",
+        "name": "Nombre de tu marca",
+        "personality": "Personalidad",
+        "options": {
+          "preciso": "Preciso",
+          "jugueton": "Juguetón",
+          "elegante": "Elegante",
+          "energico": "Enérgico"
+        },
+        "replay": "Repetir animación",
+        "stage": "Vista previa animada del nombre de tu marca con la personalidad elegida",
+        "formats": "El mismo logo en vertical 9:16, cuadrado 1:1 y horizontal 16:9, con fondo transparente"
+      }
+    },
+    "contact": {
+      "from": "Vengo de la story «{title}».",
+      "brand": "Mi marca",
+      "personality": "Personalidad"
+    }
   },
   "studio": {
     "_note": "Sección Estudio (teaser en la home + página /estudio/). Textos del dueño, literales.",

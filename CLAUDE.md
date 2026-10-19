@@ -184,14 +184,16 @@ Static site built with Vite, deployed to GitHub Pages on the custom domain https
   New pages/reels: request indexing for their URLs after the deploy (sitemap.xml updates itself).
   PENDING (Google's daily request quota was used up on 19 Oct 2026): request indexing for the Stories URLs:
   /stories/, /en/stories/, /stories/cuanto-cuesta-un-video-motion-graphics/,
-  /en/stories/how-much-does-a-motion-graphics-video-cost/ (+ every new story, ES and EN).
+  /en/stories/how-much-does-a-motion-graphics-video-cost/, /stories/como-explicar-un-producto-complejo-en-60-segundos/,
+  /en/stories/how-to-explain-a-complex-product-in-60-seconds/, /stories/logo-animado-para-tu-marca/,
+  /en/stories/animated-logo-for-your-brand/ (+ every new story, ES and EN).
   "Enforce HTTPS" is ON (Oct 2026). Still to come from the owner: Instagram/TikTok URLs (→ contact.json `social`).
 - Thumbnails: Bunny answers 403 without the site's Referer (Googlebot, WhatsApp/LinkedIn previews), so
   `.github/workflows/thumbs.yml` (manual) copies each reel's thumbnail to `public/thumbs/` (<slug>-{360,720,1080}.webp
   posters, <slug>.jpg for VideoObject, <slug>-og.jpg 1200x630 for the project og:image) + `src/data/thumbs.json`,
   commits and deploys. Run it after adding a reel or replacing its video (until then that reel uses Bunny's image).
 
-## MOVO Stories — `/stories/`, `/en/stories/` (PUBLISHED 19 Oct 2026 with Story 01)
+## MOVO Stories — `/stories/`, `/en/stories/` (PUBLISHED 19 Oct 2026: Stories 01, 02, 03)
 - Para crear o editar cualquier pieza de /stories, lee y sigue STORIES.md (playbook at the repo root; where it
   clashes with the code, the code wins: adapt and report). Owner/approver: Jerry. Prompt of phase 1:
   menu + index + home teaser → Story 01 brief/text/storyboard (STOP for approval) → scenes → validation.
@@ -217,6 +219,16 @@ Static site built with Vite, deployed to GitHub Pages on the custom domain https
   `scripts/i18n/story-scenes.mjs`. Page script `src/stories/story.js`: scenes `[data-scrub]` mounted near the
   screen and scrubbed by ScrollTrigger (top 88% → center 42%). OG image per language: `scripts/stories/og.mjs`
   (final frame of the cover scene) → `public/stories/og/<id>-<lang>.jpg`, `og` in stories.json.
+- Published (newest first in stories.json): 03 "Tu logo ya no puede quedarse quieto" (logo animado; act 3 = logo
+  playground `::logo`: the visitor types a brand name + picks Preciso/Juguetón/Elegante/Enérgico, CSS animations
+  replay; the demo logo is ALWAYS the typed name, never a client's logo; CTA ?story=03&marca=…&personalidad=…),
+  02 "Cómo explicar un producto complejo en 60 segundos" (video explicativo; CTA ?story=02&servicio=explicativos),
+  01 (cotizador). Story numbers = publication order (backlog topics 05 → Story 02, 03 → Story 03). Next in the
+  backlog: reels (04), industry/Querétaro (02, needs a real industrial project), process (06).
+  Scenes of 02/03: `scripts/i18n/story-scenes-2.mjs`, `src/stories/scene-2.css`, `src/stories/scenes/s02-*|s03-*`.
+  `::act` lines in a story's Markdown mark its 4 acts (then other ## are headings inside an act).
+  stories.json per story: `metaTitle`, `cta` {es,en}, `ctaParams`; contact prefill (src/contact/page.js) uses
+  `storyTitles` + storyUi.contact for 02/03.
 - Story 01 quoter: NO money (owner, Oct 2026: no prices on the site). Points/levels in `src/stories/quote.js`
   (approved): Esencial ≤ 4 / Avanzado ≤ 7 / Premium; times "un par de días" / "alrededor de una semana" /
   "un par de semanas". "Cotiza tu proyecto" → /contacto/?story=01&duracion=…&estilo=…&guion=…&formatos=…&extras=…

@@ -91,3 +91,58 @@ if (form && Q) {
   const vis = new IntersectionObserver(es => es.forEach(e => e.target.classList.toggle('is-off', !e.isIntersecting)));
   minis.forEach(m => vis.observe(m));
 }
+
+// ---------- Story 03: the logo playground ----------
+// The visitor types a brand name and picks a personality; the name is rebuilt letter by letter (DOM, no
+// HTML from the input) in the stage, the format previews and the act 4 scene, and the stage plays the
+// personality's motion once (on enter, on every change, on "replay"). The CTA carries both to /contacto/.
+const logo = document.querySelector('[data-logo]');
+if (logo) {
+  const form = logo.querySelector('[data-logo-form]');
+  const input = form.querySelector('[name="marca"]');
+  const fallback = input.placeholder;
+  const styled = document.querySelectorAll('.lg__stage, .lg__formats, .s03-formats');
+  let word = '';
+  const spell = (el, w) => {
+    el.replaceChildren(...[...w].map((ch, i) => {
+      const s = document.createElement('span');
+      s.className = ch === ' ' ? 'lg-sp' : 'lg-l';
+      s.style.setProperty('--i', i);
+      if (ch !== ' ') s.textContent = ch;
+      return s;
+    }));
+    el.style.setProperty('--n', w.length);
+  };
+  const play = () => {
+    if (reduce) return;
+    logo.classList.remove('is-play');
+    void logo.offsetWidth; // restart the CSS animations
+    logo.classList.add('is-play');
+  };
+  const update = (replay = true) => {
+    const w = (input.value.trim().replace(/\s+/g, ' ') || fallback).slice(0, 16);
+    const p = form.querySelector('[name="personalidad"]:checked')?.value || 'preciso';
+    if (w !== word) {
+      word = w;
+      document.querySelectorAll('[data-lg-sync]').forEach(el => spell(el, w));
+    }
+    styled.forEach(el => { el.dataset.p = p; });
+    document.querySelectorAll('[data-quote-cta]').forEach(a => {
+      const u = new URL(a.href);
+      u.search = new URLSearchParams({ story: '03', ...(input.value.trim() ? { marca: w } : {}), personalidad: p }).toString();
+      a.href = u.href;
+    });
+    if (replay) play();
+  };
+  let typing;
+  input.addEventListener('input', () => { clearTimeout(typing); typing = setTimeout(update, 300); });
+  form.addEventListener('change', e => { if (e.target.name === 'personalidad') update(); });
+  form.addEventListener('submit', e => { e.preventDefault(); update(); });
+  logo.querySelector('[data-logo-replay]').addEventListener('click', play);
+  update(false);
+  // the first play when the playground comes into view
+  const first = new IntersectionObserver(([e]) => {
+    if (e.isIntersecting) { play(); first.disconnect(); }
+  }, { threshold: 0.4 });
+  first.observe(logo.querySelector('.lg__stage'));
+}

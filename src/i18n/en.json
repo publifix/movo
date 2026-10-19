@@ -439,7 +439,58 @@
       "none": "None"
     },
     "contactIntro": "I'm coming from the story \"How much does a motion graphics video cost?\". This is what I have in mind:",
-    "contactLevel": "Estimated level"
+    "contactLevel": "Estimated level",
+    "s02": {
+      "still": "Illustration: a gray video screen packed with overlapping blocks of text, icons, arrows and tables. The timecode doesn't move.",
+      "cover": "Illustration: the blocks fall away and a single idea remains, stretching into a 60-second timeline split into hook, problem, solution and close.",
+      "layers": "Illustration: the same scene in four layers pulling apart: script, storyboard, styleframe and animation.",
+      "result": "Illustration: a clean video with a single idea, its full 60-second timeline and a \"got it\" check.",
+      "product": "YOUR PRODUCT",
+      "idea": "One idea",
+      "segments": [
+        "Hook",
+        "Problem",
+        "Solution",
+        "Close"
+      ],
+      "layers_": [
+        "Script",
+        "Storyboard",
+        "Styleframe",
+        "Animation"
+      ],
+      "ok": "Got it"
+    },
+    "s03": {
+      "still": "Illustration: a gray, motionless logo in the center while a feed of posts scrolls past behind it, faster and faster.",
+      "cover": "Illustration: the logo's letters are drawn, enter one by one and take color over an editing timeline with keyframes.",
+      "result": "Illustration: the logo in three formats, vertical, square and horizontal, on a transparent background.",
+      "brand": "YOUR BRAND",
+      "chips": [
+        "Full version",
+        "Short version",
+        "Transparent background"
+      ],
+      "logo": {
+        "title": "Try your logo",
+        "name": "Your brand's name",
+        "personality": "Personality",
+        "options": {
+          "preciso": "Precise",
+          "jugueton": "Playful",
+          "elegante": "Elegant",
+          "energico": "Energetic"
+        },
+        "replay": "Replay animation",
+        "stage": "Animated preview of your brand's name with the chosen personality",
+        "formats": "The same logo in vertical 9:16, square 1:1 and horizontal 16:9, with a transparent background"
+      }
+    },
+    "contact": {
+      "from": "I'm coming from the story \"{title}\".",
+      "brand": "My brand",
+      "personality": "Personality"
+    }
   },
   "studio": {
     "_note": "Studio section (home teaser + /en/studio/ page). Owner's copy, verbatim.",

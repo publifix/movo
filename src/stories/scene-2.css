@@ -1,0 +1,892 @@
+/* Scenes of Story 02 (explainer video) and Story 03 (animated logo) + Story 03's logo playground.
+   Same rules as scene.css: container units, CSS custom properties tweened by paused GSAP timelines,
+   DEFAULTS = the FINAL frame (no JS, reduced motion, index, OG). */
+
+/* ================= Story 02 ================= */
+.scn--s02 {
+  --swing: 0;
+  --idea: 1;
+  --s0: 1;
+  --s1: 1;
+  --s2: 1;
+  --s3: 1;
+  --tk: 1;
+  --f0: 1;
+  --f1: 1;
+  --f2: 1;
+  --f3: 1;
+  --m: 1;
+  --line: 1;
+  --ok: 1;
+}
+
+/* the video screen packed with "everything we want to say" */
+.s02-screen {
+  position: absolute;
+  left: 8cqw;
+  right: 8cqw;
+  top: 6cqh;
+  height: 56cqh;
+  overflow: hidden;
+  border: 1px solid rgb(245 245 240 / 0.16);
+  border-radius: 1.2cqw;
+  background: #14141b;
+  rotate: calc(var(--swing) * 1deg);
+}
+
+.s02-b {
+  position: absolute;
+  left: calc(var(--x) * 1%);
+  top: calc(var(--y) * 1%);
+  width: calc(var(--w) * 1%);
+  height: calc(var(--h) * 1%);
+  border-radius: 0.5cqw;
+  background: #3a3a45;
+}
+
+.s02-b--icon {
+  width: auto;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #454552;
+}
+
+.s02-b--arrow {
+  background: #4a4a57;
+  clip-path: polygon(0 35%, 70% 35%, 70% 0, 100% 50%, 70% 100%, 70% 65%, 0 65%);
+}
+
+.s02-b--table {
+  background:
+    repeating-linear-gradient(0deg, #2a2a33 0 1px, transparent 1px 20%),
+    repeating-linear-gradient(90deg, #2a2a33 0 1px, transparent 1px 33%),
+    #3a3a45;
+}
+
+.s02-b--logo {
+  display: grid;
+  place-items: center;
+  border: 0.25cqw dashed #5a5a66;
+  background: none;
+  color: #6a6a76;
+  font-size: 1.6cqw;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+}
+
+/* the still scenes never start: playhead at 0, gray timecode */
+.scn--s02still,
+.scn--s03still {
+  --t: 0;
+  --g: 1;
+}
+
+/* the cover: the blocks are gone (final frame), one idea is left, and the minute it takes */
+.scn--s02cover .s02-b {
+  opacity: 0;
+}
+
+.s02-idea {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  padding: 1.6cqh 3.2cqw;
+  border-radius: 99px;
+  background: var(--c-volt);
+  color: var(--c-ink);
+  font-size: 3.6cqw;
+  font-weight: 900;
+  font-stretch: 112%;
+  white-space: nowrap;
+  scale: var(--idea);
+  opacity: min(1, calc(var(--idea) * 3));
+}
+
+.s02-minute {
+  position: absolute;
+  left: 8cqw;
+  right: 8cqw;
+  top: 66cqh;
+  height: 7cqh;
+  display: flex;
+  gap: 0.35cqw;
+}
+
+.s02-seg {
+  --c: var(--c-volt);
+  display: flex;
+  align-items: center;
+  flex: var(--w) 0 0;
+  min-width: 0;
+  padding-left: 0.8cqw;
+  border-radius: 0.5cqw;
+  background: var(--c);
+  color: var(--c-ink);
+  transform-origin: left center;
+}
+
+.s02-seg:nth-child(1) { scale: var(--s0) 1; }
+.s02-seg:nth-child(2) { --c: var(--c-magenta); scale: var(--s1) 1; }
+.s02-seg:nth-child(3) { --c: var(--c-violet); color: var(--c-white); scale: var(--s2) 1; }
+.s02-seg:nth-child(4) { --c: var(--c-white); scale: var(--s3) 1; }
+
+.s02-seg b {
+  overflow: hidden;
+  font-size: 1.35cqw;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+
+.s02-ticks {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 120%;
+  opacity: var(--tk);
+}
+
+.s02-ticks i {
+  position: absolute;
+  color: var(--c-text-muted);
+  font-size: 1.2cqw;
+  font-style: normal;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  translate: -50% 0;
+}
+
+.s02-ticks i:nth-child(1) { left: 0; translate: 0 0; }
+.s02-ticks i:nth-child(2) { left: 8.33%; }
+.s02-ticks i:nth-child(3) { left: 33.33%; }
+.s02-ticks i:nth-child(4) { left: 83.33%; }
+.s02-ticks i:nth-child(5) { left: 100%; translate: -100% 0; }
+
+/* the explainer, taken apart: four sheets (script, storyboard, styleframe, animation) */
+.s02-sheets {
+  position: absolute;
+  inset: 4cqh 3cqw 24cqh;
+}
+
+.s02-sheet {
+  --dx: 24cqw;
+  --dy: 0cqh;
+  --gx: 0;
+  --gy: 0;
+  --f: var(--f0);
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 22.5cqw;
+  translate: calc(-50% + var(--gx) * var(--dx) * var(--f)) calc(-50% + var(--gy) * var(--dy) * var(--f) - var(--i) * 0.8cqh * (1 - var(--f)));
+  rotate: calc(var(--rot, 0) * var(--f) * 1deg);
+  z-index: calc(4 - var(--i));
+}
+
+.s02-sheet--0 { --gx: -1.5; --rot: -2; }
+.s02-sheet--1 { --gx: -0.5; --rot: 1.5; --f: var(--f1); }
+.s02-sheet--2 { --gx: 0.5; --rot: -1; --f: var(--f2); }
+.s02-sheet--3 { --gx: 1.5; --rot: 2; --f: var(--f3); }
+
+.s02-sheet__card {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: 0.9cqw;
+  background: #1d1d26;
+  box-shadow: 0 1.5cqw 3cqw rgb(0 0 0 / 0.45);
+}
+
+.s02-sheet__label {
+  display: block;
+  margin-top: 1.6cqh;
+  color: var(--c-white);
+  font-size: 1.5cqw;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-align: center;
+  text-transform: uppercase;
+  opacity: var(--f);
+}
+
+/* script: a page of text, one line highlighted */
+.s02-sheet--0 .s02-sheet__card {
+  background: #ecece6;
+}
+
+.s02-script {
+  position: absolute;
+  inset: 14% 12%;
+  display: grid;
+  gap: 9%;
+}
+
+.s02-script i {
+  height: 100%;
+  border-radius: 99px;
+  background: #b9b9c0;
+}
+
+.s02-script i:nth-child(2) { width: 82%; }
+.s02-script i:nth-child(3) { background: var(--c-violet); width: 92%; }
+.s02-script i:nth-child(4) { width: 70%; }
+.s02-script i:nth-child(5) { width: 54%; }
+
+/* the scene drawn in each layer: a person, a phone with a message, a check */
+.s02-person {
+  position: absolute;
+  left: 13%;
+  bottom: 0;
+  width: 20%;
+  height: 72%;
+}
+
+.s02-person::before {
+  content: '';
+  position: absolute;
+  left: 22%;
+  top: 0;
+  width: 56%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--c-white);
+}
+
+.s02-person i {
+  position: absolute;
+  inset: 44% 0 0;
+  border-radius: 40% 40% 0 0;
+  background: var(--c-magenta);
+}
+
+.s02-phone {
+  position: absolute;
+  left: 42%;
+  top: 12%;
+  width: 21%;
+  height: 76%;
+  border-radius: 12% / 7%;
+  background: var(--c-violet);
+}
+
+.s02-phone i {
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  top: 22%;
+  height: 22%;
+  border-radius: 0.5cqw 0.5cqw 0.5cqw 0;
+  background: var(--c-volt);
+}
+
+.s02-check {
+  position: absolute;
+  right: 11%;
+  top: 30%;
+  width: 17%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: var(--c-volt);
+}
+
+.s02-check::after {
+  content: '';
+  position: absolute;
+  left: 30%;
+  top: 26%;
+  width: 22%;
+  height: 40%;
+  border-right: 0.35cqw solid var(--c-ink);
+  border-bottom: 0.35cqw solid var(--c-ink);
+  rotate: 45deg;
+}
+
+/* storyboard: the same scene in white strokes, no color */
+.s02-sheet--1 .s02-sheet__card {
+  background: var(--c-ink);
+}
+
+.s02-sheet--1 .s02-person::before,
+.s02-sheet--1 .s02-person i,
+.s02-sheet--1 .s02-phone,
+.s02-sheet--1 .s02-phone i,
+.s02-sheet--1 .s02-check {
+  border: max(1px, 0.2cqw) solid var(--c-white);
+  background: none;
+}
+
+.s02-sheet--1 .s02-check::after {
+  border-color: var(--c-white);
+}
+
+.s02-frame-n {
+  position: absolute;
+  left: 5%;
+  top: 6%;
+  color: var(--c-text-muted);
+  font-size: 1.1cqw;
+  font-weight: 700;
+}
+
+/* animation: the styleframe in motion (speed lines + play mark) */
+.s02-sheet--3 .s02-phone i {
+  translate: 0 -8%;
+  box-shadow: -1.2cqw 0 0 -0.3cqw rgb(215 255 59 / 0.35), -2.4cqw 0 0 -0.5cqw rgb(215 255 59 / 0.15);
+}
+
+.s02-sheet--3 .s02-check {
+  scale: 1.12;
+  box-shadow: 0 0 0 0.6cqw rgb(215 255 59 / 0.2);
+}
+
+.s02-sheet--3 .s02-sheet__card::after {
+  content: '';
+  position: absolute;
+  right: 4%;
+  bottom: 6%;
+  width: 6%;
+  aspect-ratio: 1;
+  background: var(--c-white);
+  clip-path: polygon(15% 0, 100% 50%, 15% 100%);
+}
+
+/* the result: the clean explainer, its minute, understood */
+.s02-final {
+  position: absolute;
+  left: 50%;
+  top: 6cqh;
+  width: 44cqw;
+  translate: -50% 0;
+  scale: calc(0.85 + 0.15 * var(--m));
+  opacity: var(--m);
+}
+
+.s02-final__card {
+  box-shadow: 0 2cqw 5cqw rgb(0 0 0 / 0.5);
+}
+
+.s02-final__idea {
+  position: absolute;
+  left: 6%;
+  bottom: 8%;
+  width: 34%;
+  height: 7%;
+  border-radius: 99px;
+  background: var(--c-volt);
+}
+
+.scn--s02result .s02-minute {
+  clip-path: inset(-80% calc((1 - var(--line)) * 100%) -80% 0);
+}
+
+.s02-ok {
+  position: absolute;
+  right: 8cqw;
+  bottom: 12cqh;
+  display: flex;
+  align-items: center;
+  gap: 0.8cqw;
+  padding: 1.2cqh 1.6cqw;
+  border-radius: 99px;
+  background: var(--c-volt);
+  color: var(--c-ink);
+  font-size: 1.7cqw;
+  font-weight: 900;
+  scale: var(--ok);
+}
+
+.s02-ok i {
+  width: 0.9cqw;
+  height: 1.6cqw;
+  margin: -0.4cqw 0.2cqw 0;
+  border-right: 0.3cqw solid currentColor;
+  border-bottom: 0.3cqw solid currentColor;
+  rotate: 45deg;
+}
+
+@container (orientation: portrait) {
+  .s02-screen {
+    left: 6cqw;
+    right: 6cqw;
+    top: 5cqh;
+    height: 50cqh;
+  }
+
+  .s02-b--logo {
+    font-size: 2.6cqw;
+  }
+
+  .s02-idea {
+    font-size: 6.4cqw;
+  }
+
+  .s02-minute {
+    left: 6cqw;
+    right: 6cqw;
+    top: 64cqh;
+    height: 5cqh;
+  }
+
+  /* labels outside the bars: below for 1 and 3, above for 2 and 4 */
+  .s02-seg {
+    position: relative;
+    overflow: visible;
+  }
+
+  .s02-seg b {
+    position: absolute;
+    left: 0;
+    top: 115%;
+    overflow: visible;
+    color: var(--c-white);
+    font-size: 2.6cqw;
+  }
+
+  .s02-seg:nth-child(2n) b {
+    top: auto;
+    bottom: 115%;
+  }
+
+  .s02-ticks {
+    display: none;
+  }
+
+  .s02-sheets {
+    inset: 4cqh 5cqw 22cqh;
+  }
+
+  .s02-sheet {
+    --dx: 45cqw;
+    --dy: 36cqh;
+    width: 41cqw;
+  }
+
+  .s02-sheet--0 { --gx: -0.5; --gy: -0.5; }
+  .s02-sheet--1 { --gx: 0.5; --gy: -0.5; }
+  .s02-sheet--2 { --gx: -0.5; --gy: 0.5; }
+  .s02-sheet--3 { --gx: 0.5; --gy: 0.5; }
+
+  .s02-sheet__label {
+    margin-top: 1cqh;
+    font-size: 3cqw;
+  }
+
+  .s02-frame-n {
+    font-size: 2.2cqw;
+  }
+
+  .s02-final {
+    top: 5cqh;
+    width: 86cqw;
+  }
+
+  .s02-ok {
+    right: 6cqw;
+    bottom: 10cqh;
+    font-size: 3.4cqw;
+  }
+
+  .s02-ok i {
+    width: 1.8cqw;
+    height: 3.2cqw;
+    border-width: 0.6cqw;
+  }
+}
+
+/* ================= Story 03 ================= */
+.scn--s03 {
+  --feed: 1;
+  --blur: 1;
+  --fill: 1;
+  --spread: 0;
+  --kf: 1;
+  --c0: 1;
+  --c1: 1;
+  --c2: 1;
+  --chips: 1;
+}
+
+/* the demo wordmark: the visitor's brand name in the site's type (never a client's logo) */
+.lg-word {
+  display: inline-flex;
+  align-items: baseline;
+  font-weight: 900;
+  font-stretch: 125%;
+  letter-spacing: calc(var(--spread, 0) * 0.14em);
+  line-height: 1;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.lg-l {
+  display: inline-block;
+}
+
+.lg-sp {
+  display: inline-block;
+  width: 0.32em;
+}
+
+/* still: a gray logo stuck in the middle while the feed runs past behind it */
+.s03-feed {
+  position: absolute;
+  inset: 0 0 auto;
+  display: flex;
+  justify-content: center;
+  gap: 3cqw;
+  translate: 0 calc(var(--feed) * -60cqh);
+  filter: blur(calc(var(--blur) * 0.5cqw));
+  opacity: 0.6;
+}
+
+.s03-col:nth-child(2) { margin-top: -14cqh; }
+.s03-col:nth-child(3) { margin-top: -6cqh; }
+
+.s03-post {
+  display: block;
+  position: relative;
+  width: 22cqw;
+  height: 30cqh;
+  margin-bottom: 3cqh;
+  border-radius: 1cqw;
+  background: #22222b;
+}
+
+.s03-post i {
+  position: absolute;
+  left: 8%;
+  bottom: 12%;
+  width: 60%;
+  height: 5%;
+  border-radius: 99px;
+  background: #33333e;
+}
+
+.s03-post i + i {
+  bottom: 22%;
+  width: 40%;
+}
+
+.s03-card {
+  position: absolute;
+  left: 50%;
+  top: 42%;
+  translate: -50% -50%;
+  padding: 7cqh 6cqw;
+  border-radius: 1.2cqw;
+  background: #3a3a45;
+  box-shadow: 0 2cqw 6cqw rgb(0 0 0 / 0.6);
+}
+
+.s03-card .lg-word {
+  color: #8a8a96;
+  font-size: 6cqw;
+}
+
+/* cover: the letters drawn, entering one by one, in color; an editing timeline with keyframes */
+.s03-logo {
+  position: absolute;
+  left: 50%;
+  top: 36%;
+  translate: -50% -50%;
+}
+
+.s03-logo .lg-word {
+  font-size: min(11cqw, calc(150cqw / var(--n)));
+}
+
+.s03-logo .lg-l {
+  --lc: var(--c-volt);
+  color: color-mix(in srgb, transparent calc((1 - var(--fill)) * 100%), color-mix(in srgb, var(--gray) calc(var(--g) * 100%), var(--lc)));
+  -webkit-text-stroke: max(1px, 0.14cqw) rgb(245 245 240 / calc(1 - var(--fill)));
+}
+
+.s03-logo .lg-l:nth-child(3n + 2) { --lc: var(--c-white); }
+.s03-logo .lg-l:nth-child(3n) { --lc: var(--c-magenta); }
+
+.s03-tracks {
+  position: absolute;
+  left: 8cqw;
+  right: 8cqw;
+  top: 62cqh;
+  display: grid;
+  gap: 1.2cqh;
+}
+
+.s03-track {
+  position: relative;
+  height: 2.6cqh;
+  border-radius: 99px;
+  background: rgb(245 245 240 / 0.07);
+}
+
+.s03-track i {
+  position: absolute;
+  top: 50%;
+  left: calc(8% + var(--k) * 32% + var(--r) * 6%);
+  width: 1.8cqh;
+  height: 1.8cqh;
+  translate: -50% -50%;
+  rotate: 45deg;
+  background: var(--c-volt);
+  opacity: var(--kf);
+  scale: var(--kf);
+}
+
+.s03-track:nth-child(2n) i { background: var(--c-magenta); }
+
+/* result: the logo in 9:16, 1:1 and 16:9 on a transparent (checkerboard) background */
+.s03-formats {
+  position: absolute;
+  inset: 5cqh 6cqw 34cqh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 3cqw;
+}
+
+.s03-fmt {
+  --c: var(--c0);
+  display: grid;
+  justify-items: center;
+  gap: 1.4cqh;
+  opacity: var(--c);
+  translate: 0 calc((1 - var(--c)) * 4cqh);
+}
+
+.s03-fmt:nth-child(2) { --c: var(--c1); }
+.s03-fmt:nth-child(3) { --c: var(--c2); }
+
+.s03-fmt__box {
+  display: grid;
+  place-items: center;
+  height: 50cqh;
+  aspect-ratio: 9 / 16;
+  overflow: hidden;
+  container-type: inline-size;
+  border-radius: 0.8cqw;
+  background: repeating-conic-gradient(#2a2a33 0 25%, #1b1b23 0 50%) 0 0 / 2.4cqh 2.4cqh;
+}
+
+.s03-fmt--1x1 .s03-fmt__box { height: 38cqh; aspect-ratio: 1; }
+.s03-fmt--16x9 .s03-fmt__box { height: 30cqh; aspect-ratio: 16 / 9; }
+
+.s03-fmt__box .lg-word {
+  font-size: min(16cqw, calc(92cqw / var(--n)));
+}
+
+.s03-fmt__tag {
+  color: var(--c-text-muted);
+  font-size: 1.3cqw;
+  font-weight: 700;
+}
+
+.s03-chips {
+  position: absolute;
+  left: 50%;
+  bottom: 24cqh;
+  translate: -50% 0;
+  display: flex;
+  gap: 1cqw;
+  opacity: var(--chips);
+  white-space: nowrap;
+}
+
+.s03-chips span {
+  padding: 1cqh 1.4cqw;
+  border-radius: 99px;
+  background: var(--c-white);
+  color: var(--c-ink);
+  font-size: 1.4cqw;
+  font-weight: 800;
+}
+
+.s03-chips span:nth-child(1) { background: var(--c-volt); }
+.s03-chips span:nth-child(2) { background: var(--c-magenta); }
+
+@container (orientation: portrait) {
+  .s03-post {
+    width: 40cqw;
+    height: 26cqh;
+  }
+
+  .s03-card {
+    padding: 5cqh 6cqw;
+  }
+
+  .s03-card .lg-word {
+    font-size: 10cqw;
+  }
+
+  .s03-logo .lg-word {
+    font-size: min(16cqw, calc(170cqw / var(--n)));
+  }
+
+  .s03-tracks {
+    left: 6cqw;
+    right: 6cqw;
+    top: 60cqh;
+  }
+
+  .s03-formats {
+    inset: 5cqh 5cqw 34cqh;
+    gap: 3cqw;
+  }
+
+  .s03-fmt__box { height: 34cqh; }
+  .s03-fmt--1x1 .s03-fmt__box { height: 24cqh; }
+  .s03-fmt--16x9 .s03-fmt__box { height: 17cqh; }
+
+  .s03-fmt__tag {
+    font-size: 2.6cqw;
+  }
+
+  .s03-chips {
+    bottom: 19cqh;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 90cqw;
+    gap: 1cqh 1.6cqw;
+  }
+
+  .s03-chips span {
+    font-size: 2.8cqw;
+  }
+}
+
+/* ---------- personalities (static look; the playground adds the motion) ---------- */
+[data-p='preciso'] .lg-word { font-weight: 700; font-stretch: 100%; letter-spacing: 0.02em; color: var(--c-white); }
+[data-p='jugueton'] .lg-word { font-weight: 900; font-stretch: 125%; }
+[data-p='jugueton'] .lg-l:nth-child(odd) { color: var(--c-magenta); }
+[data-p='jugueton'] .lg-l:nth-child(even) { color: var(--c-volt); }
+[data-p='elegante'] .lg-word { font-weight: 250; font-stretch: 100%; letter-spacing: 0.2em; color: var(--c-white); }
+[data-p='energico'] .lg-word { font-weight: 900; font-stretch: 112%; transform: skewX(-10deg); }
+[data-p='energico'] .lg-l:nth-child(odd) { color: #a58bff; }
+[data-p='energico'] .lg-l:nth-child(even) { color: var(--c-volt); }
+
+/* ================= the logo playground (Story 03, act 3) ================= */
+.scn--lg {
+  --scn-ar: 16 / 9;
+}
+
+.lg__center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3cqh;
+}
+
+.lg__stage .lg-word {
+  font-size: min(10cqw, calc(118cqw / var(--n)));
+}
+
+.lg__rule {
+  width: 34cqw;
+  height: 0.8cqh;
+  border-radius: 99px;
+  background: var(--c-volt);
+  opacity: 0;
+}
+
+.lg__stage[data-p='preciso'] .lg__rule { opacity: 1; }
+
+.lg__formats {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 14px;
+}
+
+.lg__fmt {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  color: var(--c-text-muted);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.lg__fmt .scn {
+  height: 120px;
+  width: auto;
+  aspect-ratio: var(--scn-ar);
+  border-radius: 8px;
+  background: repeating-conic-gradient(#2a2a33 0 25%, #1b1b23 0 50%) 0 0 / 12px 12px;
+}
+
+.lg__fmt--9x16 .scn { --scn-ar: 9 / 16; }
+.lg__fmt--1x1 .scn { --scn-ar: 1; height: 90px; }
+.lg__fmt--16x9 .scn { height: 72px; }
+
+.lg__fmt .scn__stage {
+  background: none;
+}
+
+.lg__fmt .lg-word {
+  font-size: min(16cqw, calc(88cqw / var(--n)));
+}
+
+/* the motion of each personality, played (once) when .lg gets .is-play */
+.lg.is-play [data-p='preciso'] .lg-word { overflow: clip; overflow-clip-margin: 0.1em; }
+.lg.is-play [data-p='preciso'] .lg-l { animation: lg-up 0.6s cubic-bezier(0.65, 0, 0.35, 1) both; animation-delay: calc(var(--i) * 0.05s); }
+.lg.is-play [data-p='preciso'] .lg__rule { animation: lg-rule 0.5s cubic-bezier(0.65, 0, 0.35, 1) 0.6s both; }
+.lg.is-play [data-p='jugueton'] .lg-l { transform-origin: 50% 100%; animation: lg-bounce 0.9s ease-out both; animation-delay: calc(var(--i) * 0.07s); }
+.lg.is-play [data-p='elegante'] .lg-word { animation: lg-track 2.2s cubic-bezier(0.16, 1, 0.3, 1) both; }
+.lg.is-play [data-p='elegante'] .lg-l { animation: lg-fade 1.6s ease-out both; animation-delay: calc(var(--i) * 0.06s); }
+.lg.is-play [data-p='energico'] .lg-l { animation: lg-cut 0.32s steps(3, end) both; animation-delay: calc(var(--i) * 0.045s); }
+.lg.is-play .lg__stage[data-p='energico']::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--c-volt);
+  animation: lg-flash 0.5s ease-out 0.35s both;
+  pointer-events: none;
+}
+
+@keyframes lg-up {
+  from { translate: 0 110%; opacity: 0; }
+}
+
+@keyframes lg-rule {
+  from { scale: 0 1; }
+}
+
+@keyframes lg-bounce {
+  0% { translate: 0 -160%; scale: 1 1; opacity: 0; }
+  45% { translate: 0 0; scale: 1.25 0.75; opacity: 1; }
+  62% { translate: 0 -22%; scale: 0.92 1.1; }
+  78% { translate: 0 0; scale: 1.08 0.94; }
+  100% { translate: 0 0; scale: 1 1; }
+}
+
+@keyframes lg-track {
+  from { letter-spacing: 0.7em; }
+}
+
+@keyframes lg-fade {
+  from { opacity: 0; translate: 0 0.25em; filter: blur(6px); }
+}
+
+@keyframes lg-cut {
+  from { clip-path: inset(0 100% 0 0); translate: -0.25em 0; }
+  to { clip-path: inset(0); }
+}
+
+@keyframes lg-flash {
+  0% { opacity: 0; }
+  20% { opacity: 0.3; }
+  100% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lg.is-play *,
+  .lg.is-play .lg__stage::after {
+    animation: none !important;
+  }
+}

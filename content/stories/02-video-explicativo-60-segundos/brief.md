@@ -1,6 +1,6 @@
 # Brief · Story 02 — Cómo explicar un producto complejo en 60 segundos
 
-Estado: **en espera de aprobación de Jerry** (paso 2 del flujo de STORIES.md). Backlog: tema 05.
+Estado: **aprobado por Jerry (oct 2026)**. Backlog: tema 05.
 
 | Campo | Valor |
 |---|---|

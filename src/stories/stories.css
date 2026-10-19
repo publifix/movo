@@ -1,6 +1,7 @@
 /* Shared by the Stories index and the story pages: wrap, closing block, the site footer. */
 @import '../styles/footer.css';
 @import './scene.css';
+@import './scene-2.css';
 
 .sx,
 .sp {

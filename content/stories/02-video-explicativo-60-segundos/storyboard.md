@@ -1,6 +1,6 @@
 # Storyboard · Story 02 — Cómo explicar un producto complejo en 60 segundos
 
-Estado: **en espera de aprobación de Jerry**. Nada de esto se anima antes de la aprobación.
+Estado: **aprobado por Jerry (oct 2026)**.
 
 Concepto: "Nada se queda quieto". La página empieza con un producto explicado de más (gris, saturado,
 congelado) y, conforme bajas, todo se reduce a una idea que se mueve. Timecode del sitio: `01 Quieto`,

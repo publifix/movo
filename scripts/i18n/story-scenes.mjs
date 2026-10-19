@@ -2,6 +2,8 @@
 // scene is its FINAL frame (see src/stories/scene.css): without JS, with reduced motion, on the index and
 // for the OG image the scene is complete. Scripts: src/stories/scenes/*.js (timelines), src/stories/story.js.
 import { DEFAULTS, FORMATS, score, summary, toParams } from '../../src/stories/quote.js';
+import { SCENES_2 } from './story-scenes-2.mjs';
+export { logoMarkup } from './story-scenes-2.mjs';
 
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const pad = n => String(n).padStart(2, '0');
@@ -118,8 +120,12 @@ export function resultMarkup(t, lang, contactHref) {
         </div>`;
 }
 
-export function ctaMarkup(t, contactHref) {
-  return `<p class="sp-cta"><a class="btn btn--volt" href="${esc(`${contactHref}?${toParams(DEFAULTS)}`)}" data-quote-cta>${esc(t.storyUi.cta)} <span aria-hidden="true">→</span></a></p>`;
+// the story's CTA (::cta): Story 01 carries the quoter's choices, the others their own query (`ctaParams`;
+// Story 03's is rewritten live with the brand and personality), all with story=<id> for the contact form
+export function ctaMarkup(t, contactHref, story, lang) {
+  const q = story.id === '01' ? toParams(DEFAULTS) : `story=${story.id}${story.ctaParams ? `&${story.ctaParams}` : ''}`;
+  const label = story.cta?.[lang] || t.storyUi.cta;
+  return `<p class="sp-cta"><a class="btn btn--volt" href="${esc(`${contactHref}?${q}`)}" data-quote-cta>${esc(label)} <span aria-hidden="true">→</span></a></p>`;
 }
 
 // ---------- compositions ----------
@@ -143,4 +149,5 @@ const SCENES = {
           </div>`,
 };
 
-export const sceneMarkup = (id, t, lang) => (SCENES[id] ? SCENES[id](t, lang) : '');
+const ALL = { ...SCENES, ...SCENES_2 };
+export const sceneMarkup = (id, t, lang) => (ALL[id] ? ALL[id](t, lang) : '');

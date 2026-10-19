@@ -1,6 +1,7 @@
 /* MOVO Stories teaser on the home (lazy). The change of format is the effect (the only horizontal frame of
    the home): no parallax, no fade-ups, no animated hovers — the only motion is the scene. */
 @import './scene.css';
+@import './scene-2.css';
 
 .sty {
   display: grid;

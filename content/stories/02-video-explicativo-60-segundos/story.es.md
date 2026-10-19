@@ -5,11 +5,12 @@ title: "Cómo explicar un producto complejo en 60 segundos"
 metaTitle: "Video explicativo en 60 segundos · MOVO Stories"   # 47 caracteres
 metaDescription: "Cómo se construye un video explicativo que se entiende a la primera: una idea, un guion de 60 segundos y cuatro etapas. Guía de MOVO, estudio en Querétaro."   # 155
 dek: "Si tu producto necesita un manual, tu video no puede ser otro manual. Así se convierte lo complejo en una historia de un minuto."
-status: borrador — en espera de aprobación de Jerry
+status: aprobado por Jerry (oct 2026)
 ---
 
 # Cómo explicar un producto complejo en 60 segundos
 
+::act
 ::scene s02-still
 
 ## El problema no es tu producto: es la cantidad de cosas que quieres decir
@@ -27,6 +28,7 @@ Un video explicativo no es una ficha técnica animada. Es otra cosa: una histori
 entienda **una idea** lo suficiente como para querer saber más. Lo demás lo hacen tu sitio, tu equipo de
 ventas o tu demo.
 
+::act
 ## Una idea por video, una idea por escena
 
 ::scene s02-cover
@@ -61,6 +63,7 @@ cantidad de cosas que tu producto hace:
 Si tu producto tiene varias funciones importantes, en lugar de un video de cuatro minutos conviene una serie
 de videos cortos, uno por función. Cada uno se entiende solo y juntos cuentan todo.
 
+::act
 ## Cómo se construye un video explicativo
 
 Un explainer no se anima de golpe. Se construye por capas, y cada capa se aprueba antes de pasar a la
@@ -119,6 +122,7 @@ Y explicar no es solo para productos. Para [Viviendo Vino](/trabajo/viviendo-vin
 respondimos en un minuto una pregunta curiosa —¿por qué casi todas las botellas de vino son de 750 ml?—
 pensada para redes. La misma lógica, otro objetivo: que la gente se quede hasta el final y lo comparta.
 
+::act
 ## Tu producto, en 60 segundos
 
 ::scene s02-result

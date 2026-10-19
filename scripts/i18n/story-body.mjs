@@ -3,8 +3,10 @@
 // # H1 (the template has it), ## one act per heading (a <section> the timecode names: 01 Quieto…),
 // ### headings, paragraphs, - and 1. lists, | tables |, **bold**, *italic*, [links](/path/) (root-relative
 // paths become relative to the page), and directives on their own line:
+//   ::act          starts an act (then only these do; without any, every ## starts one)
 //   ::scene <id>   a composition (scrubbed by the scroll)      ::quoter   Story 01's quoter
-//   ::result       act 4: the result + CTA                      ::cta      the CTA button
+//   ::result       Story 01 act 4: the result + CTA            ::logo     Story 03's logo playground
+//   ::cta          the story's CTA button
 // [PENDIENTE: …] notes are dropped from the page (and listed by the build).
 import fs from 'node:fs';
 import path from 'node:path';
@@ -31,9 +33,20 @@ export function storyBody(file, { root, act, directive }) {
   let open = false; // inside an act <section>
   let headed = true; // that act already has its <h2>
   const lines = src.split('\n');
+  // acts: by default every ## opens one; a text with `::act` lines opens them only there (its other ##
+  // are headings inside the act)
+  const explicit = lines.some(l => l.trim() === '::act');
   for (let i = 0; i < lines.length; ) {
     const line = lines[i];
     if (!line.trim() || line.startsWith('# ') || line.startsWith('>')) { i++; continue; }
+    if (line.trim() === '::act') {
+      if (open) out.push('</section>');
+      out.push(act(n++));
+      open = true;
+      headed = true;
+      i++;
+      continue;
+    }
     if (line.startsWith('::')) {
       const [name, arg] = line.slice(2).trim().split(/\s+/);
       // a scene before the first ## opens act 1 (the act starts with its scene, its <h2> follows)
@@ -44,7 +57,7 @@ export function storyBody(file, { root, act, directive }) {
     }
     if (line.startsWith('## ')) {
       const title = line.slice(3).trim();
-      if (!open || headed) {
+      if (!open || (headed && !explicit)) {
         if (open) out.push('</section>');
         out.push(act(n++));
         open = true;

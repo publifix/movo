@@ -38,14 +38,29 @@ function check(field) {
 function prefillFromStory() {
   const q = new URLSearchParams(location.search);
   const S = UI.story;
-  if (!q.get('story') || !S || !form) return;
-  const hidden = Object.assign(document.createElement('input'), { type: 'hidden', name: 'story', value: q.get('story').slice(0, 8) });
+  const id = q.get('story');
+  if (!id || !S || !form) return;
+  const hidden = Object.assign(document.createElement('input'), { type: 'hidden', name: 'story', value: id.slice(0, 8) });
   form.append(hidden);
   const msg = form.querySelector('[name="message"]');
   if (!msg || msg.value.trim()) return;
-  const s = fromParams(q);
-  const level = S.quoter.levels[score(s).level - 1];
-  msg.value = `${S.contactIntro}\n${summary(s, S.quoter)}\n${S.contactLevel}: ${level}\n\n`;
+  if (id === '01') {
+    // the quoter's choices
+    const s = fromParams(q);
+    const level = S.quoter.levels[score(s).level - 1];
+    msg.value = `${S.contactIntro}\n${summary(s, S.quoter)}\n${S.contactLevel}: ${level}\n\n`;
+    return;
+  }
+  const title = UI.storyTitles?.[id];
+  if (!title) return;
+  let text = `${S.contact.from.replace('{title}', title)}\n`;
+  // Story 03: the brand typed in the logo playground and the chosen personality
+  const brand = (q.get('marca') || '').slice(0, 24);
+  const personality = S.s03?.logo.options[q.get('personalidad')];
+  if (id === '03' && (brand || personality)) {
+    text += [brand && `${S.contact.brand}: ${brand}`, personality && `${S.contact.personality}: ${personality}`].filter(Boolean).join(' · ') + '\n';
+  }
+  msg.value = `${text}\n`;
 }
 
 if (form) {

@@ -5,11 +5,12 @@ title: "Tu logo ya no puede quedarse quieto"
 metaTitle: "Logo animado: tu marca en movimiento · MOVO Stories"   # 51 caracteres
 metaDescription: "Qué es un logo animado, para qué sirve y qué recibes: versiones, formatos y una personalidad de movimiento propia. Guía de MOVO, estudio en Querétaro."   # 150
 dek: "Tu marca ya vive en pantallas que se mueven. Un logo animado le da algo que un archivo estático no tiene: comportamiento."
-status: borrador — en espera de aprobación de Jerry
+status: aprobado por Jerry (oct 2026)
 ---
 
 # Tu logo ya no puede quedarse quieto
 
+::act
 ::scene s03-still
 
 ## Un logo quieto en un mundo que se mueve
@@ -32,6 +33,7 @@ Animar un logo no es ponerle efectos. Es responder una pregunta que la mayoría 
 - **En eventos y pantallas LED**, donde un logo estático se pierde en un escenario que se mueve.
 - **En webinars, transmisiones en vivo y videollamadas**, como entrada y cierre.
 
+::act
 ## Un logo también es un comportamiento
 
 ::scene s03-cover
@@ -47,6 +49,7 @@ cuatro historias distintas.
 Por eso un buen logo animado empieza en la estrategia, no en el software: ¿qué tiene que sentir alguien en
 los tres segundos que dura?
 
+::act
 ## Elige la personalidad de tu marca
 
 Escribe el nombre de tu marca y prueba cómo se vería con cada personalidad. Es un boceto rápido, en
@@ -119,6 +122,7 @@ Un ejemplo de marca con comportamiento propio es la pieza de fin de año que hic
 [Blanco Nuclear](/trabajo/blanco-nuclear-fiestas-fin-de-ano/), que cierra con su promesa: tú lo imaginas.
 Puedes ver más en nuestros [proyectos de marca](/trabajo/?cat=branding).
 
+::act
 ## Tu logo, en movimiento
 
 ::scene s03-result

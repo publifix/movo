@@ -1,6 +1,6 @@
 # Storyboard · Story 03 — Tu logo ya no puede quedarse quieto
 
-Estado: **en espera de aprobación de Jerry**. Nada de esto se anima antes de la aprobación.
+Estado: **aprobado por Jerry (oct 2026)**.
 
 Concepto: "Nada se queda quieto". Un logo gris y estático en medio de un feed que se mueve; conforme bajas,
 el logo aprende a moverse y termina con la personalidad que el visitante elige. El logo de la demo es una

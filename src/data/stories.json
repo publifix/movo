@@ -1,6 +1,72 @@
 {
-  "_note": "MOVO Stories (/stories/, /en/stories/), NEWEST FIRST: the first entry is the featured story on /stories/ and in the home teaser. `slug` per language (keep it stable once published). `content` = its Markdown (approved copy) without `.es.md` / `.en.md`; `og` = its 1200x630 image (`{lang}` per language, scripts/stories/og.mjs); `cover` = the id of the scene (src/stories/scenes/) whose final frame is the story's cover. `datePublished` / `dateModified` (YYYY-MM-DD) feed the Article JSON-LD. The section is hidden until scripts/i18n/site.config.mjs → stories.published is true. Read STORIES.md before creating or editing a story.",
+  "_note": "MOVO Stories (/stories/, /en/stories/), NEWEST FIRST: the first entry is the featured story on /stories/ and in the home teaser. `slug` per language (keep it stable once published). `content` = its Markdown (approved copy) without `.es.md` / `.en.md`; `og` = its 1200x630 image (`{lang}` per language, scripts/stories/og.mjs); `cover` = the id of the scene (src/stories/scenes/) whose final frame is the story's cover. `datePublished` / `dateModified` (YYYY-MM-DD) feed the Article JSON-LD. The section is hidden until scripts/i18n/site.config.mjs → stories.published is true. Read STORIES.md before creating or editing a story. Optional: `metaTitle` {es,en} (else title + ' · MOVO Stories'), `cta` {es,en} (the ::cta button), `ctaParams` (extra /contacto/ query, after story=<id>).",
   "stories": [
+    {
+      "id": "03",
+      "slug": {
+        "es": "logo-animado-para-tu-marca",
+        "en": "animated-logo-for-your-brand"
+      },
+      "title": {
+        "es": "Tu logo ya no puede quedarse quieto",
+        "en": "Your logo can't stand still anymore"
+      },
+      "metaTitle": {
+        "es": "Logo animado: tu marca en movimiento · MOVO Stories",
+        "en": "Animated logo: your brand in motion · MOVO Stories"
+      },
+      "dek": {
+        "es": "Tu marca ya vive en pantallas que se mueven. Un logo animado le da algo que un archivo estático no tiene: comportamiento.",
+        "en": "Your brand already lives on screens that move. An animated logo gives it something a static file doesn't have: behavior."
+      },
+      "description": {
+        "es": "Qué es un logo animado, para qué sirve y qué recibes: versiones, formatos y una personalidad de movimiento propia. Guía de MOVO, estudio en Querétaro.",
+        "en": "What an animated logo is, what it's for and what you get: versions, formats and a motion personality of its own. A guide by MOVO, a studio in Querétaro."
+      },
+      "cover": "s03-cover",
+      "content": "content/stories/03-logo-animado/story",
+      "og": "stories/og/03-{lang}.jpg",
+      "cta": {
+        "es": "Anima tu logo",
+        "en": "Animate your logo"
+      },
+      "ctaParams": "personalidad=preciso",
+      "datePublished": "2026-10-19",
+      "dateModified": "2026-10-19"
+    },
+    {
+      "id": "02",
+      "slug": {
+        "es": "como-explicar-un-producto-complejo-en-60-segundos",
+        "en": "how-to-explain-a-complex-product-in-60-seconds"
+      },
+      "title": {
+        "es": "Cómo explicar un producto complejo en 60 segundos",
+        "en": "How to explain a complex product in 60 seconds"
+      },
+      "metaTitle": {
+        "es": "Video explicativo en 60 segundos · MOVO Stories",
+        "en": "Explainer video in 60 seconds · MOVO Stories"
+      },
+      "dek": {
+        "es": "Si tu producto necesita un manual, tu video no puede ser otro manual. Así se convierte lo complejo en una historia de un minuto.",
+        "en": "If your product needs a manual, your video can't be another manual. Here's how something complex becomes a one-minute story."
+      },
+      "description": {
+        "es": "Cómo se construye un video explicativo que se entiende a la primera: una idea, un guion de 60 segundos y cuatro etapas. Guía de MOVO, estudio en Querétaro.",
+        "en": "How to build an explainer video people get the first time: one idea, a 60-second script and four stages. A guide by MOVO, a studio in Querétaro."
+      },
+      "cover": "s02-cover",
+      "content": "content/stories/02-video-explicativo-60-segundos/story",
+      "og": "stories/og/02-{lang}.jpg",
+      "cta": {
+        "es": "Cuéntanos tu producto",
+        "en": "Tell us about your product"
+      },
+      "ctaParams": "servicio=explicativos",
+      "datePublished": "2026-10-19",
+      "dateModified": "2026-10-19"
+    },
     {
       "id": "01",
       "slug": {
@@ -23,7 +89,11 @@
       "content": "content/stories/01-cuanto-cuesta-motion-graphics/story",
       "og": "stories/og/01-{lang}.jpg",
       "datePublished": "2026-10-19",
-      "dateModified": "2026-10-19"
+      "dateModified": "2026-10-19",
+      "cta": {
+        "es": "Cotiza tu proyecto",
+        "en": "Get a quote"
+      }
     }
   ]
 }

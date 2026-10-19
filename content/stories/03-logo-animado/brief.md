@@ -1,6 +1,6 @@
 # Brief · Story 03 — Tu logo ya no puede quedarse quieto
 
-Estado: **en espera de aprobación de Jerry** (paso 2 del flujo de STORIES.md). Backlog: tema 03.
+Estado: **aprobado por Jerry (oct 2026)**. Backlog: tema 03.
 
 | Campo | Valor |
 |---|---|
