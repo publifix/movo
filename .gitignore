@@ -3,6 +3,8 @@ dist/
 .DS_Store
 .claude/settings.local.json
 
-# project pages: stub index.html files generated from src/data/reels.json (scripts/i18n/vite-plugin-i18n.mjs)
+# collection pages: stub index.html files generated from src/data/reels.json + stories.json (scripts/i18n/vite-plugin-i18n.mjs)
 /trabajo/*/
 /en/work/*/
+/stories/*/
+/en/stories/*/

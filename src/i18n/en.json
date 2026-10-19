@@ -25,6 +25,11 @@
       "href": "#services",
       "id": "services"
     },
+    "stories": {
+      "label": "Stories",
+      "href": "#stories",
+      "id": "stories"
+    },
     "studio": {
       "label": "Studio",
       "href": "#studio",
@@ -297,6 +302,35 @@
     "faq": "FAQ",
     "closing": "Closing",
     "index": "Pillar index"
+  },
+  "stories": {
+    "meta": {
+      "title": "MOVO Stories · Motion graphics studio in Querétaro",
+      "description": "Stories that don't stand still: how we think, how we work and what it takes to put your brand in motion. A motion design studio in Querétaro."
+    },
+    "label": "MOVO Stories",
+    "h1": "MOVO Stories",
+    "dek": "Stories that don't stand still: how we think, how we work and what it costs to put your brand in motion.",
+    "num": "Story",
+    "featured": "Latest",
+    "read": "Read the story",
+    "all": "All stories",
+    "home": {
+      "heading": "Stories that don't stand still.",
+      "cta": "See the story",
+      "all": "All stories"
+    },
+    "draft": "Story in production: the full text and the scenes go live once they are approved.",
+    "crumbs": "Breadcrumb",
+    "scenes": {
+      "s01": {
+        "label": "Animated illustration: a frozen, gray price tag breaks into four colored pieces: length, style, formats and extras.",
+        "duration": "Length",
+        "style": "Style",
+        "formats": "Formats",
+        "extras": "Extras"
+      }
+    }
   },
   "studio": {
     "_note": "Studio section (home teaser + /en/studio/ page). Owner's copy, verbatim.",

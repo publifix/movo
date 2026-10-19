@@ -1,0 +1,81 @@
+/* A MOVO Story page (/stories/<slug>/). Layout of the head + cover for now; the acts and their scenes are
+   added with the story (STORIES.md). Calm page: the motion is in the scenes only. */
+@import './stories.css';
+
+.sp-crumbs {
+  display: flex;
+  gap: 10px;
+  padding-top: calc(var(--nav-h) + 20px);
+  color: var(--c-text-muted);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.sp-crumbs a {
+  color: var(--c-white);
+  text-decoration: none;
+}
+
+.sp-crumbs a:hover {
+  color: var(--c-volt);
+}
+
+.sp-head {
+  display: grid;
+  gap: clamp(16px, 2.6vh, 26px);
+  max-width: 1200px;
+  padding-top: clamp(40px, 8vh, 96px);
+  padding-bottom: clamp(36px, 6vh, 64px);
+}
+
+.sp-label {
+  margin: 0;
+  color: var(--c-volt);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.sp-title {
+  margin: 0;
+  font-size: clamp(2.25rem, 5.6vw, 6rem);
+  font-weight: 900;
+  font-stretch: 112%;
+  letter-spacing: -0.03em;
+  line-height: 0.98;
+}
+
+.sp-dek {
+  max-width: 48ch;
+  margin: 0;
+  color: var(--c-text-muted);
+  font-size: clamp(1.125rem, 1.6vw, 1.4375rem);
+  line-height: 1.45;
+}
+
+.sp-cover .scn {
+  border-radius: 18px;
+}
+
+.sp-body {
+  max-width: 72ch;
+  padding-top: clamp(40px, 7vh, 80px);
+}
+
+.sp-draft {
+  margin: 0;
+  padding: 18px 22px;
+  border: 1px dashed rgb(215 255 59 / 0.5);
+  border-radius: 12px;
+  color: var(--c-volt);
+  font-size: 0.9375rem;
+}
+
+@media (max-width: 899px) {
+  .sp-cover .scn {
+    --scn-ar: 4 / 5;
+  }
+}

@@ -1,0 +1,107 @@
+/* MOVO Stories teaser on the home (lazy). The change of format is the effect (the only horizontal frame of
+   the home): no parallax, no fade-ups, no animated hovers — the only motion is the scene. */
+@import './scene.css';
+
+.sty {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(32px, 5vw, 88px);
+  padding: clamp(96px, 16vh, 200px) var(--gutter) 0;
+}
+
+.sty__frame {
+  overflow: hidden;
+  border-radius: 18px;
+  box-shadow: 0 30px 80px rgb(0 0 0 / 0.45);
+}
+
+.sty__copy {
+  display: grid;
+  gap: clamp(16px, 2.6vh, 26px);
+  justify-items: start;
+}
+
+.sty__label {
+  margin: 0;
+  color: var(--c-volt);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+.sty__title {
+  margin: 0;
+  font-size: clamp(2rem, 3.6vw, 4.25rem);
+  font-weight: 900;
+  font-stretch: 125%;
+  letter-spacing: -0.03em;
+  line-height: 0.95;
+  text-transform: uppercase;
+}
+
+.sty__story {
+  max-width: 34ch;
+  margin: 0;
+  font-size: clamp(1.0625rem, 1.4vw, 1.3125rem);
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.sty__num {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--c-text-muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.sty__links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px 28px;
+  margin: 6px 0 0;
+}
+
+.sty__all {
+  padding: 10px 0;
+  color: var(--c-white);
+  font-weight: 700;
+  text-decoration: none;
+  background: linear-gradient(var(--c-volt), var(--c-volt)) left bottom / 100% 1px no-repeat;
+}
+
+.sty__all:hover {
+  color: var(--c-volt);
+}
+
+.sty__all:focus-visible {
+  outline: 2px solid var(--c-volt);
+  outline-offset: 4px;
+}
+
+/* phones / narrow: the frame re-composes to 4:5 (the scene re-lays itself out), the copy goes below */
+@media (max-width: 899px) {
+  .sty {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .sty__frame .scn {
+    --scn-ar: 4 / 5;
+  }
+}
+
+/* landscape phones: keep it horizontal, not taller than the screen */
+@media (max-width: 899px) and (orientation: landscape) {
+  .sty__frame {
+    max-width: calc((100svh - 48px) * 16 / 9);
+  }
+
+  .sty__frame .scn {
+    --scn-ar: 16 / 9;
+  }
+}

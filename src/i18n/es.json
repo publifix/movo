@@ -25,6 +25,11 @@
       "href": "#servicios",
       "id": "servicios"
     },
+    "stories": {
+      "label": "Stories",
+      "href": "#stories",
+      "id": "stories"
+    },
     "studio": {
       "label": "Estudio",
       "href": "#estudio",
@@ -297,6 +302,35 @@
     "faq": "Preguntas frecuentes",
     "closing": "Cierre",
     "index": "Índice de pilares"
+  },
+  "stories": {
+    "meta": {
+      "title": "MOVO Stories · Motion graphics en Querétaro",
+      "description": "Historias que no se quedan quietas: cómo pensamos, cómo trabajamos y qué hace falta para poner tu marca en movimiento. Estudio en Querétaro."
+    },
+    "label": "MOVO Stories",
+    "h1": "MOVO Stories",
+    "dek": "Historias que no se quedan quietas: cómo pensamos, cómo trabajamos y cuánto cuesta poner tu marca en movimiento.",
+    "num": "Story",
+    "featured": "La más reciente",
+    "read": "Leer la story",
+    "all": "Todas las stories",
+    "home": {
+      "heading": "Historias que no se quedan quietas.",
+      "cta": "Ver la story",
+      "all": "Todas las stories"
+    },
+    "draft": "Story en producción: el texto completo y las escenas se publican cuando estén aprobados.",
+    "crumbs": "Ruta de navegación",
+    "scenes": {
+      "s01": {
+        "label": "Ilustración animada: una etiqueta de precio, gris y congelada, se rompe en cuatro piezas de color: duración, estilo, formatos y extras.",
+        "duration": "Duración",
+        "style": "Estilo",
+        "formats": "Formatos",
+        "extras": "Extras"
+      }
+    }
   },
   "studio": {
     "_note": "Sección Estudio (teaser en la home + página /estudio/). Textos del dueño, literales.",

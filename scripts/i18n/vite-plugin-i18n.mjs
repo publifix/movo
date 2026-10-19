@@ -16,6 +16,7 @@ import { studioMarkup, STUDIO_DATA } from './studio-markup.mjs';
 import { portfolioMarkup, projectMeta } from './portfolio-markup.mjs';
 import { siteMarkup, SITE_DATA, contactData } from './site-markup.mjs';
 import { privacyMarkup, PRIVACY_DATA } from './privacy-markup.mjs';
+import { storiesMarkup, storyMeta, storiesData, slugOf, gated, STORIES_DATA } from './stories-markup.mjs';
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../..');
 const PARTIALS = path.join(ROOT, 'src/partials');
@@ -71,9 +72,15 @@ const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(
 const get = (obj, key) => key.split('.').reduce((o, k) => (o == null ? o : o[k]), obj);
 const absolute = p => site.siteUrl + p;
 
-// Collection pages (project pages) are one per reel with a slug; every other page has one item (null).
-const itemsOf = page => (page.collection === 'reels' ? reelsData().reels.filter(r => r.slug) : [null]);
-const urlPath = (page, locale, item = null) => locale.path + page.path[locale.code] + (item ? `${item.slug}/` : '');
+// Collection pages are one per item with a slug (project pages: reels; story pages: stories, a slug per
+// language); every other page has one item (null).
+const itemsOf = page =>
+  page.collection === 'reels' ? reelsData().reels.filter(r => r.slug)
+  : page.collection === 'stories' ? storiesData().stories.filter(s => s.slug)
+  : [null];
+const urlPath = (page, locale, item = null) => locale.path + page.path[locale.code] + (item ? `${slugOf(item, locale.code)}/` : '');
+// A gated page (MOVO Stories while stories.published is false) is built but hidden: noindex, no sitemap.
+const hidden = page => page.gate === 'stories' && !site.stories.published;
 const entries = () =>
   site.pages.flatMap(page => itemsOf(page).flatMap(item => site.locales.map(locale => ({ page, locale, item }))));
 
@@ -95,7 +102,7 @@ function render(page, locale, item = null) {
   const here = urlPath(page, locale, item);
   const root = here ? '../'.repeat(here.split('/').filter(Boolean).length) : './';
   const url = absolute(here);
-  const meta = item ? projectMeta(t, item, locale.code) : get(t, page.meta);
+  const meta = !item ? get(t, page.meta) : page.collection === 'stories' ? storyMeta(t, item, locale.code) : projectMeta(t, item, locale.code);
   if (!meta?.title || !meta?.description) throw new Error(`[i18n] Missing "${page.meta}.title/description" in src/i18n/${locale.code}.json`);
   const pageHref = (id, l = locale, it = null) => root + urlPath(site.pages.find(p => p.id === id), l, it);
   const homeHref = pageHref('home');
@@ -105,6 +112,8 @@ function render(page, locale, item = null) {
   const contactHref = pageHref('contact');
   const privacyHref = pageHref('privacy');
   const projectHref = r => pageHref('project', locale, r);
+  const storiesHref = pageHref('stories');
+  const storyHref = s => (s ? pageHref('story', locale, s) : storiesHref);
   const isHome = page.id === 'home';
 
   const alternates = site.locales
@@ -141,10 +150,16 @@ function render(page, locale, item = null) {
   const svc = servicesMarkup({ t, lang: locale.code, root, homeHref, servicesHref, workHref, data: servicesData(), reelsData: reelsData() });
   const pageUrl = (id, it = null) => absolute(urlPath(site.pages.find(p => p.id === id), locale, it));
   const pf = portfolioMarkup({
-    t, lang: locale.code, root, item, url, orgId: `${site.siteUrl}#org`, homeUrl: pageUrl('home'), workUrl: pageUrl('work'),
+    t, lang: locale.code, root, item: page.collection === 'reels' ? item : null, url, orgId: `${site.siteUrl}#org`, homeUrl: pageUrl('home'), workUrl: pageUrl('work'),
     projectHref, absoluteProject: r => pageUrl('project', r), servicesHref, reelsData: reelsData(), servicesData: servicesData(),
   });
-  jsonld['@graph'].push(...pf.jsonld);
+  // the Work ItemList belongs to the Work page; VideoObject + breadcrumb to the project pages
+  if (page.id === 'work' || page.id === 'project') jsonld['@graph'].push(...pf.jsonld);
+  const st = storiesMarkup({
+    t, lang: locale.code, page, item: page.collection === 'stories' ? item : null, url, orgId: `${site.siteUrl}#org`,
+    homeUrl: pageUrl('home'), storiesUrl: pageUrl('stories'), storyHref, published: site.stories.published,
+  });
+  jsonld['@graph'].push(...st.jsonld);
   if (page.id === 'services') {
     jsonld['@graph'].push({
       '@type': 'ItemList',
@@ -161,7 +176,7 @@ function render(page, locale, item = null) {
   // a project page shares its own frame (self-hosted, see reel-media.mjs); every other page the studio image
   const ogImage = pf.ogImage || { url: absolute(site.org.ogImage), alt: site.org.name };
   const seo = [
-    site.noindex ? '<meta name="robots" content="noindex, nofollow" />' : '<meta name="robots" content="index, follow, max-image-preview:large" />',
+    site.noindex || hidden(page) ? '<meta name="robots" content="noindex, nofollow" />' : '<meta name="robots" content="index, follow, max-image-preview:large" />',
     `<link rel="canonical" href="${url}" />`,
     ...alternates,
     '<meta property="og:type" content="website" />',
@@ -215,6 +230,11 @@ function render(page, locale, item = null) {
     'nav.services.href': servicesHref,
     'nav.studio.href': studioHref,
     'nav.contact.href': contactHref,
+    // Stories sits between Services and Studio; hidden (inert <template>) until stories.published
+    navStories: gated(`<li><a href="${storiesHref}"${current('stories', 'story')}>${esc(t.nav.stories.label)}</a></li>`, site.stories.published),
+    storiesHref,
+    // a hidden page turns the preview on for this browser session (src/preview.js)
+    htmlPreview: hidden(page) ? ' data-preview="on"' : '',
     'navCurrent.work': current('work', 'project'),
     'navCurrent.services': current('services'),
     'navCurrent.studio': current('studio'),
@@ -226,8 +246,9 @@ function render(page, locale, item = null) {
     ...svc,
     ...studioMarkup({ t, lang: locale.code }),
     ...pf.vars,
+    ...st.vars,
     ...(page.id === 'privacy' ? privacyMarkup({ lang: locale.code }) : {}),
-    ...siteMarkup({ t, lang: locale.code, root, homeHref, workHref, servicesHref, studioHref, contactHref, privacyHref, langSwitch }),
+    ...siteMarkup({ t, lang: locale.code, root, homeHref, workHref, servicesHref, studioHref, contactHref, privacyHref, storiesHref, storiesPublished: site.stories.published, langSwitch }),
   };
 
   const template = includePartials(fs.readFileSync(path.join(ROOT, page.template), 'utf8'));
@@ -270,7 +291,7 @@ export default function movoI18n() {
   return {
     name: 'movo-i18n',
     config() {
-      // project pages: their stub index.html files are generated (git-ignored), one per reel × language
+      // collection pages (projects, stories): their stub index.html files are generated (git-ignored)
       for (const { page, locale, item } of entries()) {
         if (!item) continue;
         const file = path.join(ROOT, urlPath(page, locale, item), 'index.html');
@@ -280,13 +301,13 @@ export default function movoI18n() {
         }
       }
       const input = Object.fromEntries(
-        entries().map(({ page, locale, item }) => [[page.id, item?.slug, locale.code].filter(Boolean).join('-'), path.join(ROOT, urlPath(page, locale, item), 'index.html')]),
+        entries().map(({ page, locale, item }) => [[page.id, item && slugOf(item, locale.code), locale.code].filter(Boolean).join('-'), path.join(ROOT, urlPath(page, locale, item), 'index.html')]),
       );
       return { build: { rollupOptions: { input } } };
     },
     configureServer(server) {
       // Edits to the template or the strings reload every language page
-      const watched = [...site.pages.map(p => path.join(ROOT, p.template)), REELS, THUMBS_DATA, SERVICES, PREVIEWS, ...STUDIO_DATA, ...SITE_DATA, ...PRIVACY_DATA, ...site.locales.map(l => path.join(ROOT, `src/i18n/${l.code}.json`))];
+      const watched = [...site.pages.map(p => path.join(ROOT, p.template)), REELS, THUMBS_DATA, STORIES_DATA, SERVICES, PREVIEWS, ...STUDIO_DATA, ...SITE_DATA, ...PRIVACY_DATA, ...site.locales.map(l => path.join(ROOT, `src/i18n/${l.code}.json`))];
       server.watcher.add([...watched, PARTIALS]);
       server.watcher.on('change', file => {
         if (watched.includes(file) || file.startsWith(PARTIALS)) server.ws.send({ type: 'full-reload' });
@@ -301,7 +322,7 @@ export default function movoI18n() {
     },
     generateBundle() {
       const today = new Date().toISOString().slice(0, 10);
-      const urls = entries().map(({ page, locale: l, item }) => {
+      const urls = entries().filter(({ page }) => !hidden(page)).map(({ page, locale: l, item }) => {
         const links = site.locales
           .map(a => `<xhtml:link rel="alternate" hreflang="${a.code}" href="${absolute(urlPath(page, a, item))}"/>`)
           .concat(`<xhtml:link rel="alternate" hreflang="x-default" href="${absolute(urlPath(page, site.locales[0], item))}"/>`)

@@ -1,0 +1,392 @@
+/* MOVO Stories scenes (compositions, STORIES.md §4). A scene is a size container: everything inside is
+   laid out in container units (cqw / cqh), so the same composition re-composes for a landscape frame
+   (16:9) and a portrait one (4:5) instead of shrinking. The frame's aspect ratio comes from where it is
+   placed (--scn-ar): the box is reserved before anything loads (no layout shift).
+
+   The animation is driven by CSS custom properties that a paused GSAP timeline tweens
+   (src/stories/scenes/*.js). Their DEFAULTS here are the FINAL frame: without JS, with reduced motion,
+   on the index and for an OG capture the scene shows its finished cover. */
+
+.scn {
+  --scn-ar: 16 / 9;
+  /* progress variables (final frame) */
+  --g: 0;        /* 1 = gray and frozen, 0 = full color */
+  --t: 1;        /* playhead, 0..1 */
+  --spread: 1;   /* 0 = the tag is whole, 1 = broken into its pieces */
+  --q: 0;        /* the "$?" on the whole tag */
+  --swing: 0;    /* deg: the tag swings on its hole */
+  --p0: 1;
+  --p1: 1;
+  --p2: 1;
+  --p3: 1;
+  --gray: #3a3a45;
+  position: relative;
+  width: 100%;
+  aspect-ratio: var(--scn-ar);
+  container-type: size;
+  overflow: hidden;
+  background: var(--c-ink);
+  color: var(--c-white);
+}
+
+/* the gray → color of every colored part: its color mixed with the gray by --g */
+.scn {
+  --mix-volt: var(--c-volt);
+  --mix-magenta: var(--c-magenta);
+  --mix-violet: var(--c-violet);
+  --mix-white: var(--c-white);
+}
+
+@supports (color: color-mix(in srgb, red 50%, blue)) {
+  .scn {
+    --mix-volt: color-mix(in srgb, var(--gray) calc(var(--g) * 100%), var(--c-volt));
+    --mix-magenta: color-mix(in srgb, var(--gray) calc(var(--g) * 100%), var(--c-magenta));
+    --mix-violet: color-mix(in srgb, var(--gray) calc(var(--g) * 100%), var(--c-violet));
+    --mix-white: color-mix(in srgb, var(--gray) calc(var(--g) * 100%), var(--c-white));
+  }
+}
+
+.scn__stage {
+  position: absolute;
+  inset: 0;
+  /* a faint editor grid */
+  background:
+    linear-gradient(rgb(245 245 240 / 0.04) 1px, transparent 1px) 0 0 / 8cqw 8cqw,
+    linear-gradient(90deg, rgb(245 245 240 / 0.04) 1px, transparent 1px) 0 0 / 8cqw 8cqw,
+    var(--c-ink);
+}
+
+/* timeline ruler + playhead + timecode (the thread of every story) */
+.scn__ruler {
+  position: absolute;
+  left: 6cqw;
+  right: 6cqw;
+  bottom: 9cqh;
+  height: 2.6cqh;
+  border-bottom: 1px solid rgb(245 245 240 / 0.3);
+  background: repeating-linear-gradient(90deg, rgb(245 245 240 / 0.28) 0 1px, transparent 1px 2.5%) bottom / 100% 55% no-repeat;
+}
+
+.scn__playhead {
+  position: absolute;
+  top: -1.4cqh;
+  bottom: -0.6cqh;
+  left: calc(var(--t) * 100%);
+  width: max(2px, 0.18cqw);
+  translate: -50% 0;
+  background: var(--mix-magenta);
+}
+
+.scn__playhead::before {
+  content: '';
+  position: absolute;
+  top: -0.9cqh;
+  left: 50%;
+  width: 1.4cqh;
+  height: 1.4cqh;
+  translate: -50% 0;
+  rotate: 45deg;
+  background: inherit;
+}
+
+.scn__tc {
+  position: absolute;
+  left: 6cqw;
+  bottom: 14cqh;
+  color: var(--mix-volt);
+  font-size: 1.9cqw;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.06em;
+}
+
+/* ---------- s01-cover: the price tag that breaks into the variables of the price ---------- */
+.s01-tag {
+  position: absolute;
+  left: 13cqw;
+  top: 16cqh;
+  width: 74cqw;
+  height: 54cqh;
+  display: flex;
+  transform-origin: 3% 50%;
+  rotate: calc(var(--swing) * 1deg);
+}
+
+.s01-slice {
+  --c: var(--mix-white);
+  --ink: var(--c-ink);
+  --r: 1.4cqw;
+  position: relative;
+  flex: 0 0 25%; /* four equal pieces whatever their padding: the "$?" across them stays aligned */
+  box-sizing: border-box;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 2cqh;
+  padding: 3.2cqh 1.8cqw;
+  overflow: hidden;
+  border-radius: calc(var(--spread) * var(--r));
+  background: var(--c);
+  box-shadow: 0 0 0 0.6px var(--c); /* no hairline seam between the pieces while the tag is whole */
+  color: var(--ink);
+  translate: calc((var(--i) - 1.5) * var(--spread) * 3.4cqw) calc(var(--dy) * var(--spread));
+  rotate: calc(var(--rot) * var(--spread) * 1deg);
+}
+
+.s01-slice[data-color='volt'] { --c: var(--mix-volt); }
+.s01-slice[data-color='magenta'] { --c: var(--mix-magenta); }
+.s01-slice[data-color='violet'] { --c: var(--mix-violet); --ink: var(--c-white); }
+
+.s01-slice:nth-child(1) { --p: var(--p0); --dy: -2.5cqh; --rot: -3; }
+.s01-slice:nth-child(2) { --p: var(--p1); --dy: 2cqh; --rot: 2; }
+.s01-slice:nth-child(3) { --p: var(--p2); --dy: -1.2cqh; --rot: -1.5; }
+.s01-slice:nth-child(4) { --p: var(--p3); --dy: 2.6cqh; --rot: 3; }
+
+/* the pointed end (with the hole) and the rounded end of the tag */
+.s01-slice:first-child {
+  padding-left: 5.5cqw;
+  border-radius: 0 calc(var(--spread) * var(--r)) calc(var(--spread) * var(--r)) 0;
+  clip-path: polygon(30% 0, 100% 0, 100% 100%, 30% 100%, 0 50%);
+}
+
+.s01-slice:last-child {
+  border-radius: calc(var(--spread) * var(--r)) var(--r) var(--r) calc(var(--spread) * var(--r));
+}
+
+.s01-hole {
+  position: absolute;
+  left: 17%;
+  top: 50%;
+  width: 3.4cqh;
+  height: 3.4cqh;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: var(--c-ink);
+}
+
+/* "$?" across the whole tag: each slice holds the piece of it that falls on it, so it breaks with them */
+.s01-q {
+  position: absolute;
+  top: 0;
+  left: calc(var(--i) * -100%);
+  width: 400%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  opacity: var(--q);
+  pointer-events: none;
+}
+
+.s01-q span {
+  color: rgb(245 245 240 / 0.86);
+  font-size: 26cqh;
+  font-weight: 900;
+  font-stretch: 125%;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+
+.s01-label {
+  font-size: 1.75cqw;
+  font-weight: 900;
+  font-stretch: 100%;
+  letter-spacing: 0.02em;
+  line-height: 1;
+  text-transform: uppercase;
+  opacity: var(--p);
+  translate: 0 calc((1 - var(--p)) * 3cqh);
+}
+
+/* glyphs: one idea per variable, drawn by --p */
+.s01-g {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  gap: 0.9cqh;
+  height: 12cqh;
+}
+
+.s01-g--bar {
+  align-items: center;
+  height: 12cqh;
+  border-radius: 99px;
+}
+
+.s01-g--bar::before {
+  content: '';
+  position: absolute;
+  inset: 50% 0 auto;
+  height: 1.4cqh;
+  translate: 0 -50%;
+  border-radius: 99px;
+  background: currentColor;
+  opacity: calc(0.22 * var(--p));
+}
+
+.s01-g--bar i {
+  position: relative;
+  width: calc(var(--p) * 100%);
+  height: 1.4cqh;
+  border-radius: 99px;
+  background: currentColor;
+}
+
+.s01-g--bar i::after {
+  content: '';
+  position: absolute;
+  right: -1cqh;
+  top: 50%;
+  width: 3.4cqh;
+  height: 3.4cqh;
+  translate: 0 -50%;
+  border-radius: 50%;
+  background: currentColor;
+  scale: var(--p);
+}
+
+.s01-g--shapes i {
+  width: 5.4cqh;
+  height: 5.4cqh;
+  background: currentColor;
+  scale: var(--p);
+  rotate: calc((1 - var(--p)) * -120deg);
+}
+
+.s01-g--shapes i:nth-child(1) { border-radius: 50%; }
+.s01-g--shapes i:nth-child(2) { border-radius: 0.8cqh; }
+.s01-g--shapes i:nth-child(3) { clip-path: polygon(50% 0, 100% 100%, 0 100%); }
+
+.s01-g--formats i {
+  border: max(1.5px, 0.4cqh) solid currentColor;
+  border-radius: 0.6cqh;
+  scale: var(--p);
+  transform-origin: bottom left;
+}
+
+.s01-g--formats i:nth-child(1) { width: 8cqh; height: 4.5cqh; }
+.s01-g--formats i:nth-child(2) { width: 4.5cqh; height: 8cqh; }
+.s01-g--formats i:nth-child(3) { width: 5.6cqh; height: 5.6cqh; }
+
+.s01-g--wave {
+  align-items: center;
+}
+
+.s01-g--wave i {
+  width: 1cqh;
+  height: var(--h, 6cqh);
+  border-radius: 99px;
+  background: currentColor;
+  scale: 1 var(--p);
+}
+
+.s01-g--wave i:nth-child(1) { --h: 3cqh; }
+.s01-g--wave i:nth-child(2) { --h: 7cqh; }
+.s01-g--wave i:nth-child(3) { --h: 10cqh; }
+.s01-g--wave i:nth-child(4) { --h: 5cqh; }
+.s01-g--wave i:nth-child(5) { --h: 9cqh; }
+.s01-g--wave i:nth-child(6) { --h: 4cqh; }
+.s01-g--wave i:nth-child(7) { --h: 6.5cqh; }
+
+/* ---------- portrait frame (4:5): the tag stands up, the pieces stack ---------- */
+@container (orientation: portrait) {
+  .scn__ruler {
+    left: 8cqw;
+    right: 8cqw;
+    bottom: 6cqh;
+    height: 2.2cqh;
+  }
+
+  .scn__tc {
+    left: 8cqw;
+    bottom: 10cqh;
+    font-size: 3.8cqw;
+  }
+
+  .s01-tag {
+    left: 15cqw;
+    top: 7cqh;
+    width: 70cqw;
+    height: 70cqh;
+    flex-direction: column;
+    transform-origin: 50% 3%;
+  }
+
+  .s01-slice {
+    flex-direction: row-reverse;
+    align-items: center;
+    padding: 0 5cqw;
+    translate: calc(var(--dy) * var(--spread) * 0.8) calc((var(--i) - 1.5) * var(--spread) * 2.6cqh);
+  }
+
+  .s01-slice:first-child {
+    padding: 5cqh 5cqw 0;
+    border-radius: 0 0 calc(var(--spread) * var(--r)) calc(var(--spread) * var(--r));
+    clip-path: polygon(0 34%, 50% 0, 100% 34%, 100% 100%, 0 100%);
+  }
+
+  .s01-slice:last-child {
+    border-radius: calc(var(--spread) * var(--r)) calc(var(--spread) * var(--r)) var(--r) var(--r);
+  }
+
+  .s01-hole {
+    left: 50%;
+    top: 20%;
+    width: 4.2cqw;
+    height: 4.2cqw;
+  }
+
+  .s01-q {
+    left: 0;
+    top: calc(var(--i) * -100%);
+    width: 100%;
+    height: 400%;
+  }
+
+  .s01-q span {
+    font-size: 30cqw;
+  }
+
+  .s01-label {
+    font-size: 4.6cqw;
+  }
+
+  .s01-g {
+    height: auto;
+    gap: 1.4cqw;
+  }
+
+  .s01-g--bar {
+    width: 24cqw;
+    height: 6cqw;
+  }
+
+  .s01-g--bar::before,
+  .s01-g--bar i {
+    height: 1.6cqw;
+  }
+
+  .s01-g--bar i::after {
+    width: 4cqw;
+    height: 4cqw;
+    right: -1.2cqw;
+  }
+
+  .s01-g--shapes i {
+    width: 5.4cqw;
+    height: 5.4cqw;
+  }
+
+  .s01-g--formats {
+    align-items: flex-end;
+  }
+
+  .s01-g--formats i:nth-child(1) { width: 8cqw; height: 4.5cqw; }
+  .s01-g--formats i:nth-child(2) { width: 4.5cqw; height: 8cqw; }
+  .s01-g--formats i:nth-child(3) { width: 5.6cqw; height: 5.6cqw; }
+
+  .s01-g--wave i {
+    width: 1.1cqw;
+    height: calc(var(--h, 6cqh) * 0.7);
+  }
+}

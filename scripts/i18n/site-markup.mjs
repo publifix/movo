@@ -17,7 +17,7 @@ const ICONS = {
 };
 const NAMES = { instagram: 'Instagram', tiktok: 'TikTok' };
 
-export function siteMarkup({ t, lang, workHref, servicesHref, studioHref, contactHref }) {
+export function siteMarkup({ t, lang, workHref, servicesHref, studioHref, contactHref, storiesHref, storiesPublished }) {
   const c = contactData();
   const newTab = `<span class="sr-only"> ${esc(t.studioUi.newTab)}</span>`;
   const wa = `https://wa.me/${c.whatsapp}?text=${encodeURIComponent(t.contact.whatsapp.message)}`;
@@ -28,9 +28,14 @@ export function siteMarkup({ t, lang, workHref, servicesHref, studioHref, contac
     footerSite: [
       [workHref, t.nav.work.label],
       [servicesHref, t.nav.services.label],
+      [storiesHref, t.nav.stories.label, true],
       [studioHref, t.nav.studio.label],
       [contactHref, t.nav.contact.label],
-    ].map(([href, label]) => `<li><a class="site-footer__link" href="${href}">${esc(label)}</a></li>`).join(''),
+    ].map(([href, label, stories]) => {
+      const li = `<li><a class="site-footer__link" href="${href}">${esc(label)}</a></li>`;
+      // Stories stays an inert <template> until it is published (src/preview.js shows it for review)
+      return stories && !storiesPublished ? `<template data-preview>${li}</template>` : li;
+    }).join(''),
     // Instagram / TikTok as the tracks of a video editor (V1, V2): giant name, a playhead wipes the lane on
     // hover. No URL yet in src/data/contact.json → the lane says "coming soon" (not a link).
     footerSocial: `<section class="sf-social" aria-labelledby="sf-social-title">

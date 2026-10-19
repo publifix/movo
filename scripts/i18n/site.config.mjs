@@ -6,6 +6,12 @@ export default {
   // PREVIEW: keep search engines out while the copy is provisional. Set to false at launch.
   noindex: false,
 
+  // MOVO Stories (STORIES.md). While `published` is false the section is built but HIDDEN: its pages are
+  // noindex and out of the sitemap, and the nav item, footer link and home teaser ship inside
+  // <template data-preview> (invisible). ?preview (or opening a /stories/ page) shows them for that browser
+  // session so the owner can review live; ?preview=off hides them again. Approval = set it to true.
+  stories: { published: false },
+
   // First locale is the default (x-default) and lives at the root.
   locales: [
     { code: 'es', path: '', label: 'ES', name: 'Español' },
@@ -22,6 +28,10 @@ export default {
     { id: 'work', template: 'src/work.html', path: { es: 'trabajo/', en: 'work/' }, meta: 'workPage.meta' },
     // one page per reel of src/data/reels.json (its `slug`): /trabajo/<slug>/, /en/work/<slug>/
     { id: 'project', template: 'src/project.html', path: { es: 'trabajo/', en: 'work/' }, collection: 'reels' },
+    // MOVO Stories: index + one page per story of src/data/stories.json (slug per language). gate: 'stories'
+    // = hidden while stories.published is false (see above).
+    { id: 'stories', template: 'src/stories.html', path: { es: 'stories/', en: 'stories/' }, meta: 'stories.meta', gate: 'stories' },
+    { id: 'story', template: 'src/story.html', path: { es: 'stories/', en: 'stories/' }, collection: 'stories', gate: 'stories' },
     { id: 'contact', template: 'src/contact.html', path: { es: 'contacto/', en: 'contact/' }, meta: 'contact.meta' },
     { id: 'privacy', template: 'src/privacy.html', path: { es: 'aviso-de-privacidad/', en: 'privacy-notice/' }, meta: 'privacy.meta' },
   ],

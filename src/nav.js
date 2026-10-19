@@ -1,5 +1,9 @@
 // Navbar: background once the page scrolls, accessible mobile menu.
+import { revealPreview } from './preview.js';
+
 export function initNav({ labels = {} } = {}) {
+  // first of all: unpublished sections in review mode (their nav links must exist before the menu is wired)
+  revealPreview();
   const header = document.querySelector('[data-site-header]');
   const nav = header?.querySelector('.nav');
   const toggle = header?.querySelector('[data-nav-toggle]');

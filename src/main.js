@@ -21,8 +21,8 @@ initNav({ labels: UI.a11y });
 initHero({ base: `${ROOT}video/hero/` });
 initTimecode();
 
-// Work (scene, strip/feed, player, ScrollTrigger), Services (tracks, playhead) and Studio (teaser, client
-// band, footer styles) are separate chunks
+// Work (scene, strip/feed, player, ScrollTrigger), Services (tracks, playhead), Stories (teaser scene) and
+// Studio (teaser, client band, footer styles) are separate chunks
 // with their own CSS. Nothing of them — code, styles, posters, previews — loads before the visitor
 // shows intent to scroll (or arrives scrolled / with a #hash), and never during the intro.
 let workRequested = false;
@@ -38,6 +38,8 @@ const loadWork = () => {
     import('./work/index.js').then(m => m.initWork({ root: ROOT, ui: UI, preferMp4 })),
     import('./services/home.js').then(m => m.initServicesHome()),
     import('./studio/home.js').then(m => m.initStudioHome()),
+    // MOVO Stories teaser (only when it is in the page: published, or revealed in review mode)
+    document.querySelector('[data-stories-teaser]') && import('./stories/home.js').then(m => m.initStoriesHome()),
     import('./contact/home.css'),
   ]).then(() => {
     // A #hash to a section below the pinned scene: its position is only final now.

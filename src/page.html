@@ -107,6 +107,11 @@
         <a class="btn btn--volt svc__cta" href="{{servicesHref}}">{{services.home.cta}}</a>
       </section>
 
+      <!-- MOVO Stories (home teaser): the newest story of src/data/stories.json, one horizontal frame (the only
+           one on the home) whose scene plays once when it enters the screen. Styles/motion load lazily
+           (src/stories/home.*). An inert <template> until stories.published (site.config.mjs). -->
+      {{storiesTeaser}}
+
       <!-- Studio (home teaser). Copy: src/i18n/*.json → studio; band: src/data/clients.json. Styles and motion
            load lazily on the first scroll (src/studio/home.*). Full page: src/studio.html. -->
       <section class="stt" id="{{nav.studio.id}}" aria-labelledby="studio-title" data-studio-teaser data-clip="studio" data-clip-label="{{nav.studio.label}}">

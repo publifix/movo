@@ -187,3 +187,26 @@ Static site built with Vite, deployed to GitHub Pages on the custom domain https
   `.github/workflows/thumbs.yml` (manual) copies each reel's thumbnail to `public/thumbs/` (<slug>-{360,720,1080}.webp
   posters, <slug>.jpg for VideoObject, <slug>-og.jpg 1200x630 for the project og:image) + `src/data/thumbs.json`,
   commits and deploys. Run it after adding a reel or replacing its video (until then that reel uses Bunny's image).
+
+## MOVO Stories — `/stories/`, `/en/stories/` (in production, HIDDEN until approved)
+- Para crear o editar cualquier pieza de /stories, lee y sigue STORIES.md (playbook at the repo root; where it
+  clashes with the code, the code wins: adapt and report). Owner/approver: Jerry. Prompt of phase 1:
+  menu + index + home teaser → Story 01 brief/text/storyboard (STOP for approval) → scenes → validation.
+- Switch: `scripts/i18n/site.config.mjs → stories.published` (false now). Hidden = pages noindex + out of the
+  sitemap; nav item (between Services and Studio), footer link and home teaser (between Services and Studio)
+  ship inside `<template data-preview>` (inert). `src/preview.js` (called by initNav): `?preview` or opening a
+  /stories/ page turns them on for the browser session; `?preview=off` turns them off. Approval = true.
+  (Agreed with the owner instead of a separate branch: GitHub Pages can only preview one branch.)
+- Data: `src/data/stories.json` (NEWEST FIRST: the first is featured on the index and in the home teaser;
+  slug per language; `cover` = scene id; dates → Article JSON-LD). Markup: `scripts/i18n/stories-markup.mjs`
+  (index: featured horizontal + titles list from 3 stories; CollectionPage/Article + BreadcrumbList).
+  Pages: `src/stories.html`, `src/story.html` (collection 'stories', stubs git-ignored). Texts/storyboards:
+  `content/stories/<nn-slug>/` (not under /stories/: root folders are URLs).
+- Scenes (`src/stories/scenes/`, styles `src/stories/scene.css`): HyperFrames conventions (data-composition-id,
+  design size 1920x1080, ONE paused GSAP timeline in window.__timelines[id]) driving CSS custom properties;
+  the HTML/CSS defaults are the FINAL frame (no JS, reduced motion, index, OG). Size containers (cqw/cqh):
+  the same composition re-composes for 16:9 and 4:5 (`--scn-ar`). mountScene() returns { tl } (a GSAP
+  timeline is a thenable: never return it from an async function). Home teaser `src/stories/home.{js,css}`:
+  lazy with Work/Services/Studio; frame 0 gray + 00:00:00:00, plays ONCE at 40 % visible, pauses off screen.
+- Story 01 cotizador: NO money (owner, Oct 2026: no prices on the site) — complexity, approximate delivery
+  time and investment level, then "Cotiza tu proyecto" → /contacto/?story=01&… (prefill the message).

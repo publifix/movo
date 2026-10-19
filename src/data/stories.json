@@ -1,0 +1,27 @@
+{
+  "_note": "MOVO Stories (/stories/, /en/stories/), NEWEST FIRST: the first entry is the featured story on /stories/ and in the home teaser. `slug` per language (keep it stable once published). `cover` = the id of the scene (src/stories/scenes/) whose final frame is the story's cover. `datePublished` / `dateModified` (YYYY-MM-DD) feed the Article JSON-LD. The section is hidden until scripts/i18n/site.config.mjs → stories.published is true. Read STORIES.md before creating or editing a story.",
+  "stories": [
+    {
+      "id": "01",
+      "slug": {
+        "es": "cuanto-cuesta-un-video-motion-graphics",
+        "en": "how-much-does-a-motion-graphics-video-cost"
+      },
+      "title": {
+        "es": "¿Cuánto cuesta un video en motion graphics?",
+        "en": "How much does a motion graphics video cost?"
+      },
+      "dek": {
+        "es": "No es un número: son decisiones. Duración, estilo, formatos y extras, explicados para que sepas qué pedir antes de cotizar.",
+        "en": "It isn't a number: it's a set of decisions. Length, style, formats and extras, explained so you know what to ask for before you get a quote."
+      },
+      "description": {
+        "es": "Qué determina el precio de un video en motion graphics: duración, estilo, guion, voz, formatos y revisiones. Guía de MOVO, estudio en Querétaro.",
+        "en": "What drives the cost of a motion graphics video: length, style, script, voice-over, formats and revisions. A guide by MOVO, a studio in Querétaro."
+      },
+      "cover": "s01-cover",
+      "datePublished": null,
+      "dateModified": null
+    }
+  ]
+}

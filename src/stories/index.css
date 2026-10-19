@@ -1,0 +1,141 @@
+/* MOVO Stories index (/stories/, /en/stories/): title + dek, the newest story featured horizontally (its
+   cover scene, final frame, static) and, from 3 stories on, a plain list of titles (no animated thumbs). */
+@import './stories.css';
+
+.sx-hero {
+  display: grid;
+  gap: clamp(18px, 3vh, 30px);
+  padding-top: calc(var(--nav-h) + clamp(48px, 10vh, 120px));
+  padding-bottom: clamp(48px, 8vh, 96px);
+}
+
+.sx-hero__title {
+  margin: 0 0 0 -0.04em;
+  font-size: clamp(3.25rem, 11.5vw, 13rem);
+  font-weight: 900;
+  font-stretch: 125%;
+  letter-spacing: -0.045em;
+  line-height: 0.86;
+  text-transform: uppercase;
+}
+
+.sx-hero__dek {
+  max-width: 46ch;
+  margin: 0;
+  color: var(--c-text-muted);
+  font-size: clamp(1.125rem, 1.7vw, 1.5rem);
+  line-height: 1.4;
+}
+
+/* ---------- featured ---------- */
+.sx-feat {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(28px, 4.5vw, 80px);
+  padding-top: clamp(28px, 4vh, 48px);
+  border-top: 1px solid rgb(245 245 240 / 0.14);
+}
+
+.sx-feat__frame {
+  display: block;
+  overflow: hidden;
+  border-radius: 18px;
+  box-shadow: 0 30px 80px rgb(0 0 0 / 0.45);
+}
+
+.sx-feat__copy {
+  display: grid;
+  justify-items: start;
+  gap: clamp(14px, 2.4vh, 24px);
+}
+
+.sx-feat__num {
+  margin: 0;
+  color: var(--c-volt);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.sx-feat__title {
+  margin: 0;
+  font-size: clamp(1.75rem, 2.9vw, 3.25rem);
+  font-weight: 900;
+  font-stretch: 112%;
+  letter-spacing: -0.02em;
+  line-height: 1.02;
+}
+
+.sx-feat__title a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.sx-feat__title a:hover {
+  color: var(--c-volt);
+}
+
+.sx-feat__title a:focus-visible {
+  outline: 2px solid var(--c-volt);
+  outline-offset: 4px;
+}
+
+.sx-feat__dek {
+  max-width: 40ch;
+  margin: 0;
+  color: var(--c-text-muted);
+  font-size: clamp(1rem, 1.3vw, 1.1875rem);
+  line-height: 1.5;
+}
+
+/* ---------- the list (3+ stories) ---------- */
+.sx-list {
+  margin-top: clamp(64px, 10vh, 120px);
+}
+
+.sx-list__title {
+  margin: 0 0 16px;
+  color: var(--c-text-muted);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.sx-list__items {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sx-list__items a {
+  display: flex;
+  gap: 20px;
+  padding: 20px 0;
+  border-bottom: 1px solid rgb(245 245 240 / 0.14);
+  color: var(--c-white);
+  font-size: clamp(1.125rem, 2vw, 1.75rem);
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.sx-list__items a:hover {
+  color: var(--c-volt);
+}
+
+.sx-list__num {
+  color: var(--c-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 899px) {
+  .sx-feat {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .sx-feat__frame .scn {
+    --scn-ar: 4 / 5;
+  }
+}
