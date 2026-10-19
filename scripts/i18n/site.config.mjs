@@ -10,7 +10,7 @@ export default {
   // noindex and out of the sitemap, and the nav item, footer link and home teaser ship inside
   // <template data-preview> (invisible). ?preview (or opening a /stories/ page) shows them for that browser
   // session so the owner can review live; ?preview=off hides them again. Approval = set it to true.
-  stories: { published: false },
+  stories: { published: true },
 
   // First locale is the default (x-default) and lives at the root.
   locales: [

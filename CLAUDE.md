@@ -188,11 +188,11 @@ Static site built with Vite, deployed to GitHub Pages on the custom domain https
   posters, <slug>.jpg for VideoObject, <slug>-og.jpg 1200x630 for the project og:image) + `src/data/thumbs.json`,
   commits and deploys. Run it after adding a reel or replacing its video (until then that reel uses Bunny's image).
 
-## MOVO Stories — `/stories/`, `/en/stories/` (in production, HIDDEN until approved)
+## MOVO Stories — `/stories/`, `/en/stories/` (PUBLISHED 19 Oct 2026 with Story 01)
 - Para crear o editar cualquier pieza de /stories, lee y sigue STORIES.md (playbook at the repo root; where it
   clashes with the code, the code wins: adapt and report). Owner/approver: Jerry. Prompt of phase 1:
   menu + index + home teaser → Story 01 brief/text/storyboard (STOP for approval) → scenes → validation.
-- Switch: `scripts/i18n/site.config.mjs → stories.published` (false now). Hidden = pages noindex + out of the
+- Switch: `scripts/i18n/site.config.mjs → stories.published` (true since 19 Oct 2026). Hidden = pages noindex + out of the
   sitemap; nav item (between Services and Studio), footer link and home teaser (between Services and Studio)
   ship inside `<template data-preview>` (inert). `src/preview.js` (called by initNav): `?preview` or opening a
   /stories/ page turns them on for the browser session; `?preview=off` turns them off. Approval = true.

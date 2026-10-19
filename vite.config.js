@@ -15,7 +15,9 @@ export default defineConfig({
         // timecode). ScrollTrigger, Observer and Flip stay in the lazy chunks that use them.
         manualChunks(id) {
           if (/node_modules\/gsap\/(index|gsap-core|CSSPlugin)\.js$/.test(id)) return 'core';
-          if (/src\/(nav|timecode|video-format)\.js$/.test(id)) return 'core';
+          if (/src\/(nav|timecode|video-format|preview)\.js$/.test(id)) return 'core';
+          // Vite's helper for lazy imports (used by several pages): in core, not one more request
+          if (id.includes('vite/preload-helper')) return 'core';
         },
       },
     },
