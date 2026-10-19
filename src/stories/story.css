@@ -1,5 +1,5 @@
-/* A MOVO Story page (/stories/<slug>/). Layout of the head + cover for now; the acts and their scenes are
-   added with the story (STORIES.md). Calm page: the motion is in the scenes only. */
+/* A MOVO Story page (/stories/<slug>/). Calm page (STORIES.md §3): the motion lives in the scenes only —
+   no fade-ups, no parallax, no hover effects beyond links. Text column ~68ch; scenes and the quoter wider. */
 @import './stories.css';
 
 .sp-crumbs {
@@ -22,12 +22,17 @@
   color: var(--c-volt);
 }
 
+.sp-crumbs a:focus-visible {
+  outline: 2px solid var(--c-volt);
+  outline-offset: 4px;
+}
+
 .sp-head {
   display: grid;
   gap: clamp(16px, 2.6vh, 26px);
   max-width: 1200px;
   padding-top: clamp(40px, 8vh, 96px);
-  padding-bottom: clamp(36px, 6vh, 64px);
+  padding-bottom: clamp(24px, 4vh, 48px);
 }
 
 .sp-label {
@@ -56,26 +61,410 @@
   line-height: 1.45;
 }
 
-.sp-cover .scn {
-  border-radius: 18px;
+/* ---------- the text ---------- */
+.sp-act > * {
+  max-width: 44rem; /* one text column (~68 characters) for headings, paragraphs, lists and tables */
+  margin-inline: auto;
 }
 
-.sp-body {
-  max-width: 72ch;
-  padding-top: clamp(40px, 7vh, 80px);
+.sp-act > .sp-scene,
+.sp-act > .qz,
+.sp-act > .sp-result {
+  max-width: 1240px;
 }
 
-.sp-draft {
-  margin: 0;
-  padding: 18px 22px;
-  border: 1px dashed rgb(215 255 59 / 0.5);
-  border-radius: 12px;
+.sp-act + .sp-act {
+  margin-top: clamp(72px, 12vh, 140px);
+}
+
+.sp-body h2 {
+  margin-top: clamp(40px, 6vh, 64px);
+  margin-bottom: 24px;
+  font-size: clamp(1.875rem, 3.6vw, 3.5rem);
+  font-weight: 900;
+  font-stretch: 112%;
+  letter-spacing: -0.025em;
+  line-height: 1.02;
+}
+
+.sp-body h3 {
+  margin-top: 48px;
+  margin-bottom: 12px;
+  font-size: clamp(1.25rem, 1.8vw, 1.5rem);
+  font-weight: 800;
+  font-stretch: 105%;
+  line-height: 1.2;
+}
+
+.sp-body p,
+.sp-body li {
+  color: rgb(245 245 240 / 0.86);
+  font-size: clamp(1.0625rem, 1.25vw, 1.1875rem);
+  line-height: 1.65;
+}
+
+.sp-body p {
+  margin-top: 0;
+  margin-bottom: 1.1em;
+}
+
+.sp-body strong {
+  color: var(--c-white);
+}
+
+.sp-body ul,
+.sp-body ol {
+  margin-top: 0;
+  margin-bottom: 1.3em;
+  padding-left: 1.3em;
+}
+
+.sp-body li {
+  margin-bottom: 0.45em;
+}
+
+.sp-body li::marker {
   color: var(--c-volt);
-  font-size: 0.9375rem;
 }
 
+.sp-body a:not(.btn) {
+  color: var(--c-white);
+  text-decoration: underline;
+  text-decoration-color: var(--c-volt);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+.sp-body a:not(.btn):hover {
+  color: var(--c-volt);
+}
+
+.sp-body a:focus-visible {
+  outline: 2px solid var(--c-volt);
+  outline-offset: 3px;
+}
+
+.sp-table {
+  overflow-x: auto;
+  margin-bottom: 1.5em;
+}
+
+.sp-table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 1rem;
+}
+
+.sp-table th,
+.sp-table td {
+  padding: 14px 12px 14px 0;
+  border-bottom: 1px solid rgb(245 245 240 / 0.14);
+  text-align: left;
+  vertical-align: top;
+  line-height: 1.45;
+}
+
+.sp-table thead th {
+  color: var(--c-text-muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.sp-table tbody th {
+  color: var(--c-white);
+  font-weight: 700;
+}
+
+.sp-table td {
+  color: rgb(245 245 240 / 0.8);
+}
+
+/* ---------- scenes ---------- */
+.sp-scene {
+  margin-top: clamp(28px, 5vh, 56px);
+  margin-bottom: clamp(32px, 6vh, 64px);
+}
+
+.sp-scene .scn {
+  border-radius: 18px;
+  box-shadow: 0 30px 80px rgb(0 0 0 / 0.45);
+}
+
+/* ---------- act 4: summary + CTA ---------- */
+.sp-result {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px 32px;
+  margin-bottom: clamp(40px, 7vh, 72px);
+  padding: 22px 26px;
+  border: 1px solid rgb(245 245 240 / 0.14);
+  border-radius: 16px;
+}
+
+.sp-body .sp-summary {
+  max-width: 62ch;
+  margin: 0;
+  font-size: 1.0625rem;
+}
+
+.sp-summary__lead {
+  color: var(--c-text-muted);
+}
+
+.sp-summary strong {
+  color: var(--c-volt);
+}
+
+.sp-cta {
+  margin-top: 32px;
+}
+
+/* ---------- the quoter ---------- */
+.qz {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+  align-items: start;
+  gap: clamp(24px, 4vw, 64px);
+  margin-top: 28px;
+  margin-bottom: clamp(48px, 8vh, 96px);
+}
+
+.qz__form {
+  display: grid;
+  gap: 22px;
+}
+
+.sp-body .qz__help {
+  margin: 0;
+  color: var(--c-text-muted);
+  font-size: 1rem;
+}
+
+.qz__set {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  min-width: 0;
+}
+
+.qz__legend {
+  margin-bottom: 10px;
+  padding: 0;
+  color: var(--c-text-muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.qz__opts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.qz__opt {
+  position: relative;
+  cursor: pointer;
+}
+
+/* the native input stays (keyboard, screen readers); the chip is its label */
+.qz__opt input {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.qz__opt span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 16px;
+  border: 1px solid rgb(245 245 240 / 0.26);
+  border-radius: 999px;
+  color: var(--c-white);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.qz__opt input[type='checkbox'] + span::before {
+  content: '';
+  width: 14px;
+  height: 14px;
+  border: 1.5px solid currentColor;
+  border-radius: 4px;
+}
+
+.qz__opt input:checked + span {
+  border-color: var(--c-volt);
+  background: var(--c-volt);
+  color: var(--c-ink);
+}
+
+.qz__opt input[type='checkbox']:checked + span::before {
+  background: var(--c-ink) linear-gradient(var(--c-volt), var(--c-volt)) center / 6px 6px no-repeat;
+  border-color: var(--c-ink);
+}
+
+.qz__opt input:focus-visible + span {
+  outline: 2px solid var(--c-white);
+  outline-offset: 3px;
+}
+
+.qz__opt:hover input:not(:checked) + span {
+  border-color: var(--c-white);
+}
+
+.qz__out {
+  position: sticky;
+  top: calc(var(--nav-h) + 16px);
+  display: grid;
+  gap: 18px;
+}
+
+.qz__mini .scn {
+  border-radius: 16px;
+  box-shadow: 0 24px 64px rgb(0 0 0 / 0.45);
+}
+
+.qz__result {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 6px 20px;
+  padding: 18px 22px;
+  border: 1px solid rgb(245 245 240 / 0.14);
+  border-radius: 16px;
+}
+
+.sp-body .qz__label {
+  grid-column: 1 / -1;
+  margin: 0;
+  color: var(--c-text-muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.sp-body .qz__level {
+  margin: 0;
+  color: var(--c-volt);
+  font-size: clamp(1.75rem, 2.6vw, 2.5rem);
+  font-weight: 900;
+  font-stretch: 112%;
+  line-height: 1;
+}
+
+.qz__meter {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  max-width: 220px;
+}
+
+.qz__meter i {
+  height: 8px;
+  border-radius: 99px;
+  background: rgb(245 245 240 / 0.16);
+  transition: background-color 0.3s;
+}
+
+.qz__meter[data-level='1'] i:nth-child(1),
+.qz__meter[data-level='2'] i:nth-child(-n + 2),
+.qz__meter[data-level='3'] i {
+  background: var(--c-volt);
+}
+
+.qz__facts {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 10px 0 0;
+}
+
+.qz__facts dt {
+  color: var(--c-text-muted);
+  font-size: 0.8125rem;
+}
+
+.qz__facts dd {
+  margin: 2px 0 0;
+  color: var(--c-white);
+  font-size: 1.0625rem;
+  font-weight: 700;
+}
+
+/* ---------- phones / narrow ---------- */
 @media (max-width: 899px) {
-  .sp-cover .scn {
+  .sp-scene .scn--s01,
+  .sp-scene .scn--result {
     --scn-ar: 4 / 5;
+  }
+
+  .qz {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* the preview and the level stay in view while the choices scroll under them */
+  .qz__out {
+    order: -1;
+    top: var(--nav-h);
+    z-index: 2;
+    gap: 10px;
+    margin-inline: calc(var(--gutter) * -1);
+    padding: 10px var(--gutter) 12px;
+    background: var(--c-ink);
+    box-shadow: 0 16px 24px -12px rgb(11 11 16 / 0.9);
+  }
+
+  .qz__mini .scn {
+    border-radius: 12px;
+  }
+
+  .qz__result {
+    padding: 10px 14px;
+    gap: 2px 14px;
+  }
+
+  .sp-body .qz__level {
+    font-size: 1.5rem;
+  }
+
+  .qz__facts {
+    margin-top: 4px;
+  }
+
+  .qz__facts dd {
+    font-size: 0.9375rem;
+  }
+
+  .sp-result {
+    padding: 18px;
+  }
+}
+
+/* landscape phones: horizontal scenes that fit the screen */
+@media (max-width: 899px) and (orientation: landscape) {
+  .sp-scene .scn--s01,
+  .sp-scene .scn--result {
+    --scn-ar: 16 / 9;
+  }
+
+  .sp-scene {
+    max-width: calc((100svh - 40px) * 16 / 9);
+  }
+
+  .qz__out {
+    position: static;
   }
 }

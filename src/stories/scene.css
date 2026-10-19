@@ -128,7 +128,6 @@
   overflow: hidden;
   border-radius: calc(var(--spread) * var(--r));
   background: var(--c);
-  box-shadow: 0 0 0 0.6px var(--c); /* no hairline seam between the pieces while the tag is whole */
   color: var(--ink);
   translate: calc((var(--i) - 1.5) * var(--spread) * 3.4cqw) calc(var(--dy) * var(--spread));
   rotate: calc(var(--rot) * var(--spread) * 1deg);
@@ -163,6 +162,41 @@
   translate: -50% -50%;
   border-radius: 50%;
   background: var(--c-ink);
+}
+
+/* the tag while it is whole: ONE piece (no seams between the four), gone as soon as it starts to break */
+.s01-whole {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  border-radius: 0 var(--r, 1.4cqw) var(--r, 1.4cqw) 0;
+  background: var(--gray);
+  clip-path: polygon(7.5% 0, 100% 0, 100% 100%, 7.5% 100%, 0 50%);
+  opacity: clamp(0, 1 - var(--spread) * 12, 1);
+  pointer-events: none;
+}
+
+.s01-whole::before {
+  content: '';
+  position: absolute;
+  left: 4.25%;
+  top: 50%;
+  width: 3.4cqh;
+  height: 3.4cqh;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: var(--c-ink);
+}
+
+.s01-whole span {
+  color: rgb(245 245 240 / 0.86);
+  font-size: 26cqh;
+  font-weight: 900;
+  font-stretch: 125%;
+  letter-spacing: -0.04em;
+  line-height: 1;
 }
 
 /* "$?" across the whole tag: each slice holds the piece of it that falls on it, so it breaks with them */
@@ -329,6 +363,22 @@
     border-radius: calc(var(--spread) * var(--r)) calc(var(--spread) * var(--r)) var(--r) var(--r);
   }
 
+  .s01-whole {
+    border-radius: 0 0 1.4cqw 1.4cqw;
+    clip-path: polygon(0 8.5%, 50% 0, 100% 8.5%, 100% 100%, 0 100%);
+  }
+
+  .s01-whole::before {
+    left: 50%;
+    top: 5%;
+    width: 4.2cqw;
+    height: 4.2cqw;
+  }
+
+  .s01-whole span {
+    font-size: 30cqw;
+  }
+
   .s01-hole {
     left: 50%;
     top: 20%;
@@ -388,5 +438,462 @@
   .s01-g--wave i {
     width: 1.1cqw;
     height: calc(var(--h, 6cqh) * 0.7);
+  }
+}
+
+/* ---------- s01-still (Story 01, act 1): the same tag, whole, gray and quiet ---------- */
+.scn--still {
+  --g: 1;
+  --spread: 0;
+  --q: 1;
+  --p0: 0;
+  --p1: 0;
+  --p2: 0;
+  --p3: 0;
+  --t: 0;
+  --zoom: 1.12; /* final frame: a slow push in on the "$?" */
+}
+
+.scn--still .s01-tag {
+  scale: var(--zoom);
+}
+
+.still__ghost {
+  position: absolute;
+  left: calc(var(--gx) * 1%);
+  top: calc(var(--gy) * 1%);
+  color: rgb(245 245 240 / 0.42);
+  font-size: 3.2cqw;
+  font-weight: 800;
+  font-stretch: 112%;
+  white-space: nowrap;
+  opacity: 0; /* final frame: gone (they were the noise of searching for prices) */
+}
+
+.still__ghost.is-crossed {
+  text-decoration: line-through;
+  text-decoration-thickness: 0.3cqw;
+}
+
+/* ---------- the mini piece (Story 01 quoter): the video being built, driven by data-* ---------- */
+.scn--mini {
+  --scn-ar: 16 / 9;
+  --dur: 0.75;
+  --a1: var(--c-volt);
+  --a2: var(--c-volt);
+  --a3: var(--c-volt);
+}
+
+.scn--mini[data-level='2'] { --a2: var(--c-magenta); }
+.scn--mini[data-level='3'] { --a2: var(--c-magenta); --a3: #8f6bff; }
+.scn--mini[data-dur='15'] { --dur: 0.25; }
+.scn--mini[data-dur='30'] { --dur: 0.45; }
+.scn--mini[data-dur='120'] { --dur: 1; }
+
+.scn--mini .scn__ruler {
+  right: auto;
+  width: calc((100% - 12cqw) * var(--dur));
+  transition: width 0.6s var(--ease-out);
+}
+
+.scn--mini .scn__playhead {
+  animation: mini-play 4s linear infinite;
+}
+
+.scn--mini[data-urgent='true'] .scn__playhead {
+  animation-duration: 1.6s;
+}
+
+.scn--mini .scn__tc {
+  color: var(--c-volt);
+}
+
+@keyframes mini-play {
+  from { left: 0; }
+  to { left: 100%; }
+}
+
+.mini__skin {
+  position: absolute;
+  inset: 12cqh 10cqw 30cqh;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  gap: 2cqw;
+  animation: mini-in 0.5s var(--ease-out);
+}
+
+.scn--mini[data-style='tipografia'] .mini__skin--tipografia,
+.scn--mini[data-style='ilustracion'] .mini__skin--ilustracion,
+.scn--mini[data-style='personajes'] .mini__skin--personajes,
+.scn--mini[data-style='3d'] .mini__skin--3d {
+  display: flex;
+}
+
+@keyframes mini-in {
+  from { opacity: 0; scale: 0.92; }
+}
+
+/* kinetic type: the letters of "TU VIDEO" bounce in turn */
+.mini__skin--tipografia {
+  gap: 0;
+}
+
+.mini__skin--tipografia span {
+  color: var(--a1);
+  font-size: 11cqw;
+  font-weight: 900;
+  font-stretch: 125%;
+  line-height: 1;
+  animation: mini-letter 2.4s var(--ease-out) infinite;
+}
+
+.mini__skin--tipografia span:nth-child(3n + 2) { color: var(--a2); }
+.mini__skin--tipografia span:nth-child(3n) { color: var(--a3); }
+.mini__skin--tipografia .mini__sp { width: 3cqw; }
+.mini__skin--tipografia span:nth-child(2) { animation-delay: 0.08s; }
+.mini__skin--tipografia span:nth-child(3) { animation-delay: 0.16s; }
+.mini__skin--tipografia span:nth-child(4) { animation-delay: 0.24s; }
+.mini__skin--tipografia span:nth-child(5) { animation-delay: 0.32s; }
+.mini__skin--tipografia span:nth-child(6) { animation-delay: 0.4s; }
+.mini__skin--tipografia span:nth-child(7) { animation-delay: 0.48s; }
+.mini__skin--tipografia span:nth-child(8) { animation-delay: 0.56s; }
+.mini__skin--tipografia span:nth-child(9) { animation-delay: 0.64s; }
+.mini__skin--tipografia span:nth-child(10) { animation-delay: 0.72s; }
+
+@keyframes mini-letter {
+  0%, 40%, 100% { translate: 0 0; }
+  18% { translate: 0 -18%; }
+}
+
+/* graphics & illustration: shapes that float; more shapes with a higher level */
+.mini__skin--ilustracion {
+  flex-wrap: wrap;
+  gap: 2.4cqw;
+}
+
+.mini__skin--ilustracion i {
+  width: 12cqh;
+  height: 12cqh;
+  background: var(--a1);
+  animation: mini-float 3s ease-in-out infinite;
+}
+
+.mini__skin--ilustracion i:nth-child(3n + 1) { border-radius: 50%; }
+.mini__skin--ilustracion i:nth-child(3n + 2) { background: var(--a2); border-radius: 1.4cqh; rotate: 12deg; animation-delay: -1s; }
+.mini__skin--ilustracion i:nth-child(3n) { background: var(--a3); clip-path: polygon(50% 0, 100% 100%, 0 100%); animation-delay: -2s; }
+.mini__skin--ilustracion i:nth-child(n + 4) { display: none; }
+.scn--mini[data-level='2'] .mini__skin--ilustracion i:nth-child(-n + 5),
+.scn--mini[data-level='3'] .mini__skin--ilustracion i { display: block; }
+
+@keyframes mini-float {
+  50% { translate: 0 -2.2cqh; }
+}
+
+/* characters: a simple character blinks and waves; a second one joins at the top level */
+.mini__skin--personajes {
+  align-items: flex-end;
+  gap: 6cqw;
+}
+
+.mini__char {
+  position: relative;
+  display: grid;
+  justify-items: center;
+}
+
+.mini__head {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2.4cqh;
+  width: 15cqh;
+  height: 15cqh;
+  border-radius: 50%;
+  background: var(--c-white);
+}
+
+.mini__head i {
+  width: 1.8cqh;
+  height: 2.6cqh;
+  border-radius: 99px;
+  background: var(--c-ink);
+  animation: mini-blink 3.2s infinite;
+}
+
+.mini__body {
+  width: 22cqh;
+  height: 20cqh;
+  margin-top: 1cqh;
+  border-radius: 9cqh 9cqh 2cqh 2cqh;
+  background: var(--a2);
+}
+
+.mini__arm {
+  position: absolute;
+  right: -5cqh;
+  bottom: 9cqh;
+  width: 3cqh;
+  height: 12cqh;
+  border-radius: 99px;
+  background: var(--a2);
+  transform-origin: 50% 100%;
+  animation: mini-wave 1.4s ease-in-out infinite;
+}
+
+.mini__char--b { display: none; }
+.mini__char--b .mini__body { background: var(--a3); height: 15cqh; }
+.scn--mini[data-level='3'] .mini__char--b { display: grid; }
+
+@keyframes mini-blink {
+  0%, 92%, 100% { scale: 1 1; }
+  95% { scale: 1 0.1; }
+}
+
+@keyframes mini-wave {
+  0%, 100% { rotate: 20deg; }
+  50% { rotate: -25deg; }
+}
+
+/* 3D: a cube with light and shade that turns (CSS 3D) */
+.mini__skin--3d {
+  perspective: 80cqh;
+}
+
+.mini__cube {
+  position: relative;
+  width: 22cqh;
+  height: 22cqh;
+  transform-style: preserve-3d;
+  animation: mini-turn 7s linear infinite;
+}
+
+.mini__cube i {
+  position: absolute;
+  inset: 0;
+  border-radius: 1cqh;
+  background: var(--a1);
+  box-shadow: inset 0 0 0 0.4cqh rgb(11 11 16 / 0.25);
+}
+
+.mini__cube i:nth-child(1) { transform: translateZ(11cqh); }
+.mini__cube i:nth-child(2) { transform: rotateY(180deg) translateZ(11cqh); filter: brightness(0.55); }
+.mini__cube i:nth-child(3) { transform: rotateY(90deg) translateZ(11cqh); background: var(--a2); filter: brightness(0.8); }
+.mini__cube i:nth-child(4) { transform: rotateY(-90deg) translateZ(11cqh); background: var(--a2); filter: brightness(0.7); }
+.mini__cube i:nth-child(5) { transform: rotateX(90deg) translateZ(11cqh); background: var(--a3); }
+.mini__cube i:nth-child(6) { transform: rotateX(-90deg) translateZ(11cqh); background: var(--a3); filter: brightness(0.5); }
+
+@keyframes mini-turn {
+  from { transform: rotateX(-22deg) rotateY(0deg); }
+  to { transform: rotateX(-22deg) rotateY(360deg); }
+}
+
+/* formats: the frames of each chosen format over the same scene */
+.mini__frames i {
+  position: absolute;
+  left: 50%;
+  top: 41%;
+  height: 64cqh;
+  translate: -50% -50%;
+  border: max(1.5px, 0.4cqh) dashed var(--c-volt);
+  border-radius: 1cqh;
+  opacity: 0;
+  scale: 0.85;
+  transition: opacity 0.35s, scale 0.45s var(--ease-out);
+}
+
+.mini__frames [data-f='16x9'] { aspect-ratio: 16 / 9; height: 58cqh; }
+.mini__frames [data-f='9x16'] { aspect-ratio: 9 / 16; border-color: var(--c-magenta); }
+.mini__frames [data-f='1x1'] { aspect-ratio: 1; height: 50cqh; border-color: #a58bff; }
+
+.scn--mini[data-formats~='16x9'] [data-f='16x9'],
+.scn--mini[data-formats~='9x16'] [data-f='9x16'],
+.scn--mini[data-formats~='1x1'] [data-f='1x1'] {
+  opacity: 0.85;
+  scale: 1;
+}
+
+/* extras: tags in the corner + an audio wave when there is a voice */
+.mini__badges {
+  position: absolute;
+  left: 4cqw;
+  top: 6cqh;
+  display: flex;
+  gap: 1cqw;
+}
+
+.mini__badges span {
+  display: none;
+  padding: 0.8cqh 1.2cqw;
+  border-radius: 99px;
+  background: var(--c-white);
+  color: var(--c-ink);
+  font-size: 1.7cqw;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  animation: mini-in 0.4s var(--ease-out);
+}
+
+.mini__badges [data-x='cortes'] { background: var(--c-volt); }
+.mini__badges [data-x='idioma'] { background: var(--c-magenta); }
+
+.scn--mini[data-extras~='cortes'] [data-x='cortes'],
+.scn--mini[data-extras~='idioma'] [data-x='idioma'],
+.scn--mini[data-extras~='voz'] [data-x='voz'] {
+  display: inline-block;
+}
+
+.mini__wave {
+  position: absolute;
+  right: 4cqw;
+  top: 6cqh;
+  display: none;
+  align-items: center;
+  gap: 0.5cqw;
+  height: 7cqh;
+}
+
+.scn--mini[data-extras~='voz'] .mini__wave {
+  display: flex;
+}
+
+.mini__wave i {
+  width: 0.6cqw;
+  height: 100%;
+  border-radius: 99px;
+  background: var(--c-white);
+  transform-origin: 50% 50%;
+  animation: mini-voice 0.9s ease-in-out infinite;
+}
+
+.mini__wave i:nth-child(2n) { animation-delay: -0.3s; }
+.mini__wave i:nth-child(3n) { animation-delay: -0.6s; }
+
+@keyframes mini-voice {
+  0%, 100% { scale: 1 0.25; }
+  50% { scale: 1 1; }
+}
+
+/* off screen: nothing runs */
+.scn--mini.is-off,
+.scn--mini.is-off * {
+  animation-play-state: paused !important;
+}
+
+/* ---------- s01-result (Story 01, act 4): your video + your choices as clips ---------- */
+.scn--result {
+  --m: 1;
+  --c0: 1;
+  --c1: 1;
+  --c2: 1;
+  --c3: 1;
+  --c4: 1;
+}
+
+.res__mini {
+  position: absolute;
+  left: 50%;
+  top: 7cqh;
+  width: 54cqw;
+  translate: -50% 0;
+  overflow: hidden;
+  border: 1px solid rgb(245 245 240 / 0.16);
+  border-radius: 1.2cqw;
+  box-shadow: 0 2cqw 5cqw rgb(0 0 0 / 0.5);
+  scale: calc(0.82 + 0.18 * var(--m));
+  opacity: calc(0.35 + 0.65 * var(--m));
+}
+
+.res__tracks {
+  position: absolute;
+  left: 5cqw;
+  right: 5cqw;
+  bottom: 7cqh;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 1cqw;
+}
+
+.res__clip {
+  --c: var(--c0);
+  display: grid;
+  gap: 0.6cqh;
+  min-width: 0;
+  padding: 1.6cqh 1.2cqw;
+  border-radius: 0.8cqw;
+  background: var(--c-white);
+  color: var(--c-ink);
+  opacity: var(--c);
+  translate: calc((1 - var(--c)) * -5cqw) 0;
+  clip-path: inset(0 calc((1 - var(--c)) * 100%) 0 0 round 0.8cqw);
+}
+
+.res__clip:nth-child(2) { --c: var(--c1); }
+.res__clip:nth-child(3) { --c: var(--c2); }
+.res__clip:nth-child(4) { --c: var(--c3); }
+.res__clip:nth-child(5) { --c: var(--c4); }
+.res__clip[data-color='volt'] { background: var(--c-volt); }
+.res__clip[data-color='magenta'] { background: var(--c-magenta); }
+.res__clip[data-color='violet'] { background: var(--c-violet); color: var(--c-white); }
+
+.res__clip b {
+  font-size: 1.15cqw;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.75;
+}
+
+.res__clip span {
+  overflow: hidden;
+  font-size: 1.5cqw;
+  font-weight: 800;
+  line-height: 1.15;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@container (orientation: portrait) {
+  .still__ghost {
+    font-size: 6cqw;
+  }
+
+  .res__mini {
+    top: 4cqh;
+    width: 88cqw;
+    border-radius: 2.4cqw;
+  }
+
+  .res__tracks {
+    left: 6cqw;
+    right: 6cqw;
+    bottom: 4cqh;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 1.2cqh;
+  }
+
+  .res__clip {
+    grid-template-columns: 30% minmax(0, 1fr);
+    align-items: center;
+    padding: 1.6cqh 3cqw;
+    border-radius: 2cqw;
+  }
+
+  .res__clip b {
+    font-size: 2.6cqw;
+  }
+
+  .res__clip span {
+    font-size: 3.6cqw;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .scn--mini *,
+  .scn--mini .scn__ruler,
+  .mini__frames i {
+    animation: none !important;
+    transition: none !important;
   }
 }

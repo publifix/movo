@@ -16,7 +16,7 @@ import { studioMarkup, STUDIO_DATA } from './studio-markup.mjs';
 import { portfolioMarkup, projectMeta } from './portfolio-markup.mjs';
 import { siteMarkup, SITE_DATA, contactData } from './site-markup.mjs';
 import { privacyMarkup, PRIVACY_DATA } from './privacy-markup.mjs';
-import { storiesMarkup, storyMeta, storiesData, slugOf, gated, STORIES_DATA } from './stories-markup.mjs';
+import { storiesMarkup, storyMeta, storiesData, slugOf, gated, STORIES_DATA, storyFiles } from './stories-markup.mjs';
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../..');
 const PARTIALS = path.join(ROOT, 'src/partials');
@@ -156,8 +156,8 @@ function render(page, locale, item = null) {
   // the Work ItemList belongs to the Work page; VideoObject + breadcrumb to the project pages
   if (page.id === 'work' || page.id === 'project') jsonld['@graph'].push(...pf.jsonld);
   const st = storiesMarkup({
-    t, lang: locale.code, page, item: page.collection === 'stories' ? item : null, url, orgId: `${site.siteUrl}#org`,
-    homeUrl: pageUrl('home'), storiesUrl: pageUrl('stories'), storyHref, published: site.stories.published,
+    t, lang: locale.code, root, siteUrl: site.siteUrl, page, item: page.collection === 'stories' ? item : null, url, orgId: `${site.siteUrl}#org`,
+    homeUrl: pageUrl('home'), storiesUrl: pageUrl('stories'), storyHref, contactHref, published: site.stories.published,
   });
   jsonld['@graph'].push(...st.jsonld);
   if (page.id === 'services') {
@@ -174,12 +174,12 @@ function render(page, locale, item = null) {
   }
 
   // a project page shares its own frame (self-hosted, see reel-media.mjs); every other page the studio image
-  const ogImage = pf.ogImage || { url: absolute(site.org.ogImage), alt: site.org.name };
+  const ogImage = pf.ogImage || st.ogImage || { url: absolute(site.org.ogImage), alt: site.org.name };
   const seo = [
     site.noindex || hidden(page) ? '<meta name="robots" content="noindex, nofollow" />' : '<meta name="robots" content="index, follow, max-image-preview:large" />',
     `<link rel="canonical" href="${url}" />`,
     ...alternates,
-    '<meta property="og:type" content="website" />',
+    `<meta property="og:type" content="${page.id === 'story' ? 'article' : 'website'}" />`,
     `<meta property="og:site_name" content="${esc(site.org.name)}" />`,
     `<meta property="og:url" content="${url}" />`,
     `<meta property="og:title" content="${esc(meta.title)}" />`,
@@ -210,7 +210,7 @@ function render(page, locale, item = null) {
   const otherLangs = site.locales
     .filter(l => l !== locale)
     .map(l => ({ code: l.code, name: strings(l.code).intro.langName, offer: strings(l.code).intro.langOffer, href: root + urlPath(page, l, item) }));
-  const ui = { intro: { ...t.intro, langs: otherLangs }, a11y: { menu: t.a11y.menu, closeMenu: t.a11y.closeMenu }, player: t.player, work: { scrubHint: t.work.scrubHint }, contact: t.contactUi };
+  const ui = { intro: { ...t.intro, langs: otherLangs }, a11y: { menu: t.a11y.menu, closeMenu: t.a11y.closeMenu }, player: t.player, work: { scrubHint: t.work.scrubHint }, contact: t.contactUi, ...(['story', 'contact'].includes(page.id) ? { story: t.storyUi } : {}) };
   const work = workMarkup(t, root, projectHref);
   // Nav: every item is a page (Work, Services, Studio, Contact); the home keeps a teaser of each one.
   const current = (...ids) => (ids.includes(page.id) ? ' aria-current="page"' : '');
@@ -307,7 +307,7 @@ export default function movoI18n() {
     },
     configureServer(server) {
       // Edits to the template or the strings reload every language page
-      const watched = [...site.pages.map(p => path.join(ROOT, p.template)), REELS, THUMBS_DATA, STORIES_DATA, SERVICES, PREVIEWS, ...STUDIO_DATA, ...SITE_DATA, ...PRIVACY_DATA, ...site.locales.map(l => path.join(ROOT, `src/i18n/${l.code}.json`))];
+      const watched = [...site.pages.map(p => path.join(ROOT, p.template)), REELS, THUMBS_DATA, STORIES_DATA, ...storyFiles(), SERVICES, PREVIEWS, ...STUDIO_DATA, ...SITE_DATA, ...PRIVACY_DATA, ...site.locales.map(l => path.join(ROOT, `src/i18n/${l.code}.json`))];
       server.watcher.add([...watched, PARTIALS]);
       server.watcher.on('change', file => {
         if (watched.includes(file) || file.startsWith(PARTIALS)) server.ws.send({ type: 'full-reload' });

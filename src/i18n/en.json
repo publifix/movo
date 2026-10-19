@@ -320,7 +320,6 @@
       "cta": "See the story",
       "all": "All stories"
     },
-    "draft": "Story in production: the full text and the scenes go live once they are approved.",
     "crumbs": "Breadcrumb",
     "scenes": {
       "s01": {
@@ -331,6 +330,116 @@
         "extras": "Extras"
       }
     }
+  },
+  "storyUi": {
+    "acts": [
+      "Still",
+      "Spark",
+      "Motion",
+      "Result"
+    ],
+    "cta": "Get a quote",
+    "summaryLead": "You chose:",
+    "scenes": {
+      "s01Still": "Illustration: a gray, motionless price tag with a dollar sign and a question mark; crossed-out figures appear and fade around it. The timecode doesn't move.",
+      "s01Result": "Illustration: your finished video in the center and, below it, your choices laid out as clips on a timeline.",
+      "mini": "Animated preview of the video based on your choices in the quoter.",
+      "word": "YOUR VIDEO"
+    },
+    "quoter": {
+      "title": "Build your video",
+      "help": "Make your choices and watch your piece change. It isn't a quote: it's a map to get to the conversation with clarity.",
+      "duracion": {
+        "legend": "Length",
+        "options": {
+          "15": "6–15 s",
+          "30": "30 s",
+          "60": "60 s",
+          "120": "90–120 s"
+        }
+      },
+      "estilo": {
+        "legend": "Style",
+        "options": {
+          "tipografia": "Kinetic type",
+          "ilustracion": "Graphics & illustration",
+          "personajes": "Characters",
+          "3d": "3D"
+        }
+      },
+      "guion": {
+        "legend": "Script",
+        "options": {
+          "cliente": "I'll bring it",
+          "movo": "MOVO writes it"
+        },
+        "short": {
+          "cliente": "Own script",
+          "movo": "Script by MOVO"
+        }
+      },
+      "formatos": {
+        "legend": "Formats",
+        "options": {
+          "16x9": "Horizontal 16:9",
+          "9x16": "Vertical 9:16",
+          "1x1": "Square 1:1 / 4:5"
+        },
+        "short": {
+          "16x9": "16:9",
+          "9x16": "9:16",
+          "1x1": "1:1"
+        }
+      },
+      "extras": {
+        "legend": "Extras",
+        "options": {
+          "cortes": "Ad cutdowns (6, 15 and 30 s)",
+          "idioma": "Version in another language",
+          "voz": "Voice-over (included)"
+        },
+        "short": {
+          "cortes": "Ad cutdowns",
+          "idioma": "Another language",
+          "voz": "Voice-over"
+        }
+      },
+      "urgencia": {
+        "legend": "Timing",
+        "options": {
+          "normal": "Regular schedule",
+          "urgente": "I need it urgently"
+        }
+      },
+      "levelLabel": "Investment level",
+      "levels": [
+        "Essential",
+        "Advanced",
+        "Premium"
+      ],
+      "complexityLabel": "Complexity",
+      "complexity": [
+        "Low",
+        "Medium",
+        "High"
+      ],
+      "timeLabel": "Approximate time",
+      "times": [
+        "A couple of days",
+        "About a week",
+        "A couple of weeks"
+      ],
+      "clips": {
+        "duracion": "Length",
+        "estilo": "Style",
+        "guion": "Script",
+        "formatos": "Formats",
+        "extras": "Extras"
+      },
+      "none": "None"
+    },
+    "contactIntro": "I'm coming from the story \"How much does a motion graphics video cost?\". This is what I have in mind:",
+    "contactLevel": "Estimated level"
   },
   "studio": {
     "_note": "Studio section (home teaser + /en/studio/ page). Owner's copy, verbatim.",

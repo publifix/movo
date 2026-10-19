@@ -3,6 +3,8 @@
 // (Wrapped: a GSAP timeline is a thenable, so returning it from an async function would wait for it to end.)
 const SCENES = {
   's01-cover': () => import('./s01-cover.js'),
+  's01-still': () => import('./s01-still.js'),
+  's01-result': () => import('./s01-result.js'),
 };
 
 export async function mountScene(root) {

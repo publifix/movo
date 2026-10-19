@@ -1,6 +1,6 @@
 # Brief · Story 01 — ¿Cuánto cuesta un video en motion graphics?
 
-Estado: **en espera de aprobación de Jerry** (paso 2 del flujo de STORIES.md).
+Estado: **aprobado por Jerry (oct 2026)**.
 
 | Campo | Valor |
 |---|---|

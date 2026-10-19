@@ -320,7 +320,6 @@
       "cta": "Ver la story",
       "all": "Todas las stories"
     },
-    "draft": "Story en producción: el texto completo y las escenas se publican cuando estén aprobados.",
     "crumbs": "Ruta de navegación",
     "scenes": {
       "s01": {
@@ -331,6 +330,116 @@
         "extras": "Extras"
       }
     }
+  },
+  "storyUi": {
+    "acts": [
+      "Quieto",
+      "Chispa",
+      "Movimiento",
+      "Resultado"
+    ],
+    "cta": "Cotiza tu proyecto",
+    "summaryLead": "Elegiste:",
+    "scenes": {
+      "s01Still": "Ilustración: una etiqueta de precio gris y quieta con un signo de pesos y un signo de interrogación; alrededor aparecen y se borran cifras tachadas. El timecode no avanza.",
+      "s01Result": "Ilustración: tu video terminado al centro y, debajo, lo que elegiste ordenado como clips en una línea de tiempo.",
+      "mini": "Vista previa animada del video según lo que elijas en el cotizador.",
+      "word": "TU VIDEO"
+    },
+    "quoter": {
+      "title": "Arma tu video",
+      "help": "Elige y mira cómo cambia tu pieza. No es una cotización: es un mapa para llegar con claridad a la conversación.",
+      "duracion": {
+        "legend": "Duración",
+        "options": {
+          "15": "6–15 s",
+          "30": "30 s",
+          "60": "60 s",
+          "120": "90–120 s"
+        }
+      },
+      "estilo": {
+        "legend": "Estilo",
+        "options": {
+          "tipografia": "Tipografía animada",
+          "ilustracion": "Gráficos e ilustración",
+          "personajes": "Personajes",
+          "3d": "3D"
+        }
+      },
+      "guion": {
+        "legend": "Guion",
+        "options": {
+          "cliente": "Lo traigo yo",
+          "movo": "Lo desarrolla MOVO"
+        },
+        "short": {
+          "cliente": "Guion propio",
+          "movo": "Guion de MOVO"
+        }
+      },
+      "formatos": {
+        "legend": "Formatos",
+        "options": {
+          "16x9": "Horizontal 16:9",
+          "9x16": "Vertical 9:16",
+          "1x1": "Cuadrado 1:1 / 4:5"
+        },
+        "short": {
+          "16x9": "16:9",
+          "9x16": "9:16",
+          "1x1": "1:1"
+        }
+      },
+      "extras": {
+        "legend": "Extras",
+        "options": {
+          "cortes": "Cortes para anuncios (6, 15 y 30 s)",
+          "idioma": "Versión en otro idioma",
+          "voz": "Voz en off (incluida)"
+        },
+        "short": {
+          "cortes": "Cortes para anuncios",
+          "idioma": "Otro idioma",
+          "voz": "Voz en off"
+        }
+      },
+      "urgencia": {
+        "legend": "Urgencia",
+        "options": {
+          "normal": "Calendario normal",
+          "urgente": "Lo necesito urgente"
+        }
+      },
+      "levelLabel": "Nivel de inversión",
+      "levels": [
+        "Esencial",
+        "Avanzado",
+        "Premium"
+      ],
+      "complexityLabel": "Complejidad",
+      "complexity": [
+        "Baja",
+        "Media",
+        "Alta"
+      ],
+      "timeLabel": "Tiempo aproximado",
+      "times": [
+        "Un par de días",
+        "Alrededor de una semana",
+        "Un par de semanas"
+      ],
+      "clips": {
+        "duracion": "Duración",
+        "estilo": "Estilo",
+        "guion": "Guion",
+        "formatos": "Formatos",
+        "extras": "Extras"
+      },
+      "none": "Ninguno"
+    },
+    "contactIntro": "Vengo de la story «¿Cuánto cuesta un video en motion graphics?». Esto es lo que tengo en mente:",
+    "contactLevel": "Nivel estimado"
   },
   "studio": {
     "_note": "Sección Estudio (teaser en la home + página /estudio/). Textos del dueño, literales.",

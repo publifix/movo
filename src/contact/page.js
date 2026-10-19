@@ -4,6 +4,7 @@
 // and points to WhatsApp (the button in the same card).
 import { initNav } from '../nav.js';
 import { initTimecode } from '../timecode.js';
+import { fromParams, score, summary } from '../stories/quote.js';
 
 const UI = JSON.parse(document.getElementById('movo-i18n')?.textContent || '{}');
 const T = UI.contact || {};
@@ -31,7 +32,24 @@ function check(field) {
   return ok;
 }
 
+// Coming from a MOVO Story (?story=01&duracion=60&estilo=…, the "Cotiza tu proyecto" of its quoter): the
+// message starts with what the visitor chose (editable), and `story` travels in a hidden field so the
+// email says where the lead came from.
+function prefillFromStory() {
+  const q = new URLSearchParams(location.search);
+  const S = UI.story;
+  if (!q.get('story') || !S || !form) return;
+  const hidden = Object.assign(document.createElement('input'), { type: 'hidden', name: 'story', value: q.get('story').slice(0, 8) });
+  form.append(hidden);
+  const msg = form.querySelector('[name="message"]');
+  if (!msg || msg.value.trim()) return;
+  const s = fromParams(q);
+  const level = S.quoter.levels[score(s).level - 1];
+  msg.value = `${S.contactIntro}\n${summary(s, S.quoter)}\n${S.contactLevel}: ${level}\n\n`;
+}
+
 if (form) {
+  prefillFromStory();
   form.noValidate = true; // our messages instead of the browser's bubbles
   const required = [...form.querySelectorAll('[required]')];
   // a field with an error is re-checked while typing (not on blur: a message disappearing on blur would

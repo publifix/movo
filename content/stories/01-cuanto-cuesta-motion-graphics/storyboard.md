@@ -1,6 +1,6 @@
 # Storyboard · Story 01 — ¿Cuánto cuesta un video en motion graphics?
 
-Estado: **en espera de aprobación de Jerry**. Nada de esto se anima antes de la aprobación.
+Estado: **aprobado por Jerry (oct 2026)**, con la tabla de puntos y los tiempos propuestos.
 
 Concepto: "Nada se queda quieto". La página empieza quieta (gris, timecode en `00:00:00:00`) y gana color y
 ritmo conforme el visitante baja. El timecode del sitio (abajo a la izquierda) nombra cada acto: `01 Quieto`,

@@ -6,9 +6,15 @@
 // frame: without JS, with reduced motion, on the index and in an OG capture they show the finished cover;
 // the scripts rewind them to frame 0 and the page plays or scrubs the timeline.
 import fs from 'node:fs';
+import path from 'node:path';
+import { sceneMarkup, quoterMarkup, resultMarkup, ctaMarkup } from './story-scenes.mjs';
+import { storyBody, storyFile } from './story-body.mjs';
 
 const STORIES = new URL('../../src/data/stories.json', import.meta.url);
+const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../..');
 export const STORIES_DATA = STORIES.pathname;
+// the texts of the stories (Markdown, approved copy): watched by the dev server
+export const storyFiles = () => storiesData().stories.flatMap(s => (s.content ? ['es', 'en'].map(l => storyFile(ROOT, s, l)) : []));
 export const storiesData = () => JSON.parse(fs.readFileSync(STORIES, 'utf8'));
 
 const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
@@ -22,37 +28,9 @@ export function storyMeta(t, s, lang) {
   return { title: `${loc(s.title, lang)} · MOVO Stories`, description: loc(s.description, lang) };
 }
 
-// ---------- scenes ----------
-// s01-cover: a price tag, frozen and gray, breaks into the four variables of the price (story 01).
-// Design size 1920x1080 (16:9); in a portrait frame (4:5) the tag stands up and the slices stack (CSS).
-const SCENES = {
-  's01-cover': (t, lang) => {
-    const L = t.stories.scenes.s01;
-    const slices = [
-      ['duration', 'volt', '<span class="s01-g s01-g--bar"><i></i></span>'],
-      ['style', 'magenta', '<span class="s01-g s01-g--shapes"><i></i><i></i><i></i></span>'],
-      ['formats', 'violet', '<span class="s01-g s01-g--formats"><i></i><i></i><i></i></span>'],
-      ['extras', 'white', `<span class="s01-g s01-g--wave">${'<i></i>'.repeat(7)}</span>`],
-    ];
-    return `<div class="scn scn--s01" data-composition-id="s01-cover" data-width="1920" data-height="1080" data-duration="7" role="img" aria-label="${esc(L.label)}">
-            <div class="scn__stage" aria-hidden="true">
-              <div class="s01-tag">${slices
-                .map(([k, color, glyph], i) => `<div class="s01-slice" data-k="${k}" data-color="${color}" style="--i: ${i}">
-                  <span class="s01-q"><span>$?</span></span>${i === 0 ? '<span class="s01-hole"></span>' : ''}
-                  ${glyph}
-                  <span class="s01-label">${esc(L[k])}</span>
-                </div>`)
-                .join('')}
-              </div>
-              <div class="scn__ruler"><span class="scn__playhead"></span></div>
-              <span class="scn__tc" data-scene-tc>00:00:07:00</span>
-            </div>
-          </div>`;
-  },
-};
-const scene = (id, t, lang) => (SCENES[id] ? SCENES[id](t, lang) : '');
+const scene = (id, t, lang) => sceneMarkup(id, t, lang);
 
-export function storiesMarkup({ t, lang, page, item, url, orgId, homeUrl, storiesUrl, storyHref, published }) {
+export function storiesMarkup({ t, lang, root, siteUrl, page, item, url, orgId, homeUrl, storiesUrl, storyHref, contactHref, published }) {
   const { stories } = storiesData();
   const latest = stories[0];
   const n = s => `${t.stories.num} ${s.id}`;
@@ -119,15 +97,24 @@ export function storiesMarkup({ t, lang, page, item, url, orgId, homeUrl, storie
     );
   }
 
+  let ogImage = null;
   if (page.id === 'story' && item) {
     const s = stories.find(x => x.id === item.id) || item;
+    // the acts: <section> per ## of the text, named by the timecode (01 Quieto, 02 Chispa…)
+    const act = i => `<section class="sp-act" data-act="${i + 1}" data-clip="act-${i + 1}" data-clip-label="${esc(t.storyUi.acts[i] || '')}">`;
+    const directive = (name, arg) =>
+      name === 'scene' ? `<figure class="sp-scene">${scene(arg, t, lang).replace('data-duration=', 'data-scrub data-duration=')}</figure>`
+      : name === 'quoter' ? quoterMarkup(t, lang)
+      : name === 'result' ? resultMarkup(t, lang, contactHref)
+      : name === 'cta' ? ctaMarkup(t, contactHref)
+      : '';
     Object.assign(vars, {
       storyNum: esc(n(s)),
       storyTitle: esc(loc(s.title, lang)),
       storyDek: esc(loc(s.dek, lang)),
-      storyCover: scene(s.cover, t, lang),
-      storyDraft: published && s.datePublished ? '' : `<p class="sp-draft">${esc(t.stories.draft)}</p>`,
+      storyBody: s.content ? storyBody(storyFile(ROOT, s, lang), { root, act, directive }) : '',
     });
+    if (s.og) ogImage = { url: new URL(s.og.replace('{lang}', lang), siteUrl).href, width: 1200, height: 630, alt: loc(s.title, lang) };
     const article = {
       '@type': 'Article',
       '@id': `${url}#article`,
@@ -138,6 +125,7 @@ export function storiesMarkup({ t, lang, page, item, url, orgId, homeUrl, storie
       publisher: { '@id': orgId },
       mainEntityOfPage: url,
     };
+    if (ogImage) article.image = ogImage.url;
     if (s.datePublished) article.datePublished = `${s.datePublished}T12:00:00-06:00`;
     if (s.dateModified || s.datePublished) article.dateModified = `${s.dateModified || s.datePublished}T12:00:00-06:00`;
     jsonld.push(article, {
@@ -150,5 +138,5 @@ export function storiesMarkup({ t, lang, page, item, url, orgId, homeUrl, storie
       ],
     });
   }
-  return { vars, jsonld };
+  return { vars, jsonld, ogImage };
 }

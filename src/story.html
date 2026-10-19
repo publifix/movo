@@ -19,14 +19,15 @@
       </nav>
 
       <article class="sp-article" aria-labelledby="sp-title">
-        <header class="sp-head sp-wrap" data-clip="intro" data-clip-start="0" data-clip-label="{{storyNum}}">
+        <header class="sp-head sp-wrap">
           <p class="sp-label">{{stories.label}} · {{storyNum}}</p>
           <h1 class="sp-title" id="sp-title">{{storyTitle}}</h1>
           <p class="sp-dek">{{storyDek}}</p>
         </header>
-        <div class="sp-cover sp-wrap">{{storyCover}}</div>
+        <!-- The text (content/stories/<nn-slug>/story.<lang>.md, approved copy) with its scenes: one <section>
+             per act (Quieto, Chispa, Movimiento, Resultado). The scroll moves the scenes (src/stories/story.js). -->
         <div class="sp-body sp-wrap">
-          {{storyDraft}}
+          {{storyBody}}
         </div>
       </article>
 

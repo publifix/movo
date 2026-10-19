@@ -208,5 +208,15 @@ Static site built with Vite, deployed to GitHub Pages on the custom domain https
   the same composition re-composes for 16:9 and 4:5 (`--scn-ar`). mountScene() returns { tl } (a GSAP
   timeline is a thenable: never return it from an async function). Home teaser `src/stories/home.{js,css}`:
   lazy with Work/Services/Studio; frame 0 gray + 00:00:00:00, plays ONCE at 40 % visible, pauses off screen.
-- Story 01 cotizador: NO money (owner, Oct 2026: no prices on the site) — complexity, approximate delivery
-  time and investment level, then "Cotiza tu proyecto" → /contacto/?story=01&… (prefill the message).
+- Story text = Markdown `content/stories/<nn-slug>/story.{es,en}.md` (approved copy, source of truth) →
+  `scripts/i18n/story-body.mjs` (## = one act <section>, timecode labels `storyUi.acts`; directives `::scene id`,
+  `::quoter`, `::result`, `::cta`; `[PENDIENTE: …]` dropped + listed by the build). Scene/quoter markup:
+  `scripts/i18n/story-scenes.mjs`. Page script `src/stories/story.js`: scenes `[data-scrub]` mounted near the
+  screen and scrubbed by ScrollTrigger (top 88% → center 42%). OG image per language: `scripts/stories/og.mjs`
+  (final frame of the cover scene) → `public/stories/og/<id>-<lang>.jpg`, `og` in stories.json.
+- Story 01 quoter: NO money (owner, Oct 2026: no prices on the site). Points/levels in `src/stories/quote.js`
+  (approved): Esencial ≤ 4 / Avanzado ≤ 7 / Premium; times "un par de días" / "alrededor de una semana" /
+  "un par de semanas". "Cotiza tu proyecto" → /contacto/?story=01&duracion=…&estilo=…&guion=…&formatos=…&extras=…
+  &urgencia=… → src/contact/page.js prefills the message (editable) + hidden field `story`.
+  Still unconfirmed in the text (shown without the markers): whether original music / several voice languages
+  or a rush change the quote.

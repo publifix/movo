@@ -5,12 +5,12 @@ title: "¿Cuánto cuesta un video en motion graphics?"
 metaTitle: "¿Cuánto cuesta un video en motion graphics? · MOVO Stories"   # 58 caracteres
 metaDescription: "Qué determina el precio de un video en motion graphics: duración, estilo, guion, voz, formatos y revisiones. Guía de MOVO, estudio en Querétaro."   # 144
 dek: "No es un número: son decisiones. Duración, estilo, formatos y extras, explicados para que sepas qué pedir antes de cotizar."
-status: borrador — en espera de aprobación de Jerry
+status: aprobado por Jerry (oct 2026)
 ---
 
 # ¿Cuánto cuesta un video en motion graphics?
 
-> Escena 1 · Quieto — una etiqueta de precio congelada, en gris. Timecode en 00:00:00:00.
+::scene s01-still
 
 ## Por qué nadie te da un precio a la primera
 
@@ -29,7 +29,7 @@ conversación sabiendo qué pedir y qué esperar. Esta story es eso.
 
 ## No es un número: son decisiones
 
-> Escena 2 · Chispa — la etiqueta se rompe en cuatro piezas de color: duración, estilo, formatos y extras.
+::scene s01-cover
 
 El precio de un video animado no sale de una tabla: sale de las decisiones que tomas sobre él. Cada una
 mueve la balanza hacia una pieza más sencilla y rápida o hacia una más elaborada.
@@ -42,8 +42,6 @@ complejo es lo que se anima. **Formatos**: en cuántas medidas y versiones se en
 música, revisiones y tiempos. Veamos cada una.
 
 ## Las decisiones que mueven el precio
-
-> Escena 3 · Movimiento — el cotizador interactivo (ver storyboard).
 
 ### 1. Duración
 
@@ -125,12 +123,11 @@ cotizar cada video.
 Mueve los controles y mira cómo cambia tu pieza: la complejidad, el tiempo aproximado de entrega y el nivel
 de inversión. No es una cotización, es un mapa para llegar con claridad a la conversación.
 
-*(Cotizador interactivo: duración, estilo, guion, formatos, extras y urgencia → complejidad, tiempo
-aproximado y nivel de inversión: Esencial, Avanzado o Premium.)*
+::quoter
 
 ## Qué tener listo para una cotización precisa
 
-> Escena 4 · Resultado — "Tu video, en movimiento": resumen de lo elegido y CTA.
+::result
 
 Con estas respuestas te enviamos una cotización en no más de 48 horas:
 
@@ -151,4 +148,4 @@ minuto, o conoce nuestros [videos explicativos](/servicios/#explicativos),
 Somos un estudio de motion graphics en Querétaro y trabajamos con marcas de México, Estados Unidos y
 cualquier parte del mundo. Cuéntanos qué quieres contar.
 
-**[Cotiza tu proyecto →]** (`/contacto/?story=01&…` con lo que elegiste en el cotizador)
+::cta
