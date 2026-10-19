@@ -182,11 +182,16 @@ Static site built with Vite, deployed to GitHub Pages on the custom domain https
   verified by `public/googledcccd2c664a9ab65.html` (keep it; `…ab651.html` is a copy); sitemap.xml submitted.
   "Request indexing" (URL Inspection) DONE for every page (ES + EN, all projects, privacy) by Oct 2026.
   New pages/reels: request indexing for their URLs after the deploy (sitemap.xml updates itself).
-  PENDING (Google's daily request quota was used up on 19 Oct 2026): request indexing for the Stories URLs:
-  /stories/, /en/stories/, /stories/cuanto-cuesta-un-video-motion-graphics/,
-  /en/stories/how-much-does-a-motion-graphics-video-cost/, /stories/como-explicar-un-producto-complejo-en-60-segundos/,
-  /en/stories/how-to-explain-a-complex-product-in-60-seconds/, /stories/logo-animado-para-tu-marca/,
-  /en/stories/animated-logo-for-your-brand/ (+ every new story, ES and EN).
+  PENDING — TO DO ON 20 OCT 2026 (Google's daily quota was used up on 19 Oct): Search Console → URL Inspection →
+  "Request indexing" for these 8 URLs (then for every new story, ES and EN):
+    https://www.movomotiondesign.com/stories/
+    https://www.movomotiondesign.com/en/stories/
+    https://www.movomotiondesign.com/stories/cuanto-cuesta-un-video-motion-graphics/
+    https://www.movomotiondesign.com/en/stories/how-much-does-a-motion-graphics-video-cost/
+    https://www.movomotiondesign.com/stories/como-explicar-un-producto-complejo-en-60-segundos/
+    https://www.movomotiondesign.com/en/stories/how-to-explain-a-complex-product-in-60-seconds/
+    https://www.movomotiondesign.com/stories/logo-animado-para-tu-marca/
+    https://www.movomotiondesign.com/en/stories/animated-logo-for-your-brand/
   "Enforce HTTPS" is ON (Oct 2026). Still to come from the owner: Instagram/TikTok URLs (→ contact.json `social`).
 - Thumbnails: Bunny answers 403 without the site's Referer (Googlebot, WhatsApp/LinkedIn previews), so
   `.github/workflows/thumbs.yml` (manual) copies each reel's thumbnail to `public/thumbs/` (<slug>-{360,720,1080}.webp
