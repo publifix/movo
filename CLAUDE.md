@@ -132,7 +132,7 @@ Static site built with Vite, deployed to GitHub Pages on the custom domain https
 ## Work page + project pages (portfolio, SEO) — `scripts/i18n/portfolio-markup.mjs`
 - Everything comes from `src/data/reels.json`: a new reel (with a stable `slug`) = a new card on `/trabajo/`,
   a new project page, a sitemap entry and JSON-LD (ItemList on Work; VideoObject + BreadcrumbList on the
-  project). `date` (YYYY-MM-DD, the day the video was published on the site) → `uploadDate`, which Google needs
+  project). `date` (YYYY-MM-DD, the day the video was published on the site) → `uploadDate` (rendered as YYYY-MM-DDT12:00:00-06:00: Google rejects a date without time zone), which Google needs
   for video results: set it on every new reel.
 - Work page `src/portfolio/work.{js,css}`: kinetic title, filters with counts (`?cat=a,b`; Services links here),
   4/3/2-column grid with offset columns, real poster <img> (lazy after the first row), hover preview (fine

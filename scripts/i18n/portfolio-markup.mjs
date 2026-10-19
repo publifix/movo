@@ -130,7 +130,9 @@ export function portfolioMarkup({ t, lang, root, item, url, orgId, homeUrl, work
     publisher: { '@id': orgId },
   };
   if (r.bunny?.duration) video.duration = isoDuration(r.bunny.duration);
-  if (r.date) video.uploadDate = r.date; // needed by Google for video rich results: add `date` to the reel
+  // needed by Google for video rich results: add `date` to the reel. Google wants a full ISO 8601 date-time
+  // WITH time zone (a bare YYYY-MM-DD is flagged "invalid" / "missing time zone"): noon in Querétaro (UTC-6, no DST)
+  if (r.date) video.uploadDate = /^\d{4}-\d{2}-\d{2}$/.test(r.date) ? `${r.date}T12:00:00-06:00` : r.date;
   jsonld.push(video, {
     '@type': 'BreadcrumbList',
     '@id': `${url}#breadcrumb`,
